@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="16px" viewBox="0 0 20 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
+    <title>ico / 24 / ui / home</title>
+    <desc>Created with Sketch.</desc>
+    <g id="builder" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-207.000000, -286.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="ico-/-24-/-actions-/-carousel_horizontal" transform="translate(205.000000, 282.000000)">
+                <path d="M18,18 L18,6 C18,4.8954305 17.1045695,4 16,4 L8,4 C6.8954305,4 6,4.8954305 6,6 L6,18 C6,19.1045695 6.8954305,20 8,20 L16,20 C17.1045695,20 18,19.1045695 18,18 Z M21,18 C21.5522847,18 22,17.5522847 22,17 L22,7 C22,6.44771525 21.5522847,6 21,6 L20,6 L20,18 L21,18 Z M3,6 C2.44771525,6 2,6.44771525 2,7 L2,17 C2,17.5522847 2.44771525,18 3,18 L4,18 L4,6 L3,6 Z" id="Icon-color"></path>
+            </g>
+        </g>
+    </g>
+</svg>

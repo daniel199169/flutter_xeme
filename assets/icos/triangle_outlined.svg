@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="19px" viewBox="0 0 22 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
+    <title>ico / 24 / other / triangle_outlined</title>
+    <desc>Created with Sketch.</desc>
+    <g id="builder" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-434.000000, -229.000000)" fill="#686F7D" fill-rule="nonzero">
+            <g id="ico-/-24-/-other-/-triangle_outlined" transform="translate(433.000000, 227.000000)">
+                <path d="M22.9051845,19.63 L12.8127956,2.37 C12.6759761,2.14121078 12.4292654,2.0008087 12.1626417,2 L11.8625706,2 C11.5959469,2.0008087 11.3492362,2.14121078 11.2124167,2.37 L1.10002306,19.63 C0.97013069,19.8666912 0.97013069,20.1533088 1.10002306,20.39 L1.24005621,20.62 C1.36967811,20.8572507 1.61983181,21.0034598 1.8902101,21.0000601 L22.1149975,21.0000601 C22.3853758,21.0034598 22.6355295,20.8572507 22.7651514,20.62 L22.9051845,20.39 C23.0350769,20.1533088 23.0350769,19.8666912 22.9051845,19.63 L22.9051845,19.63 Z M3.79065995,19 L12.0026038,5 L20.2045452,19 L3.79065995,19 Z" id="Icon-color"></path>
+            </g>
+        </g>
+    </g>
+</svg>

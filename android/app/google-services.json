@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "991226697679",
+    "firebase_url": "https://xenome-mobile.firebaseio.com",
+    "project_id": "xenome-mobile",
+    "storage_bucket": "xenome-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991226697679:android:44c551accf8136e55ee4ba",
+        "android_client_info": {
+          "package_name": "com.scott.xenome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991226697679-rh2pih6j32jbgeno47id9mrichud9r97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAohh9ygIxBKRBJtLm7mrqV49uUXhFvqtk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991226697679-rh2pih6j32jbgeno47id9mrichud9r97.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "991226697679-bk250mr96fn8ql1pmfnlsm8v1mvmsrgg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.scott.xenome",
+                "app_store_id": "1514995283"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

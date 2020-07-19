@@ -161,17 +161,16 @@ class TrendingManager {
         .where('id', isEqualTo: xmapid)
         .getDocuments();
     String result = '';
-    
+
     var _list = querySnapshot.documents[0]['page_order'];
     for (int i = 0; i < _list.length; i++) {
-      
       if (_list[i]['page_name'] == 'Scale chart' &&
           _list[i]['sub_order'] == subOrder) {
         result = (i + 1).toString();
         break;
       }
     }
-    
+
     return result;
   }
 
@@ -182,17 +181,16 @@ class TrendingManager {
         .where('id', isEqualTo: xmapid)
         .getDocuments();
     String result = '';
-    
+
     var _list = querySnapshot.documents[0]['page_order'];
     for (int i = 0; i < _list.length; i++) {
-      
       if (_list[i]['page_name'] == 'Quad chart' &&
           _list[i]['sub_order'] == subOrder) {
         result = (i + 1).toString();
         break;
       }
     }
-    
+
     return result;
   }
 
@@ -258,61 +256,54 @@ class TrendingManager {
     }
   }
 
-  static getSectionImage(String xmapid, String pageOrder) async {
+  static getSectionInfo(String xmapid, String commentID) async {
     QuerySnapshot docSnapShot = await db
         .collection('Trending')
         .where('id', isEqualTo: xmapid)
         .getDocuments();
 
-    var _pageOrder = docSnapShot.documents[0]['page_order'];
-    String _pageName = _pageOrder[int.parse(pageOrder) - 1]['page_name'];
-    String _subOrder = _pageOrder[int.parse(pageOrder) - 1]['sub_order'];
+    var _result = [];
     String _resultURL = '';
-    if (_pageName == "Cover image") {
-      CoverImageModel _new =
-          CoverImageModel.fromJson(docSnapShot.documents[0]['cover_image']);
-      _resultURL = _new.imageURL;
-    }
-    if (_pageName == "Image") {
-      var _new = docSnapShot.documents[0]['my_image'];
-      _resultURL = _new[int.parse(_subOrder)]['image_url'];
-    }
-    if (_pageName == "YouTube") {
-      var _new = docSnapShot.documents[0]['youtube'];
-      _resultURL = _new[int.parse(_subOrder)]['image'];
-    }
-    if (_pageName == "Instagram") {
-      var _new = docSnapShot.documents[0]['instagram'];
-      _resultURL = _new[int.parse(_subOrder)]['instagramURL'];
-    }
-    if (_pageName == "Vimeo") {
-      var _new = docSnapShot.documents[0]['vimeo'];
-      _resultURL = _new[int.parse(_subOrder)]['image'];
-    }
-
-    return _resultURL;
-  }
-
-  static getSectionType(String xmapid, String pageOrder) async {
-    QuerySnapshot docSnapShot = await db
-        .collection('Trending')
-        .where('id', isEqualTo: xmapid)
-        .getDocuments();
+    String _resultPageName = '';
+    String _resultSubOrder = '';
+    String _resultPageID = '';
 
     var _pageOrder = docSnapShot.documents[0]['page_order'];
-    String _pageName = _pageOrder[int.parse(pageOrder) - 1]['page_name'];
-    return _pageName;
-  }
+    for (int i = 0; i < _pageOrder.length; i++) {
+      if (_pageOrder[i]['comment_id'] == commentID) {
+         _resultPageName = _pageOrder[i]['page_name'];
+         _resultSubOrder = _pageOrder[i]['sub_order'];
 
-  static getSectionSubOrder(String xmapid, String pageOrder) async {
-    QuerySnapshot docSnapShot = await db
-        .collection('Trending')
-        .where('id', isEqualTo: xmapid)
-        .getDocuments();
+        if (_resultPageName == "Cover image") {
+          CoverImageModel _new =
+              CoverImageModel.fromJson(docSnapShot.documents[0]['cover_image']);
+          _resultURL = _new.imageURL;
+        }
+        if (_resultPageName == "Image") {
+          var _new = docSnapShot.documents[0]['my_image'];
+          _resultURL = _new[int.parse(_resultSubOrder)]['image_url'];
+        }
+        if (_resultPageName == "YouTube") {
+          var _new = docSnapShot.documents[0]['youtube'];
+          _resultURL = _new[int.parse(_resultSubOrder)]['image'];
+        }
+        if (_resultPageName == "Instagram") {
+          var _new = docSnapShot.documents[0]['instagram'];
+          _resultURL = _new[int.parse(_resultSubOrder)]['instagramURL'];
+        }
+        if (_resultPageName == "Vimeo") {
+          var _new = docSnapShot.documents[0]['vimeo'];
+          _resultURL = _new[int.parse(_resultSubOrder)]['image'];
+        }
+        _resultPageID = (i + 1).toString();
+        break;
+      }
+    }
+    _result.add(_resultURL);
+    _result.add(_resultPageName);
+    _result.add(_resultSubOrder);
+    _result.add(_resultPageID);
 
-    var _pageOrder = docSnapShot.documents[0]['page_order'];
-    String _subOrder = _pageOrder[int.parse(pageOrder) - 1]['sub_order'];
-
-    return _subOrder;
+    return _result;
   }
 }

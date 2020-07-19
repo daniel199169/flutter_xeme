@@ -33,6 +33,8 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
   int circlebackgroundcolor = 4278190080;
   int flag = 0;
   int flagMoveEnd = 0;
+  double midWidth = 0.0;
+  double midHeight = 0.0;
   @override
   void initState() {
     super.initState();
@@ -43,9 +45,13 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
 
     borderWidth = 2.0;
     getCircleColor();
-
+   
     xPosition = SessionManager.getMediaWidth() * 0.36;
     yPosition = SessionManager.getMediaHeight() * 0.335;
+   
+    midWidth = xPosition;
+    midHeight = yPosition;
+    
   }
 
   getCircleColor() async {
@@ -155,9 +161,12 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
               if (flag == 0) {
                 setState(() {
                   borderWidth = 2.0;
-                  double midWidth = MediaQuery.of(context).size.width / 2;
-                  double midHeight =
-                      MediaQuery.of(context).size.height * 0.8 / 2 + 72;
+                  print("========== quad chart position value  ============");
+                  print(xPosition);
+                  print(midWidth);
+                  print(yPosition);
+                  print(midHeight);
+
                   if (xPosition < midWidth && yPosition < midHeight) {
                     vote = "1";
                   }
@@ -167,9 +176,11 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                   if (xPosition < midWidth && yPosition > midHeight) {
                     vote = "3";
                   }
-                  if (xPosition > midWidth && yPosition < midHeight) {
+                  if (xPosition > midWidth && yPosition > midHeight) {
                     vote = "4";
                   }
+
+                  print(vote);
                 });
 
                 ChartCirclePosition chartPosition = ChartCirclePosition(

@@ -17,14 +17,12 @@ class Comments extends StatefulWidget {
       {this.id,
       this.type,
       this.commentId,
-      this.sectionNumber,
-      this.sectionType,
+      
       this.callback});
   final String id;
   final String type;
   final String commentId;
-  final String sectionNumber;
-  final String sectionType;
+  
   final Function callback;
 
   @override
@@ -277,7 +275,7 @@ class _CommentsState extends State<Comments> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) => ViewInfoCreator(
-                                            id: widget.id, type: widget.type, pageId: widget.sectionNumber,)),
+                                            id: widget.id, type: widget.type)),
                                   ),
                                 },
                                 child: Row(
@@ -504,8 +502,8 @@ class _CommentsState extends State<Comments> {
                           CommentsManager.addCommentNumber(
                               widget.id,
                               widget.type,
-                              widget.sectionNumber,
-                              widget.sectionType);
+                              widget.commentId
+                             );
 
                           if (parentId == "") {
                             setState(() {

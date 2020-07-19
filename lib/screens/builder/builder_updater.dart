@@ -1242,12 +1242,16 @@ class _BuilderUpdaterState extends State<BuilderUpdater> {
   deleteEntireXmap() async {
     await BuildderManager.deleteEntireXmap(
         SessionManager.getUserId(), widget.id, widget.type);
-    // await BuildderManager.deleteEntireXmap(
-    //     SessionManager.getUserId(), widget.id, "SavedDraft");
-    // await BuildderManager.deleteEntireXmap(
-    //     SessionManager.getUserId(), widget.id, "Trending");
-    // await BuildderManager.deleteEntireXmap(
-    //     SessionManager.getUserId(), widget.id, "Mylist");
+    await BuildderManager.deleteEntireXmap(
+        SessionManager.getUserId(), widget.id, "SavedDraft");
+    await BuildderManager.deleteEntireXmap(
+        SessionManager.getUserId(), widget.id, "Trending");
+    await BuildderManager.deleteEntireXmap(
+        SessionManager.getUserId(), widget.id, "Mylist");
+    await BuildderManager.deleteFromXmapInfo(
+        SessionManager.getUserId(), widget.id, "XmapInfo");
+    await BuildderManager.deleteFromComments(
+        SessionManager.getUserId(), widget.id, "Comments");
   }
 
   getXmapType() async {
@@ -1285,7 +1289,7 @@ class _BuilderUpdaterState extends State<BuilderUpdater> {
       _title = setupInfo.title;
       _description = setupInfo.description;
       _email = setupInfo.privateEmailList;
-      
+
       isSwitched = setupInfo.global == 'public' ? true : false;
     });
   }
@@ -1698,12 +1702,12 @@ class _BuilderUpdaterState extends State<BuilderUpdater> {
                                 value: 'AddInstagram',
                                 height: 40,
                               ),
-                              new PopupMenuItem<String>(
-                                child: Text('Add HTML',
-                                    style: TextStyle(color: Color(0xFF868E9C))),
-                                value: 'AddHTML',
-                                height: 40,
-                              ),
+                              // new PopupMenuItem<String>(
+                              //   child: Text('Add HTML',
+                              //       style: TextStyle(color: Color(0xFF868E9C))),
+                              //   value: 'AddHTML',
+                              //   height: 40,
+                              // ),
                             ],
                             icon: Icon(Icons.more_horiz,
                                 size: 25, color: Color(0xFF868E9C)),
@@ -1735,7 +1739,8 @@ class _BuilderUpdaterState extends State<BuilderUpdater> {
                                 addImage("Vimeo");
                               } else if (value == "AddInstagram") {
                                 addImage("Instagram");
-                              } else if (value == "AddHTML") {}
+                              }
+                              // else if (value == "AddHTML") {}
                             },
                             color: Colors.black,
                           )
@@ -2095,14 +2100,16 @@ class _BuilderUpdaterState extends State<BuilderUpdater> {
                                   const EdgeInsets.fromLTRB(0, 0, 0.0, 0.0),
                               child: Switch(
                                 value: isSwitched,
-                                onChanged: (value) async{
+                                onChanged: (value) async {
                                   setState(() {
                                     isSwitched = value;
                                   });
                                   if (isSwitched == false) {
-                                    await BuildderManager.setGlobal("private", widget.id, "Trending");
+                                    await BuildderManager.setGlobal(
+                                        "private", widget.id, "Trending");
                                   } else {
-                                    await BuildderManager.setGlobal("public", widget.id, "Trending");
+                                    await BuildderManager.setGlobal(
+                                        "public", widget.id, "Trending");
                                   }
                                 },
                                 activeTrackColor: Colors.lightBlue,

@@ -77,8 +77,8 @@ class CommentsManager {
     docSnapShot.documents[0].reference.updateData({'contents': pageList});
   }
 
-  static Future<void> addCommentNumber(String xmapid, String type,
-      String sectionNumber, String sectionType) async {
+  static Future<void> addCommentNumber(
+      String xmapid, String type, String commentID) async {
     String uid = SessionManager.getUserId();
     QuerySnapshot querySnapshot = await db
         .collection("XmapInfo")
@@ -88,9 +88,7 @@ class CommentsManager {
 
     var list = querySnapshot.documents[0]['page_order'].toList();
     for (int i = 0; i < list.length; i++) {
-      if (list[i]['uid'] == uid &&
-          list[i]['section_number'] == sectionNumber 
-          ) {
+      if (list[i]['uid'] == uid && list[i]['commentID'] == commentID) {
         list[i]['comment_number'] =
             (int.parse(list[i]['comment_number']) + 1).toString();
         break;

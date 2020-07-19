@@ -51,7 +51,7 @@ class _YouTubeState extends State<YouTube> {
 
     getLastComment();
     getCollections();
-    addViewNumber();
+
     getData();
     super.initState();
   }
@@ -65,8 +65,7 @@ class _YouTubeState extends State<YouTube> {
   }
 
   addViewNumber() async {
-    await ViewerManager.addViewNumber(
-        widget.id, widget.type, widget.pageId, 'YouTube');
+    await ViewerManager.addViewNumber(widget.id, widget.type, commentId);
   }
 
   getLastComment() async {
@@ -81,6 +80,8 @@ class _YouTubeState extends State<YouTube> {
     setState(() {
       commentId = _commentId;
     });
+
+    addViewNumber();
   }
 
   getCollections() async {
@@ -648,8 +649,6 @@ class _YouTubeState extends State<YouTube> {
                                           id: widget.id,
                                           type: widget.type,
                                           commentId: commentId,
-                                          sectionNumber: widget.pageId,
-                                          sectionType: 'YouTube',
                                           callback: getLastComment,
                                         ),
                                         decoration: BoxDecoration(
@@ -788,8 +787,6 @@ class _YouTubeState extends State<YouTube> {
                                         id: widget.id,
                                         type: widget.type,
                                         commentId: commentId,
-                                        sectionNumber: widget.pageId,
-                                        sectionType: 'YouTube',
                                         callback: getLastComment,
                                       ),
                                       decoration: BoxDecoration(

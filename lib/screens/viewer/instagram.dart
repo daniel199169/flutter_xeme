@@ -45,13 +45,12 @@ class _InstagramState extends State<Instagram> {
 
     getLastComment();
     getCollections();
-    addViewNumber();
+
     super.initState();
   }
 
   addViewNumber() async {
-    await ViewerManager.addViewNumber(
-        widget.id, widget.type, widget.pageId, 'Instagram');
+    await ViewerManager.addViewNumber(widget.id, widget.type, commentId);
   }
 
   getLastComment() async {
@@ -66,6 +65,8 @@ class _InstagramState extends State<Instagram> {
     setState(() {
       commentId = _commentId;
     });
+
+    addViewNumber();
   }
 
   getCollections() async {
@@ -555,8 +556,6 @@ class _InstagramState extends State<Instagram> {
                                     id: widget.id,
                                     type: widget.type,
                                     commentId: commentId,
-                                    sectionNumber: widget.pageId,
-                                    sectionType: 'Instagram',
                                     callback: getLastComment,
                                   ),
                                   decoration: BoxDecoration(
@@ -669,8 +668,6 @@ class _InstagramState extends State<Instagram> {
                                           id: widget.id,
                                           type: widget.type,
                                           commentId: commentId,
-                                          sectionNumber: widget.pageId,
-                                          sectionType: 'Instagram',
                                           callback: getLastComment,
                                         ),
                                         decoration: BoxDecoration(

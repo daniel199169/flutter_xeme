@@ -107,8 +107,7 @@ class _TextPartState extends State<TextPart> {
                                   id: widget.id,
                                   type: widget.type,
                                   commentId: commentId,
-                                  sectionNumber: widget.pageId,
-                                  sectionType: 'Textpart',
+                                 
                                   callback: getLastComment,
                                 ),
                                 decoration: BoxDecoration(

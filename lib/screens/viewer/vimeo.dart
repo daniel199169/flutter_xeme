@@ -54,13 +54,13 @@ class _VimeoState extends State<Vimeo> {
 
     getLastComment();
     getCollections();
-    addViewNumber();
+    
     super.initState();
   }
 
   addViewNumber() async {
     await ViewerManager.addViewNumber(
-        widget.id, widget.type, widget.pageId, 'Vimeo');
+        widget.id, widget.type, commentId);
   }
 
   getLastComment() async {
@@ -75,6 +75,8 @@ class _VimeoState extends State<Vimeo> {
     setState(() {
       commentId = _commentId;
     });
+
+    addViewNumber();
   }
 
   getCollections() async {
@@ -591,8 +593,7 @@ class _VimeoState extends State<Vimeo> {
                                     id: widget.id,
                                     type: widget.type,
                                     commentId: commentId,
-                                    sectionNumber: widget.pageId,
-                                    sectionType: 'Vimeo',
+                                   
                                     callback: getLastComment,
                                   ),
                                   decoration: BoxDecoration(
@@ -734,8 +735,7 @@ class _VimeoState extends State<Vimeo> {
                                           id: widget.id,
                                           type: widget.type,
                                           commentId: commentId,
-                                          sectionNumber: widget.pageId,
-                                          sectionType: 'Vimeo',
+                                          
                                           callback: getLastComment,
                                         ),
                                         decoration: BoxDecoration(

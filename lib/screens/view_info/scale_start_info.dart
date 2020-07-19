@@ -385,8 +385,7 @@ class _ViewScaleStartState extends State<ViewScaleStart>
                                         id: widget.id,
                                         type: widget.type,
                                         commentId: commentId,
-                                        sectionNumber: widget.pageId,
-                                        sectionType: 'Scale chart',
+                                       
                                         callback: () {
                                           getLastComment();
                                           showHeatmap();

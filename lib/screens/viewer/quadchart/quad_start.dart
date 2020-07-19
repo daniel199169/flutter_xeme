@@ -379,8 +379,7 @@ class _QuadStartState extends State<ViewQuadStart>
                                     id: widget.id,
                                     type: widget.type,
                                     commentId: commentId,
-                                    sectionNumber: widget.pageId,
-                                    sectionType: 'Quad chart',
+                                   
                                     callback: () {
                                       getLastComment();
                                       showHeatmap();

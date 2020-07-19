@@ -85,13 +85,15 @@ class ViewerManager {
     }
   }
 
-  static Future<void> addViewNumber(String xmapid, String type,
-      String sectionNumber, String sectionType) async {
+  static Future<void> addViewNumber(
+      String xmapid, String type, String commentID) async {
     String uid = SessionManager.getUserId();
     QuerySnapshot querySnapshot = await db
         .collection("XmapInfo")
         .where('xmapID', isEqualTo: xmapid)
         .getDocuments();
+
+    List list = [];
 
     if (querySnapshot == null || querySnapshot.documents.length == 0) {
       XmapInfo _new = new XmapInfo(
@@ -107,44 +109,50 @@ class ViewerManager {
           .getDocuments();
 
       ViewCount _addViewNumber = new ViewCount(
-          uid: uid,
-          sectionNumber: sectionNumber,
-          sectionType: sectionType,
-          viewNumber: '1',
-          commentNumber: '0');
+          uid: uid, commentID: commentID, viewNumber: '1', commentNumber: '0');
       List _listInitMyView = [];
       _listInitMyView.add(_addViewNumber.toJson());
       querySnapshot1.documents[0].reference
           .updateData({'page_order': _listInitMyView});
     } else {
       int flag = 0;
-      var list = querySnapshot.documents[0]['page_order'];
-      print("*****************     *****************");
-      print(xmapid);
-      print(list);
-      for (int i = 0; i < list.length; i++) {
-        if (list[i]['uid'] == uid &&
-            list[i]['section_number'] == sectionNumber) {
-          int viewNum = int.parse(list[i]['view_number']) + 1;
-
-          list[i]['view_number'] = viewNum.toString();
-
-          flag = 1;
-          break;
-        }
-      }
-      if (flag == 1) {
-        querySnapshot.documents[0].reference.updateData({'page_order': list});
-      } else {
+      if (querySnapshot.documents[0]['page_order'] == null) {
         ViewCount _addViewNumber = new ViewCount(
             uid: uid,
-            sectionNumber: sectionNumber,
-            sectionType: sectionType,
+            commentID: commentID,
             viewNumber: '1',
             commentNumber: '0');
+        List _listInitMyView = [];
+        _listInitMyView.add(_addViewNumber.toJson());
+        querySnapshot.documents[0].reference
+            .updateData({'page_order': _listInitMyView});
+      } else {
+        list = querySnapshot.documents[0]['page_order'].toList();
+        // print("*****************     *****************");
+        // print(xmapid);
+        // print(list);
+        for (int i = 0; i < list.length; i++) {
+          if (list[i]['uid'] == uid && list[i]['commentID'] == commentID) {
+            int viewNum = int.parse(list[i]['view_number']) + 1;
 
-        list.add(_addViewNumber.toJson());
-        querySnapshot.documents[0].reference.updateData({'page_order': list});
+            list[i]['view_number'] = viewNum.toString();
+
+            flag = 1;
+            break;
+          }
+        }
+        if (flag == 1) {
+          querySnapshot.documents[0].reference.updateData({'page_order': list});
+        } else {
+          ViewCount _addViewNumber = new ViewCount(
+              uid: uid,
+              commentID: commentID,
+              viewNumber: '1',
+              commentNumber: '0');
+
+          list.add(_addViewNumber.toJson());
+          querySnapshot.documents[0].reference.updateData({'page_order': list});
+        }
       }
     }
   }
@@ -165,7 +173,7 @@ class ViewerManager {
 
       var _sectionArry = [];
       for (int i = 0; i < _list.length; i++) {
-        _sectionArry.add(_list[i]['section_number']);
+        _sectionArry.add(_list[i]['commentID']);
       }
 
       _sectionArry = Set.of(_sectionArry).toList();
@@ -175,7 +183,7 @@ class ViewerManager {
         int point2 = 0;
 
         for (int j = 0; j < _list.length; j++) {
-          if (_list[j]['section_number'] == _sectionArry[i]) {
+          if (_list[j]['commentID'] == _sectionArry[i]) {
             point1 = point1 + int.parse(_list[j]['comment_number']);
             point2 = point2 + int.parse(_list[j]['view_number']);
           }
@@ -191,16 +199,16 @@ class ViewerManager {
 
       for (int i = _midTempArry.length - 1; i >= 0; i--) {
         var temp = [];
+        var _sectionInfo = [];
+        _sectionInfo =
+            await TrendingManager.getSectionInfo(xmapid, _midTempArry[i].uid);
 
-        temp.add(
-            await TrendingManager.getSectionImage(xmapid, _midTempArry[i].uid));
+        temp.add(_sectionInfo[0]);
         temp.add(_midTempArry[i].viewNumber);
         temp.add(_midTempArry[i].commentNumber);
-        temp.add(
-            await TrendingManager.getSectionType(xmapid, _midTempArry[i].uid));
-        temp.add(await TrendingManager.getSectionSubOrder(
-            xmapid, _midTempArry[i].uid));
-        temp.add(_midTempArry[i].uid);
+        temp.add(_sectionInfo[1]);
+        temp.add(_sectionInfo[2]);
+        temp.add(_sectionInfo[3]);
         _result.add(temp);
       }
       return _result;
@@ -265,29 +273,36 @@ class ViewerManager {
 
     var _list = [];
     var list = [];
-    _list = querySnapshot.documents;
 
-    for (int i = 0; i < _list.length; i++) {
-      for (int j = 0; j < _list[i]['page_order'].length; j++) {
-        if (uid == _list[i]['page_order'][j]['uid']) {
-          list.add(_list[i]['xmapID']);
-          break;
+    if (querySnapshot.documents == null) {
+      return [];
+    } else {
+      _list = querySnapshot.documents;
+
+      for (int i = 0; i < _list.length; i++) {
+        if (_list[i]['page_order'] == null) continue;
+
+        for (int j = 0; j < _list[i]['page_order'].length; j++) {
+          if (uid == _list[i]['page_order'][j]['uid']) {
+            list.add(_list[i]['xmapID']);
+            break;
+          }
         }
       }
+
+      // for (int ]i = 0; i < _list.length; i++) {
+      //   if (_list[i].xmapID != xmapid) {
+      //     list.add(_list[i]);
+      //   }
+      // }
+
+      List<Trending> result = [];
+      for (int i = 0; i < list.length; i++) {
+        result.add(await TrendingManager.getListFromID(list[i], 'Trending'));
+      }
+
+      return result;
     }
-
-    // for (int ]i = 0; i < _list.length; i++) {
-    //   if (_list[i].xmapID != xmapid) {
-    //     list.add(_list[i]);
-    //   }
-    // }
-
-    List<Trending> result = [];
-    for (int i = 0; i < list.length; i++) {
-      result.add(await TrendingManager.getListFromID(list[i], 'Trending'));
-    }
-
-    return result;
   }
 
   static getAllViewers(String xmapid) async {
@@ -311,11 +326,13 @@ class ViewerManager {
       _uidArry = Set.of(_uidArry).toList();
 
       for (int i = 0; i < _uidArry.length; i++) {
-        var temp = [];
-        temp.add(_uidArry[i]);
-        temp.add(await TrendingManager.getAvatarImage(_uidArry[i]));
-        temp.add(await TrendingManager.getUserName(_uidArry[i]));
-        result.add(temp);
+        if (_uidArry[i] != '') {
+          var temp = [];
+          temp.add(_uidArry[i]);
+          temp.add(await TrendingManager.getAvatarImage(_uidArry[i]));
+          temp.add(await TrendingManager.getUserName(_uidArry[i]));
+          result.add(temp);
+        }
       }
     }
     return result;
@@ -329,64 +346,71 @@ class ViewerManager {
         .where('uid', isEqualTo: uid)
         .getDocuments();
 
-    List<ChartCirclePosition> _list = [];
     if (querySnapshot == null || querySnapshot.documents.length == 0) {
       return [];
     } else {
-      var scaleHeatmap = querySnapshot.documents[0]['scale_heatmap'];
-      var scaleTitle = querySnapshot.documents[0]['scale_title'];
+      if (querySnapshot.documents[0]['scale_heatmap'] == null ||
+          querySnapshot.documents[0]['scale_heatmap'].length == 0) {
+        return [];
+      } else {
+        var scaleHeatmap = querySnapshot.documents[0]['scale_heatmap'];
+        var scaleTitle = querySnapshot.documents[0]['scale_title'];
 
-      int maxSuborder = int.parse(scaleHeatmap[0]['subOrder']);
-      if (scaleHeatmap.length > 1) {
-        for (int i = 0; i < scaleHeatmap.length; i++) {
-          if (maxSuborder < int.parse(scaleHeatmap[i]['subOrder'])) {
-            maxSuborder = int.parse(scaleHeatmap[i]['subOrder']);
-          }
-        }
-      }
-
-      var result = [];
-      for (int j = 0; j <= maxSuborder; j++) {
-        int title1 = 0;
-        int title2 = 0;
-        String labelOne = '';
-        String labelTwo = '';
-        String title = '';
-        var _temp = [];
-        for (int i = 0; i < scaleHeatmap.length; i++) {
-          if (scaleHeatmap[i]['subOrder'] == j.toString()) {
-            if (scaleHeatmap[i]['vote'] == "1") {
-              title1 = title1 + 1;
+        int maxSuborder = int.parse(scaleHeatmap[0]['subOrder']);
+        if (scaleHeatmap.length > 1) {
+          for (int i = 0; i < scaleHeatmap.length; i++) {
+            if (maxSuborder < int.parse(scaleHeatmap[i]['subOrder'])) {
+              maxSuborder = int.parse(scaleHeatmap[i]['subOrder']);
             }
-            if (scaleHeatmap[i]['vote'] == "2") {
-              title2 = title2 + 1;
-            }
-            labelOne = scaleTitle[j]['labelOne'];
-            labelTwo = scaleTitle[j]['labelTwo'];
-            title = scaleTitle[j]['title'];
           }
         }
 
-        double per1 = 0;
-        double per2 = 0;
-        if (title2 + title1 > 0) {
-          per1 = title1 / (title1 + title2);
-          per2 = title2 / (title1 + title2);
-        }
-        _temp.add(title);
-        _temp.add(labelOne);
-        _temp.add(title1.toString());
-        _temp.add(per1.toStringAsFixed(1));
-        _temp.add(labelTwo);
-        _temp.add(title2.toString());
-        _temp.add(per2.toStringAsFixed(1));
-        _temp.add(j.toString());
-        _temp.add(await TrendingManager.getPageIdFromSubOrderForScaleChartInfo(
-            xmapid, j.toString()));
-        result.add(_temp);
-      }
+        var result = [];
+        for (int j = 0; j <= maxSuborder; j++) {
+          int title1 = 0;
+          int title2 = 0;
+          String labelOne = '';
+          String labelTwo = '';
+          String title = '';
+          var _temp = [];
+          for (int i = 0; i < scaleHeatmap.length; i++) {
+            if (scaleHeatmap[i]['uid'] != '') {
+              if (scaleHeatmap[i]['subOrder'] == j.toString()) {
+                if (scaleHeatmap[i]['vote'] == "1") {
+                  title1 = title1 + 1;
+                }
+                if (scaleHeatmap[i]['vote'] == "2") {
+                  title2 = title2 + 1;
+                }
+                labelOne = scaleTitle[j]['labelOne'];
+                labelTwo = scaleTitle[j]['labelTwo'];
+                title = scaleTitle[j]['title'];
+              }
+            }
+          }
 
-      return result;
+          double per1 = 0;
+          double per2 = 0;
+          if (title2 + title1 > 0) {
+            per1 = title1 / (title1 + title2);
+            per2 = title2 / (title1 + title2);
+          }
+          _temp.add(title);
+          _temp.add(labelOne);
+          _temp.add(title1.toString());
+          _temp.add(per1.toStringAsFixed(1));
+          _temp.add(labelTwo);
+          _temp.add(title2.toString());
+          _temp.add(per2.toStringAsFixed(1));
+          _temp.add(j.toString());
+          _temp.add(
+              await TrendingManager.getPageIdFromSubOrderForScaleChartInfo(
+                  xmapid, j.toString()));
+          result.add(_temp);
+        }
+
+        return result;
+      }
     }
   }
 
@@ -398,91 +422,97 @@ class ViewerManager {
         .where('uid', isEqualTo: uid)
         .getDocuments();
 
-    List<ChartCirclePosition> _list = [];
     if (querySnapshot == null || querySnapshot.documents.length == 0) {
       return [];
     } else {
-      var quadHeatmap = querySnapshot.documents[0]['quad_heatmap'];
-      var quadTitle = querySnapshot.documents[0]['quad_title'];
+      if (querySnapshot.documents[0]['quad_heatmap'] == null ||
+          querySnapshot.documents[0]['quad_heatmap'].length == 0) {
+        return [];
+      } else {
+        var quadHeatmap = querySnapshot.documents[0]['quad_heatmap'];
+        var quadTitle = querySnapshot.documents[0]['quad_title'];
 
-      int maxSuborder = int.parse(quadHeatmap[0]['subOrder']);
-      if (quadHeatmap.length > 1) {
-        for (int i = 0; i < quadHeatmap.length; i++) {
-          if (maxSuborder < int.parse(quadHeatmap[i]['subOrder'])) {
-            maxSuborder = int.parse(quadHeatmap[i]['subOrder']);
+        int maxSuborder = int.parse(quadHeatmap[0]['subOrder']);
+        if (quadHeatmap.length > 1) {
+          for (int i = 0; i < quadHeatmap.length; i++) {
+            if (maxSuborder < int.parse(quadHeatmap[i]['subOrder'])) {
+              maxSuborder = int.parse(quadHeatmap[i]['subOrder']);
+            }
           }
         }
-      }
-      print("%%%%%%%%%%%%%%   %%%%%%%%%%%");
-      print(maxSuborder);
-      var result = [];
-      for (int j = 0; j <= maxSuborder; j++) {
-        int title1 = 0;
-        int title2 = 0;
-        int title3 = 0;
-        int title4 = 0;
-        String labelOne = '';
-        String labelTwo = '';
-        String labelThree = '';
-        String labelFour = '';
-        String title = '';
-        var _temp = [];
-        for (int i = 0; i < quadHeatmap.length; i++) {
-          if (quadHeatmap[i]['subOrder'] == j.toString()) {
-            if (quadHeatmap[i]['vote'] == "1") {
-              title1 = title1 + 1;
+        // print("%%%%%%%%%%%%%%   %%%%%%%%%%%");
+        // print(maxSuborder);
+        var result = [];
+        for (int j = 0; j <= maxSuborder; j++) {
+          int title1 = 0;
+          int title2 = 0;
+          int title3 = 0;
+          int title4 = 0;
+          String labelOne = '';
+          String labelTwo = '';
+          String labelThree = '';
+          String labelFour = '';
+          String title = '';
+          var _temp = [];
+          for (int i = 0; i < quadHeatmap.length; i++) {
+            if (quadHeatmap[i]['uid'] != '') {
+              if (quadHeatmap[i]['subOrder'] == j.toString()) {
+                if (quadHeatmap[i]['vote'] == "1") {
+                  title1 = title1 + 1;
+                }
+                if (quadHeatmap[i]['vote'] == "2") {
+                  title2 = title2 + 1;
+                }
+                if (quadHeatmap[i]['vote'] == "3") {
+                  title3 = title3 + 1;
+                }
+                if (quadHeatmap[i]['vote'] == "4") {
+                  title4 = title4 + 1;
+                }
+                labelOne = quadTitle[j]['labelOne'];
+                labelTwo = quadTitle[j]['labelTwo'];
+                labelThree = quadTitle[j]['labelThree'];
+                labelFour = quadTitle[j]['labelFour'];
+                title = quadTitle[j]['title'];
+              }
             }
-            if (quadHeatmap[i]['vote'] == "2") {
-              title2 = title2 + 1;
-            }
-            if (quadHeatmap[i]['vote'] == "3") {
-              title3 = title3 + 1;
-            }
-            if (quadHeatmap[i]['vote'] == "4") {
-              title4 = title4 + 1;
-            }
-            labelOne = quadTitle[j]['labelOne'];
-            labelTwo = quadTitle[j]['labelTwo'];
-            labelThree = quadTitle[j]['labelThree'];
-            labelFour = quadTitle[j]['labelFour'];
-            title = quadTitle[j]['title'];
           }
+          double per1 = 0;
+          double per2 = 0;
+          double per3 = 0;
+          double per4 = 0;
+          if (title2 + title1 + title3 + title4 > 0) {
+            per1 = title1 / (title1 + title2 + title3 + title4);
+            per2 = title2 / (title1 + title2 + title3 + title4);
+            per3 = title3 / (title1 + title2 + title3 + title4);
+            per4 = title4 / (title1 + title2 + title3 + title4);
+          }
+
+          // print("%%%%%%%%%%%%%% jjjjjjjjjj  %%%%%%%%%%%");
+          // print(j);
+
+          _temp.add(title);
+          _temp.add(labelOne);
+          _temp.add(title1.toString());
+          _temp.add(per1.toStringAsFixed(1));
+          _temp.add(labelTwo);
+          _temp.add(title2.toString());
+          _temp.add(per2.toStringAsFixed(1));
+          _temp.add(labelThree);
+          _temp.add(title3.toString());
+          _temp.add(per3.toStringAsFixed(1));
+          _temp.add(labelFour);
+          _temp.add(title4.toString());
+          _temp.add(per4.toStringAsFixed(1));
+          _temp.add(j.toString());
+          _temp.add(await TrendingManager.getPageIdFromSubOrderForQuadChartInfo(
+              xmapid, j.toString()));
+
+          result.add(_temp);
         }
-        double per1 = 0;
-        double per2 = 0;
-        double per3 = 0;
-        double per4 = 0;
-        if (title2 + title1 + title3 + title4 > 0) {
-          per1 = title1 / (title1 + title2 + title3 + title4);
-          per2 = title2 / (title1 + title2 + title3 + title4);
-          per3 = title3 / (title1 + title2 + title3 + title4);
-          per4 = title4 / (title1 + title2 + title3 + title4);
-        }
 
-        print("%%%%%%%%%%%%%% jjjjjjjjjj  %%%%%%%%%%%");
-        print(j);
-
-        _temp.add(title);
-        _temp.add(labelOne);
-        _temp.add(title1.toString());
-        _temp.add(per1.toStringAsFixed(1));
-        _temp.add(labelTwo);
-        _temp.add(title2.toString());
-        _temp.add(per2.toStringAsFixed(1));
-        _temp.add(labelThree);
-        _temp.add(title3.toString());
-        _temp.add(per3.toStringAsFixed(1));
-        _temp.add(labelFour);
-        _temp.add(title4.toString());
-        _temp.add(per4.toStringAsFixed(1));
-        _temp.add(j.toString());
-        _temp.add(await TrendingManager.getPageIdFromSubOrderForQuadChartInfo(
-            xmapid, j.toString()));
-
-        result.add(_temp);
+        return result;
       }
-
-      return result;
     }
   }
 
@@ -551,10 +581,10 @@ class ViewerManager {
     QuerySnapshot querySnapshotCommentId =
         await db.collection(type).where('id', isEqualTo: id).getDocuments();
 
-    print("------------  kkk ============  kkk  ---------------");
-    print(id);
-    print(type);
-    print(pageOrderId);
+    // print("------------  kkk ============  kkk  ---------------");
+    // print(id);
+    // print(type);
+    // print(pageOrderId);
 
     // cover page absolutely exist in page_order
     List<PageOrder> _pageOrderList = [];
@@ -597,6 +627,9 @@ class ViewerManager {
       querySnapshot2.documents[0].reference
           .updateData({'page_order': _pageOrderList});
 
+      // await ViewerManager.addViewNumber(
+      //     widget.id, widget.type, widget.pageId, 'Cover image');
+      // }
       return [];
     } else {
       List commentList = [];

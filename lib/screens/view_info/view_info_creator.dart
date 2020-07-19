@@ -2,16 +2,16 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 // import 'package:share/share.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+// import 'package:auto_size_text/auto_size_text.dart';
+// import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:xenome/firebase_services/authentication.dart';
-import 'package:xenome/firebase_services/build_manager.dart';
-import 'package:xenome/firebase_services/mylist_manager.dart';
+// import 'package:xenome/firebase_services/build_manager.dart';
+// import 'package:xenome/firebase_services/mylist_manager.dart';
 import 'package:xenome/firebase_services/trending_manager.dart';
 import 'package:xenome/firebase_services/Viewer_manager.dart';
 import 'package:xenome/firebase_services/follow_manager.dart';
-import 'package:xenome/models/xmap_info.dart';
+// import 'package:xenome/models/xmap_info.dart';
 import 'package:xenome/screens/custom_widgets/fade_transition.dart';
 import 'package:xenome/models/mylist.dart';
 import 'package:xenome/models/postion.dart';
@@ -20,10 +20,10 @@ import 'package:xenome/models/trending.dart';
 import 'package:xenome/screens/profile/others_profile.dart';
 import 'package:xenome/utils/session_manager.dart';
 import 'package:xenome/screens/viewer/viewer_init.dart';
-import 'package:xenome/utils/string_helper.dart';
-import 'package:xenome/verification/login_check.dart';
-import 'latest_result_chart.dart';
-import 'package:xenome/screens/viewer/splashscreen.dart';
+// import 'package:xenome/utils/string_helper.dart';
+// import 'package:xenome/verification/login_check.dart';
+// import 'latest_result_chart.dart';
+// import 'package:xenome/screens/viewer/splashscreen.dart';
 import 'package:xenome/screens/builder/builder_updater.dart';
 import 'package:xenome/screens/view_xmap/xmap_init.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -142,6 +142,7 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
     var _itemsTrending = await ViewerManager.getTrendingView(widget.id);
     setState(() {
       itemsTrending = _itemsTrending;
+    
     });
   }
 
@@ -150,8 +151,8 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
         widget.id, SessionManager.getUserId());
     setState(() {
       itemsViewerAlsoViewed = _itemsViewerAlsoViewed;
-      print("---------      -----------    ---------------");
-      print(itemsViewerAlsoViewed);
+      // print("---------      -----------    ---------------");
+      // print(itemsViewerAlsoViewed);
     });
   }
 
@@ -166,287 +167,295 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
 
   getScaleChart() async {
     var _itemsScaleChart = await ViewerManager.getScaleChart(widget.id);
+    if (_itemsScaleChart != []) {
+      setState(() {
+        itemsScaleChart = _itemsScaleChart;
+      });
 
-    setState(() {
-      itemsScaleChart = _itemsScaleChart;
-    });
-
-    for (int i = 0; i < itemsScaleChart.length; i++) {
-      scaleChartWidgets.add(Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            FadeRoute(
-                                page: ViewScaleStart(
-                                    id: widget.id,
-                                    type: "Trending",
-                                    subOrder: itemsScaleChart[i][7],
-                                    pageId: itemsScaleChart[i][8])));
-                      },
-                      child: Text(
-                        itemsScaleChart[i][0],
-                        style: TextStyle(fontSize: 17, color: Colors.white),
+      for (int i = 0; i < itemsScaleChart.length; i++) {
+        scaleChartWidgets.add(Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              FadeRoute(
+                                  page: ViewScaleStart(
+                                      id: widget.id,
+                                      type: "Trending",
+                                      subOrder: itemsScaleChart[i][7],
+                                      pageId: itemsScaleChart[i][8])));
+                        },
+                        child: Text(
+                          itemsScaleChart[i][0],
+                          style: TextStyle(fontSize: 17, color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: Text(
-                    itemsScaleChart[i][1],
-                    style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
-                  )),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      itemsScaleChart[i][2],
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    )),
-                Expanded(
-                  flex: 8,
-                  child: LinearPercentIndicator(
-                    lineHeight: 3.0,
-                    percent: double.parse(itemsScaleChart[i][3]),
-                    progressColor: Color(0xFF2B8DD8),
-                  ),
+                  ],
                 ),
-              ]),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: Text(
-                    itemsScaleChart[i][4],
-                    style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
-                  )),
-                ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      itemsScaleChart[i][5],
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      itemsScaleChart[i][1],
+                      style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
                     )),
-                Expanded(
-                  flex: 8,
-                  child: LinearPercentIndicator(
-                    lineHeight: 3.0,
-                    percent: double.parse(itemsScaleChart[i][6]),
-                    progressColor: Color(0xFF2B8DD8),
-                  ),
+                  ],
                 ),
-              ]),
-            ),
-          ],
-        ),
-      ));
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            itemsScaleChart[i][2],
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                          )),
+                      Expanded(
+                        flex: 8,
+                        child: LinearPercentIndicator(
+                          lineHeight: 3.0,
+                          percent: double.parse(itemsScaleChart[i][3]),
+                          progressColor: Color(0xFF2B8DD8),
+                        ),
+                      ),
+                    ]),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      itemsScaleChart[i][4],
+                      style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
+                    )),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            itemsScaleChart[i][5],
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                          )),
+                      Expanded(
+                        flex: 8,
+                        child: LinearPercentIndicator(
+                          lineHeight: 3.0,
+                          percent: double.parse(itemsScaleChart[i][6]),
+                          progressColor: Color(0xFF2B8DD8),
+                        ),
+                      ),
+                    ]),
+              ),
+            ],
+          ),
+        ));
+      }
     }
   }
 
   getQuadChart() async {
     var _itemsQuadChart = await ViewerManager.getQuadChart(widget.id);
+    if (_itemsQuadChart != []) {
+      setState(() {
+        itemsQuadChart = _itemsQuadChart;
+      });
 
-    setState(() {
-      itemsQuadChart = _itemsQuadChart;
-    });
-
-    for (int i = 0; i < itemsQuadChart.length; i++) {
-      quadChartWidgets.add(Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            FadeRoute(
-                                page: ViewQuadStart(
-                                    id: widget.id,
-                                    type: "Trending",
-                                    subOrder: itemsQuadChart[i][13],
-                                    pageId: itemsQuadChart[i][14])));
-                      },
-                      child: Text(
-                        itemsQuadChart[i][0],
-                        style: TextStyle(fontSize: 17, color: Colors.white),
+      for (int i = 0; i < itemsQuadChart.length; i++) {
+        quadChartWidgets.add(Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              FadeRoute(
+                                  page: ViewQuadStart(
+                                      id: widget.id,
+                                      type: "Trending",
+                                      subOrder: itemsQuadChart[i][13],
+                                      pageId: itemsQuadChart[i][14])));
+                        },
+                        child: Text(
+                          itemsQuadChart[i][0],
+                          style: TextStyle(fontSize: 17, color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: Text(
-                    itemsQuadChart[i][1],
-                    style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
-                  )),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      itemsQuadChart[i][2],
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    )),
-                Expanded(
-                  flex: 8,
-                  child: LinearPercentIndicator(
-                    lineHeight: 3.0,
-                    percent: double.parse(itemsQuadChart[i][3]),
-                    progressColor: Color(0xFF2B8DD8),
-                  ),
+                  ],
                 ),
-              ]),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: Text(
-                    itemsQuadChart[i][4],
-                    style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
-                  )),
-                ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      itemsQuadChart[i][5],
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      itemsQuadChart[i][1],
+                      style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
                     )),
-                Expanded(
-                  flex: 8,
-                  child: LinearPercentIndicator(
-                    lineHeight: 3.0,
-                    percent: double.parse(itemsQuadChart[i][6]),
-                    progressColor: Color(0xFF2B8DD8),
-                  ),
+                  ],
                 ),
-              ]),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: Text(
-                    itemsQuadChart[i][7],
-                    style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
-                  )),
-                ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      itemsQuadChart[i][8],
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    )),
-                Expanded(
-                  flex: 8,
-                  child: LinearPercentIndicator(
-                    lineHeight: 3.0,
-                    percent: double.parse(itemsQuadChart[i][9]),
-                    progressColor: Color(0xFF2B8DD8),
-                  ),
-                ),
-              ]),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: Text(
-                    itemsQuadChart[i][10],
-                    style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
-                  )),
-                ],
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            itemsQuadChart[i][2],
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                          )),
+                      Expanded(
+                        flex: 8,
+                        child: LinearPercentIndicator(
+                          lineHeight: 3.0,
+                          percent: double.parse(itemsQuadChart[i][3]),
+                          progressColor: Color(0xFF2B8DD8),
+                        ),
+                      ),
+                    ]),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      itemsQuadChart[i][11],
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      itemsQuadChart[i][4],
+                      style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
                     )),
-                Expanded(
-                  flex: 8,
-                  child: LinearPercentIndicator(
-                    lineHeight: 3.0,
-                    percent: double.parse(itemsQuadChart[i][12]),
-                    progressColor: Color(0xFF2B8DD8),
-                  ),
+                  ],
                 ),
-              ]),
-            ),
-          ],
-        ),
-      ));
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            itemsQuadChart[i][5],
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                          )),
+                      Expanded(
+                        flex: 8,
+                        child: LinearPercentIndicator(
+                          lineHeight: 3.0,
+                          percent: double.parse(itemsQuadChart[i][6]),
+                          progressColor: Color(0xFF2B8DD8),
+                        ),
+                      ),
+                    ]),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      itemsQuadChart[i][7],
+                      style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
+                    )),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            itemsQuadChart[i][8],
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                          )),
+                      Expanded(
+                        flex: 8,
+                        child: LinearPercentIndicator(
+                          lineHeight: 3.0,
+                          percent: double.parse(itemsQuadChart[i][9]),
+                          progressColor: Color(0xFF2B8DD8),
+                        ),
+                      ),
+                    ]),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      itemsQuadChart[i][10],
+                      style: TextStyle(fontSize: 14, color: Color(0xFF868E9C)),
+                    )),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 5.0),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            itemsQuadChart[i][11],
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                          )),
+                      Expanded(
+                        flex: 8,
+                        child: LinearPercentIndicator(
+                          lineHeight: 3.0,
+                          percent: double.parse(itemsQuadChart[i][12]),
+                          progressColor: Color(0xFF2B8DD8),
+                        ),
+                      ),
+                    ]),
+              ),
+            ],
+          ),
+        ));
+      }
     }
   }
 

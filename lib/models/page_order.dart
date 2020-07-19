@@ -1,9 +1,7 @@
-
-class PageOrder{
+class PageOrder {
   String pageName;
   String subOrder;
   String commentID;
-
 
   PageOrder({this.pageName = '', this.subOrder = '', this.commentID = ''});
   PageOrder.fromJson(Map<dynamic, dynamic> json) {
@@ -16,6 +14,7 @@ class PageOrder{
     data['page_name'] = this.pageName;
     data['sub_order'] = this.subOrder;
     data['comment_id'] = this.commentID;
+
     return data;
   }
 }

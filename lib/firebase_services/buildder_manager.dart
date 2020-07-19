@@ -1846,6 +1846,22 @@ class BuildderManager {
     }
   }
 
+  static deleteFromXmapInfo(String uid, String id, String type) async {
+    QuerySnapshot querySnapshot =
+        await db.collection(type).where('xmapID', isEqualTo: id).getDocuments();
+    if (querySnapshot != null && querySnapshot.documents.length != 0) {
+      querySnapshot.documents[0].reference.delete();
+    }
+  }
+
+  static deleteFromComments(String uid, String id, String type) async {
+    QuerySnapshot querySnapshot =
+        await db.collection(type).where('xmap_id', isEqualTo: id).getDocuments();
+    if (querySnapshot != null && querySnapshot.documents.length != 0) {
+      querySnapshot.documents[0].reference.delete();
+    }
+  }
+
   static Future<void> deleteComments(String id, String type) async {
     QuerySnapshot querySnapshot = await db
         .collection("Comments")

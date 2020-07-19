@@ -49,7 +49,7 @@ class _ViewerImageState extends State<ViewerImage>
 
     getCollections();
     getLastComment();
-    addViewNumber();
+    
     getData();
   }
 
@@ -63,7 +63,7 @@ class _ViewerImageState extends State<ViewerImage>
 
   addViewNumber() async {
     await ViewerManager.addViewNumber(
-        widget.id, widget.type, widget.pageId, 'Image');
+        widget.id, widget.type, commentId);
   }
 
   getLastComment() async {
@@ -78,6 +78,7 @@ class _ViewerImageState extends State<ViewerImage>
     setState(() {
       commentId = _commentId;
     });
+    addViewNumber();
   }
 
   void addNewCollection(String collectionTitle) async {
@@ -626,8 +627,7 @@ class _ViewerImageState extends State<ViewerImage>
                                         id: widget.id,
                                         type: widget.type,
                                         commentId: commentId,
-                                        sectionNumber: widget.pageId,
-                                        sectionType: 'Image',
+                                       
                                         callback: getLastComment,
                                       ),
                                       decoration: BoxDecoration(
@@ -733,8 +733,7 @@ class _ViewerImageState extends State<ViewerImage>
                                       id: widget.id,
                                       type: widget.type,
                                       commentId: commentId,
-                                      sectionNumber: widget.pageId,
-                                      sectionType: 'Image',
+                                      
                                       callback: getLastComment,
                                     ),
                                     decoration: BoxDecoration(

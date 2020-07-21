@@ -1855,8 +1855,10 @@ class BuildderManager {
   }
 
   static deleteFromComments(String uid, String id, String type) async {
-    QuerySnapshot querySnapshot =
-        await db.collection(type).where('xmap_id', isEqualTo: id).getDocuments();
+    QuerySnapshot querySnapshot = await db
+        .collection(type)
+        .where('xmap_id', isEqualTo: id)
+        .getDocuments();
     if (querySnapshot != null && querySnapshot.documents.length != 0) {
       querySnapshot.documents[0].reference.delete();
     }
@@ -1882,30 +1884,72 @@ class BuildderManager {
         .where('id', isEqualTo: id)
         .getDocuments();
 
-    String fieldName = '';
-
     // 1. delete from type
 
-    if (sectionName == "Image") {
-      fieldName = 'my_image';
-    }
-    if (sectionName == "Text") {
-      fieldName = 'text_part';
-    }
-    if (sectionName == 'YouTube') {
-      fieldName = 'youtube';
-    }
-    if (sectionName == 'Vimeo') {
-      fieldName = 'vimeo';
-    }
-    if (sectionName == 'Instagram') {
-      fieldName = 'instagram';
-    }
     if (sectionName == 'Quad chart') {
-      fieldName = 'quad_chart';
-    }
-    if (sectionName == 'Scale chart') {
-      fieldName = 'scale_chart';
+      var _updateheatmap = [];
+
+      _updateheatmap = querySnapshot.documents[0]['quad_heatmap'];
+
+      for (int i = 0; i < _updateheatmap.length; i++) {
+        int tempSubOrder = int.parse(_updateheatmap[i]['subOrder']);
+
+        if (tempSubOrder > subOrder) {
+          tempSubOrder = tempSubOrder - 1;
+          _updateheatmap[i]['subOrder'] = tempSubOrder.toString();
+        }
+      }
+
+      querySnapshot.documents[0].reference
+          .updateData({'quad_heatmap': _updateheatmap});
+
+      var _updatecircle = [];
+
+      _updatecircle = querySnapshot.documents[0]['quad_circle_position'];
+
+      for (int i = 0; i < _updatecircle.length; i++) {
+        int tempSubOrder = int.parse(_updatecircle[i]['subOrder']);
+
+        if (tempSubOrder > subOrder) {
+          tempSubOrder = tempSubOrder - 1;
+          _updatecircle[i]['subOrder'] = tempSubOrder.toString();
+        }
+      }
+
+      querySnapshot.documents[0].reference
+          .updateData({'quad_circle_position': _updatecircle});
+    } else if (sectionName == 'Scale chart') {
+      var _updateheatmap = [];
+
+      _updateheatmap = querySnapshot.documents[0]['scale_heatmap'];
+
+      for (int i = 0; i < _updateheatmap.length; i++) {
+        int tempSubOrder = int.parse(_updateheatmap[i]['subOrder']);
+
+        if (tempSubOrder > subOrder) {
+          tempSubOrder = tempSubOrder - 1;
+          _updateheatmap[i]['subOrder'] = tempSubOrder.toString();
+        }
+      }
+
+      querySnapshot.documents[0].reference
+          .updateData({'scale_heatmap': _updateheatmap});
+
+      var _updatecircle = [];
+
+      _updatecircle = querySnapshot.documents[0]['scale_circle_position'];
+
+      for (int i = 0; i < _updatecircle.length; i++) {
+        int tempSubOrder = int.parse(_updatecircle[i]['subOrder']);
+
+        if (tempSubOrder > subOrder) {
+          tempSubOrder = tempSubOrder - 1;
+          _updatecircle[i]['subOrder'] = tempSubOrder.toString();
+        }
+      }
+
+      querySnapshot.documents[0].reference
+          .updateData({'scale_circle_position': _updatecircle});
     }
 
     // 3. update suborder if suborder in pageOrder > subOrder
@@ -1941,41 +1985,119 @@ class BuildderManager {
 
     // 1. delete from type
 
-    if (sectionName == "Image") {
-      fieldName = 'my_image';
-    }
-    if (sectionName == "Text") {
-      fieldName = 'text_part';
-    }
-    if (sectionName == 'YouTube') {
-      fieldName = 'youtube';
-    }
-    if (sectionName == 'Vimeo') {
-      fieldName = 'vimeo';
-    }
-    if (sectionName == 'Instagram') {
-      fieldName = 'instagram';
-    }
     if (sectionName == 'Quad chart') {
-      fieldName = 'quad_chart';
-    }
-    if (sectionName == 'Scale chart') {
-      fieldName = 'scale_chart';
-      // querySnapshot.documents[0].reference
-      //     .updateData({'scale_circle_color': FieldValue.delete()});
-    }
-
-    List _data = [];
-    List _tempData = [];
-    if (querySnapshot.documents[0][fieldName] != null &&
-        querySnapshot.documents[0][fieldName].length != 0) {
-      _data = querySnapshot.documents[0][fieldName];
-      for (int i = 0; i < _data.length; i++) {
-        if (i != subOrder) {
-          _tempData.add(_data[i]);
+      List _dataheatmap = [];
+      List _tempDataheatmap = [];
+      if (querySnapshot.documents[0]['quad_heatmap'] != null &&
+          querySnapshot.documents[0]['quad_heatmap'].length != 0) {
+        _dataheatmap = querySnapshot.documents[0]['quad_heatmap'];
+        for (int i = 0; i < _dataheatmap.length; i++) {
+          if (_dataheatmap[i]['subOrder'] != subOrder.toString()) {
+            _tempDataheatmap.add(_dataheatmap[i]);
+          }
         }
+        querySnapshot.documents[0].reference
+            .updateData({'quad_heatmap': _tempDataheatmap});
       }
-      querySnapshot.documents[0].reference.updateData({fieldName: _tempData});
+
+      List _datacircle = [];
+      List _tempDatacircle = [];
+      if (querySnapshot.documents[0]['quad_circle_position'] != null &&
+          querySnapshot.documents[0]['quad_circle_position'].length != 0) {
+        _datacircle = querySnapshot.documents[0]['quad_circle_position'];
+        for (int i = 0; i < _datacircle.length; i++) {
+          if (_datacircle[i]['subOrder'] != subOrder.toString()) {
+            _tempDatacircle.add(_datacircle[i]);
+          }
+        }
+        querySnapshot.documents[0].reference
+            .updateData({'quad_circle_position': _tempDatacircle});
+      }
+
+      List _datatitle = [];
+      List _tempDatatitle = [];
+      if (querySnapshot.documents[0]['quad_title'] != null &&
+          querySnapshot.documents[0]['quad_title'].length != 0) {
+        _datatitle = querySnapshot.documents[0]['quad_title'];
+        for (int i = 0; i < _datatitle.length; i++) {
+          if (i != subOrder) {
+            _tempDatatitle.add(_datatitle[i]);
+          }
+        }
+        querySnapshot.documents[0].reference
+            .updateData({'quad_title': _tempDatatitle});
+      }
+    } else if (sectionName == 'Scale chart') {
+      List _dataheatmap = [];
+      List _tempDataheatmap = [];
+      if (querySnapshot.documents[0]['scale_heatmap'] != null &&
+          querySnapshot.documents[0]['scale_heatmap'].length != 0) {
+        _dataheatmap = querySnapshot.documents[0]['scale_heatmap'];
+        for (int i = 0; i < _dataheatmap.length; i++) {
+          if (_dataheatmap[i]['subOrder'] != subOrder.toString()) {
+            _tempDataheatmap.add(_dataheatmap[i]);
+          }
+        }
+        querySnapshot.documents[0].reference
+            .updateData({'scale_heatmap': _tempDataheatmap});
+      }
+
+      List _datacircle = [];
+      List _tempDatacircle = [];
+      if (querySnapshot.documents[0]['scale_circle_position'] != null &&
+          querySnapshot.documents[0]['scale_circle_position'].length != 0) {
+        _datacircle = querySnapshot.documents[0]['scale_circle_position'];
+        for (int i = 0; i < _datacircle.length; i++) {
+          if (_datacircle[i]['subOrder'] != subOrder.toString()) {
+            _tempDatacircle.add(_datacircle[i]);
+          }
+        }
+        querySnapshot.documents[0].reference
+            .updateData({'scale_circle_position': _tempDatacircle});
+      }
+
+      List _datatitle = [];
+      List _tempDatatitle = [];
+      if (querySnapshot.documents[0]['scale_title'] != null &&
+          querySnapshot.documents[0]['scale_title'].length != 0) {
+        _datatitle = querySnapshot.documents[0]['scale_title'];
+        for (int i = 0; i < _datatitle.length; i++) {
+          if (i != subOrder) {
+            _tempDatatitle.add(_datatitle[i]);
+          }
+        }
+        querySnapshot.documents[0].reference
+            .updateData({'scale_title': _tempDatatitle});
+      }
+    } else {
+      if (sectionName == "Image") {
+        fieldName = 'my_image';
+      }
+      if (sectionName == "Text") {
+        fieldName = 'text_part';
+      }
+      if (sectionName == 'YouTube') {
+        fieldName = 'youtube';
+      }
+      if (sectionName == 'Vimeo') {
+        fieldName = 'vimeo';
+      }
+      if (sectionName == 'Instagram') {
+        fieldName = 'instagram';
+      }
+
+      List _data = [];
+      List _tempData = [];
+      if (querySnapshot.documents[0][fieldName] != null &&
+          querySnapshot.documents[0][fieldName].length != 0) {
+        _data = querySnapshot.documents[0][fieldName];
+        for (int i = 0; i < _data.length; i++) {
+          if (i != subOrder) {
+            _tempData.add(_data[i]);
+          }
+        }
+        querySnapshot.documents[0].reference.updateData({fieldName: _tempData});
+      }
     }
 
     // 2. delete from pageOrder

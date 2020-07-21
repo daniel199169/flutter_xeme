@@ -274,7 +274,7 @@ class _MyActivityFeedState extends State<MyActivityFeed> {
         ),
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
-              canvasColor: Color(0xFF272D3A),
+              canvasColor: Color(0xFF181C26),
               primaryColor: Colors.white,
               textTheme: Theme.of(context)
                   .textTheme
@@ -331,18 +331,23 @@ class _MyActivityFeedState extends State<MyActivityFeed> {
                                 width: 23,
                                 height: 23,
                                 fit: BoxFit.cover)))
-                    : CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        placeholder: (BuildContext context, String url) =>
-                            Image.asset(
-                              'assets/icos/loader.gif',
-                              height: 23,
-                              width: 23,
-                              fit: BoxFit.cover,
-                            ),
-                        width: 23,
-                        height: 23,
-                        fit: BoxFit.cover),
+                    : CircleAvatar(
+                        radius: 13,
+                        child: CachedNetworkImage(
+                          imageUrl: imageUrl,
+                          placeholder: (BuildContext context, String url) =>
+                              Image.asset(
+                            'assets/icos/loader.gif',
+                            height: 13,
+                            width: 13,
+                            fit: BoxFit.cover,
+                          ),
+                          width: 13,
+                          height: 13,
+                          fit: BoxFit.fill,
+                        ),
+                        backgroundColor: Color(0xFF272D3A),
+                      ),
                 title: Container(),
               ),
             ],

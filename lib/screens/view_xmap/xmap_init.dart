@@ -114,7 +114,7 @@ class _XmapInitState extends State<XmapInit> {
     });
 
     var _tempPageList = [];
-    _tempPageList.add({'page_name': 'FilterPage', 'sub_order': 0});
+    // _tempPageList.add({'page_name': 'FilterPage', 'sub_order': 0});
     _tempPageList.addAll(getPageOrders);
     setState(() {
       pageList = _tempPageList;
@@ -132,13 +132,13 @@ class _XmapInitState extends State<XmapInit> {
           }
         }
       }
-      if (pageList[i]['page_name'] == "FilterPage") {
-        sectionWidgets.add(Container(
-          width: MediaQuery.of(context).size.width - 70,
-          margin: const EdgeInsets.all(10.0),
-          child: FilterPage(id: widget.id, type: widget.type),
-        ));
-      }
+      // if (pageList[i]['page_name'] == "FilterPage") {
+      //   sectionWidgets.add(Container(
+      //     width: MediaQuery.of(context).size.width - 70,
+      //     margin: const EdgeInsets.all(10.0),
+      //     child: FilterPage(id: widget.id, type: widget.type),
+      //   ));
+      // }
       if (pageList[i]['page_name'] == "Cover image") {
         sectionWidgets.add(Container(
           width: MediaQuery.of(context).size.width - 10,

@@ -13,16 +13,11 @@ import 'package:xenome/firebase_services/viewer_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Comments extends StatefulWidget {
-  Comments(
-      {this.id,
-      this.type,
-      this.commentId,
-      
-      this.callback});
+  Comments({this.id, this.type, this.commentId, this.callback});
   final String id;
   final String type;
   final String commentId;
-  
+
   final Function callback;
 
   @override
@@ -450,20 +445,23 @@ class _CommentsState extends State<Comments> {
                             ),
                           ))
                         : Container(
+                            child: CircleAvatar(
+                            radius: 15,
                             child: CachedNetworkImage(
                               imageUrl: userImage,
                               placeholder: (BuildContext context, String url) =>
                                   Image.asset(
                                 'assets/icos/loader.gif',
-                                height: 30,
-                                width: 30,
+                                height: 15,
+                                width: 15,
                                 fit: BoxFit.cover,
                               ),
-                              width: 30,
-                              height: 30,
-                              fit: BoxFit.cover,
+                              width: 15,
+                              height: 15,
+                              fit: BoxFit.fill,
                             ),
-                          ),
+                            backgroundColor: Color(0xFF272D3A),
+                          )),
                   ),
                   Expanded(
                     child: Container(
@@ -500,10 +498,7 @@ class _CommentsState extends State<Comments> {
                               parentId);
 
                           CommentsManager.addCommentNumber(
-                              widget.id,
-                              widget.type,
-                              widget.commentId
-                             );
+                              widget.id, widget.type, widget.commentId);
 
                           if (parentId == "") {
                             setState(() {
@@ -676,19 +671,23 @@ class _CommentsState extends State<Comments> {
                       ))
                     : Container(
                         child: userImageList != null
-                            ? CachedNetworkImage(
-                                imageUrl: userImageList[index],
-                                placeholder:
-                                    (BuildContext context, String url) =>
-                                        Image.asset(
-                                  'assets/icos/loader.gif',
-                                  height: 30,
-                                  width: 30,
-                                  fit: BoxFit.cover,
+                            ? CircleAvatar(
+                                radius: 15,
+                                child: CachedNetworkImage(
+                                  imageUrl: userImageList[index],
+                                  placeholder:
+                                      (BuildContext context, String url) =>
+                                          Image.asset(
+                                    'assets/icos/loader.gif',
+                                    height: 15,
+                                    width: 15,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  width: 15,
+                                  height: 15,
+                                  fit: BoxFit.fill,
                                 ),
-                                width: 30,
-                                height: 30,
-                                fit: BoxFit.cover,
+                                backgroundColor: Color(0xFF272D3A),
                               )
                             : Image.asset(
                                 'assets/images/noavatar.png',

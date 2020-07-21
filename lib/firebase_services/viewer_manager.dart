@@ -572,7 +572,8 @@ class ViewerManager {
       _pageOrderList.add(PageOrder.fromJson(
           querySnapshotCommentId.documents[0]['page_order'][i]));
     }
-    int orderId = int.parse(pageOrderId) - 1;
+    // int orderId = int.parse(pageOrderId) - 1;
+    int orderId = int.parse(pageOrderId) ;
     String commentID = _pageOrderList[orderId].commentID;
     return commentID;
   }
@@ -594,7 +595,8 @@ class ViewerManager {
       _pageOrderList.add(PageOrder.fromJson(
           querySnapshotCommentId.documents[0]['page_order'][i]));
     }
-    int orderId = int.parse(pageOrderId) - 1;
+    // int orderId = int.parse(pageOrderId) - 1;
+    int orderId = int.parse(pageOrderId);
     String commentID = _pageOrderList[orderId].commentID;
 
     QuerySnapshot querySnapshot = await db

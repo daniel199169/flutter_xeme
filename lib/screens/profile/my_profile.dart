@@ -366,7 +366,7 @@ class _MyProfileState extends State<MyProfile> {
           }
           if (SessionManager.getPermission() == "free" ||
               SessionManager.getPermission() == "Request") {
-           showModalBottomSheet(
+            showModalBottomSheet(
                 isScrollControlled: true,
                 context: context,
                 builder: (context) {
@@ -468,7 +468,7 @@ class _MyProfileState extends State<MyProfile> {
         ),
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
-              canvasColor: Color(0xFF272D3A),
+              canvasColor: Color(0xFF181C26),
               primaryColor: Colors.white,
               textTheme: Theme.of(context)
                   .textTheme
@@ -525,18 +525,23 @@ class _MyProfileState extends State<MyProfile> {
                                 width: 23,
                                 height: 23,
                                 fit: BoxFit.cover)))
-                    : CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        placeholder: (BuildContext context, String url) =>
-                            Image.asset(
-                              'assets/icos/loader.gif',
-                              height: 23,
-                              width: 23,
-                              fit: BoxFit.cover,
-                            ),
-                        width: 23,
-                        height: 23,
-                        fit: BoxFit.cover),
+                    : CircleAvatar(
+                        radius: 13,
+                        child: CachedNetworkImage(
+                          imageUrl: imageUrl,
+                          placeholder: (BuildContext context, String url) =>
+                              Image.asset(
+                            'assets/icos/loader.gif',
+                            height: 13,
+                            width: 13,
+                            fit: BoxFit.cover,
+                          ),
+                          width: 13,
+                          height: 13,
+                          fit: BoxFit.fill,
+                        ),
+                        backgroundColor: Color(0xFF272D3A),
+                      ),
                 title: Container(),
               ),
             ],
@@ -553,20 +558,34 @@ class _MyProfileState extends State<MyProfile> {
             children: <Widget>[
               imageUrl !=
                       'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
-                  ? new CircleAvatar(
+                  ? Container(
+                      height: 94,
+                      width: 94,
+                      padding: EdgeInsets.all(2),
                       child: CircleAvatar(
-                        child: CircleAvatar(
-                          radius: 43,
-                          backgroundImage: NetworkImage(
-                            imageUrl,
-                            //fit: BoxFit.cover,
+                        radius: 90,
+                        backgroundColor: Colors.black,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(86),
+                          child: CachedNetworkImage(
+                            imageUrl: imageUrl,
+                            placeholder: (BuildContext context, String url) =>
+                                Image.asset(
+                              'assets/icos/loader.gif',
+                              width: 86,
+                              height: 86,
+                              fit: BoxFit.cover,
+                            ),
+                            width: 86,
+                            height: 86,
+                            fit: BoxFit.fill,
                           ),
                         ),
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                        radius: 45.0,
                       ),
-                      radius: 47,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [Colors.pink, Colors.blue]),
+                          borderRadius: BorderRadius.circular(94)),
                     )
                   : new CircleAvatar(
                       radius: 43,

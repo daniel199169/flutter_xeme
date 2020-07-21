@@ -69,6 +69,7 @@ class _HomeState extends State<Home> {
   var followingNames = [];
   var followingCounts = [];
   var followingWebsites = [];
+  var updateStatus = [];
   double yPosition = 0.01;
 
   List<Viewing> itemsViewing = [];
@@ -109,6 +110,17 @@ class _HomeState extends State<Home> {
 
     setState(() {
       followingUsers = _followingUsers;
+    });
+    var _updateStatus = [];
+
+    for (int i = 0; i < followingUsers.length; i++) {
+      String temp = await FollowManager.getUpdateState(followingUsers[i]);
+
+      _updateStatus.add(temp);
+    }
+
+    setState(() {
+      updateStatus = _updateStatus;
     });
   }
 
@@ -388,31 +400,6 @@ class _HomeState extends State<Home> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                followingUsers.length != 0
-                    ? Container(
-                        child: Stack(children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(30.0, 30.0, 0.0, 0.0),
-                          child: RichText(
-                            text: TextSpan(
-                              text: "FOLLOWING (" +
-                                  followingUsers.length.toString() +
-                                  ")",
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding:
-                              const EdgeInsets.fromLTRB(0.0, 60.0, 0.0, 0.0),
-                          constraints: const BoxConstraints(maxHeight: 160.0),
-                          child: new ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: _buildFollowingChild,
-                          ),
-                        ),
-                      ]))
-                    : Container(),
                 itemsViewing.length != 0
                     ? Container(
                         child: Stack(children: <Widget>[
@@ -496,6 +483,33 @@ class _HomeState extends State<Home> {
                         ),
                       )
                     : Container(),
+
+                followingUsers.length != 0
+                    ? Container(
+                        child: Stack(children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(30.0, 30.0, 0.0, 0.0),
+                          child: RichText(
+                            text: TextSpan(
+                              text: "FOLLOWING (" +
+                                  followingUsers.length.toString() +
+                                  ")",
+                              style: Theme.of(context).textTheme.subtitle,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding:
+                              const EdgeInsets.fromLTRB(0.0, 60.0, 0.0, 0.0),
+                          constraints: const BoxConstraints(maxHeight: 160.0),
+                          child: new ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: _buildFollowingChild,
+                          ),
+                        ),
+                      ]))
+                    : Container(),
+
                 itemsMylist.length != 0
                     ? Container(
                         child: Stack(
@@ -597,7 +611,7 @@ class _HomeState extends State<Home> {
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-            canvasColor: Color(0xFF272D3A),
+            canvasColor: Color(0xFF181C26),
             primaryColor: Colors.white,
             textTheme: Theme.of(context)
                 .textTheme
@@ -654,18 +668,22 @@ class _HomeState extends State<Home> {
                               width: 23,
                               height: 23,
                               fit: BoxFit.cover)))
-                  : CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      placeholder: (BuildContext context, String url) =>
-                          Image.asset(
-                        'assets/icos/loader.gif',
-                        width: 23,
-                        height: 23,
-                        fit: BoxFit.cover,
+                  : CircleAvatar(
+                      radius: 13,
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        placeholder: (BuildContext context, String url) =>
+                            Image.asset(
+                          'assets/icos/loader.gif',
+                          height: 13,
+                          width: 13,
+                          fit: BoxFit.cover,
+                        ),
+                        width: 13,
+                        height: 13,
+                        fit: BoxFit.fill,
                       ),
-                      width: 23,
-                      height: 23,
-                      fit: BoxFit.cover,
+                      backgroundColor: Color(0xFF272D3A),
                     ),
               title: Container(),
             ),
@@ -694,7 +712,7 @@ class _HomeState extends State<Home> {
               fit: BoxFit.cover,
             ),
           ),
-          TitleSentence(),
+
           // Container(
           //   height: 100,
           //   margin:
@@ -843,113 +861,85 @@ class _HomeState extends State<Home> {
     index++;
     if (index > followingUsers.length) return null;
     if (followingImages.length == 0 || followingNames.length == 0) return null;
-    if (index < 4) {
-      return new Padding(
-        padding: index == 1
-            ? const EdgeInsets.only(right: 10.0, left: 30)
-            : const EdgeInsets.only(right: 10.0),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                FadeRoute(
-                    page: OthersProfile(
-                  uid: followingUsers[index - 1],
-                )));
-          },
-          child: Column(
-            children: <Widget>[
-              followingImages[index - 1] !=
-                      'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
-                  ? new CircleAvatar(
-                      child: CircleAvatar(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              NetworkImage(followingImages[index - 1]),
+
+    return new Padding(
+      padding: index == 1
+          ? const EdgeInsets.only(right: 10.0, left: 30)
+          : const EdgeInsets.only(right: 10.0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              FadeRoute(
+                  page: OthersProfile(
+                uid: followingUsers[index - 1],
+              )));
+        },
+        child: Column(
+          children: <Widget>[
+            followingImages[index - 1] !=
+                    'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
+                ? Container(
+                    height: 68,
+                    width: 68,
+                    padding: EdgeInsets.all(2),
+                    child: CircleAvatar(
+                      radius: 32,
+                      backgroundColor: Colors.black,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: CachedNetworkImage(
+                          imageUrl: followingImages[index - 1],
+                          placeholder: (BuildContext context, String url) =>
+                              Image.asset(
+                            'assets/icos/loader.gif',
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                          ),
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.fill,
                         ),
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                        radius: 32.0,
                       ),
-                      radius: 34,
-                      // backgroundImage: AssetImage(
-                      //   'assets/images/circle.png',
-                      //   //fit: BoxFit.cover,
-                      // ),
-                    )
-                  : new CircleAvatar(
-                      radius: 34,
-                      child: CachedNetworkImage(
-                        imageUrl: followingImages[index - 1],
-                        placeholder: (BuildContext context, String url) =>
-                            Image.asset(
-                          'assets/icos/loader.gif',
-                          width: 34,
-                          height: 34,
-                          fit: BoxFit.cover,
-                        ),
+                    ),
+                    decoration: updateStatus.length > 0
+                        ? updateStatus[index - 1] == "updated"
+                            ? BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.pink, Colors.blue]),
+                                borderRadius: BorderRadius.circular(34))
+                            : BoxDecoration()
+                        : BoxDecoration(),
+                  )
+                : new CircleAvatar(
+                    radius: 34,
+                    child: CachedNetworkImage(
+                      imageUrl: followingImages[index - 1],
+                      placeholder: (BuildContext context, String url) =>
+                          Image.asset(
+                        'assets/icos/loader.gif',
                         width: 34,
                         height: 34,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
-                      backgroundColor: Color(0xFF272D3A),
+                      width: 34,
+                      height: 34,
+                      fit: BoxFit.fill,
                     ),
-              SizedBox(
-                height: 7.0,
-              ),
-              Text(
-                followingNames[index - 1],
-                style: Theme.of(context).textTheme.headline,
-              ),
-            ],
-          ),
+                    backgroundColor: Color(0xFF272D3A),
+                  ),
+            SizedBox(
+              height: 7.0,
+            ),
+            Text(
+              followingNames[index - 1],
+              style: Theme.of(context).textTheme.headline,
+            ),
+          ],
         ),
-      );
-    } else {
-      return new Padding(
-        padding: EdgeInsets.only(right: 10.0, top: 5.0, bottom: 5.0),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(context, FadeRoute(page: OthersProfile()));
-          },
-          child: Column(
-            children: <Widget>[
-              followingImages[index - 1] !=
-                      'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
-                  ? new CircleAvatar(
-                      radius: 32,
-                      backgroundImage: NetworkImage(followingImages[index - 1]),
-                    )
-                  : new CircleAvatar(
-                      radius: 32,
-                      child: CachedNetworkImage(
-                        imageUrl: followingImages[index - 1],
-                        placeholder: (BuildContext context, String url) =>
-                            Image.asset(
-                          'assets/icos/loader.gif',
-                          width: 32,
-                          height: 32,
-                          fit: BoxFit.cover,
-                        ),
-                        width: 32,
-                        height: 32,
-                        fit: BoxFit.fill,
-                      ),
-                      backgroundColor: Color(0xFF272D3A),
-                    ),
-              SizedBox(
-                height: 7.0,
-              ),
-              Text(
-                followingNames[index - 1],
-                style: Theme.of(context).textTheme.headline,
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
 
   Widget _buildViewingChild(BuildContext context, int index) {

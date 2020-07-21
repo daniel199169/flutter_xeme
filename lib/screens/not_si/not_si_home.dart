@@ -258,7 +258,7 @@ class _NotSiHomeState extends State<NotSiHome> {
 //        floatingActionButton: MyFloatingActionButton(),
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
-              canvasColor: Color(0xFF272D3A),
+              canvasColor: Color(0xFF181C26),
               primaryColor: Colors.white,
               textTheme: Theme.of(context)
                   .textTheme

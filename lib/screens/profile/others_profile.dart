@@ -43,7 +43,6 @@ class _OthersProfileState extends State<OthersProfile> {
   void initState() {
     super.initState();
 
-   
     getTrendingList();
     getFollowingListCount();
     getFollowersListCount();
@@ -74,7 +73,6 @@ class _OthersProfileState extends State<OthersProfile> {
       website = _userWebsites;
       otherlink = _otherlink;
       description = _description;
-      
     });
   }
 
@@ -176,21 +174,34 @@ class _OthersProfileState extends State<OthersProfile> {
             children: <Widget>[
               avatar !=
                       'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
-                  ? new CircleAvatar(
+                  ? Container(
+                      height: 94,
+                      width: 94,
+                      padding: EdgeInsets.all(2),
                       child: CircleAvatar(
-                        child: CircleAvatar(
-                          radius: 43,
-                          backgroundImage: NetworkImage(avatar),
-                        ),
-                        foregroundColor: Colors.white,
+                        radius: 90,
                         backgroundColor: Colors.black,
-                        radius: 45.0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(86),
+                          child: CachedNetworkImage(
+                            imageUrl: avatar,
+                            placeholder: (BuildContext context, String url) =>
+                                Image.asset(
+                              'assets/icos/loader.gif',
+                              width: 86,
+                              height: 86,
+                              fit: BoxFit.cover,
+                            ),
+                            width: 86,
+                            height: 86,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                       ),
-                      radius: 47,
-                      backgroundImage: AssetImage(
-                        'assets/images/circle.png',
-                        //fit: BoxFit.cover,
-                      ),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [Colors.pink, Colors.blue]),
+                          borderRadius: BorderRadius.circular(94)),
                     )
                   : new CircleAvatar(
                       radius: 43,

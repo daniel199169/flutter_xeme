@@ -142,7 +142,6 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
     var _itemsTrending = await ViewerManager.getTrendingView(widget.id);
     setState(() {
       itemsTrending = _itemsTrending;
-    
     });
   }
 
@@ -1216,34 +1215,43 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
             alignment: Alignment(-0.8, -0.84),
             padding: EdgeInsets.only(top: 0, right: 0),
             child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    FadeRoute(
-                        page: OthersProfile(
-                      uid: topXmapUid,
-                    )));
-              },
-              child: new CircleAvatar(
-                child: CircleAvatar(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      FadeRoute(
+                          page: OthersProfile(
+                        uid: topXmapUid,
+                      )));
+                },
+                child: Container(
+                  height: 38,
+                  width: 38,
+                  padding: EdgeInsets.all(2),
                   child: CircleAvatar(
                     radius: 15,
-                    backgroundImage: NetworkImage(
-                      imageUrl,
-                      //fit: BoxFit.cover,
+                    backgroundColor: Colors.black,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        placeholder: (BuildContext context, String url) =>
+                            Image.asset(
+                          'assets/icos/loader.gif',
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.cover,
+                        ),
+                        width: 30,
+                        height: 30,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.black,
-                  radius: 17.0,
-                ),
-                radius: 19,
-                backgroundImage: AssetImage(
-                  'assets/images/circle.png',
-                  //fit: BoxFit.cover,
-                ),
-              ),
-            ),
+                  decoration: BoxDecoration(
+                      gradient:
+                          LinearGradient(colors: [Colors.pink, Colors.blue]),
+                      borderRadius: BorderRadius.circular(19)),
+                )),
           ),
           Container(
             alignment: Alignment(0.8, -0.84),
@@ -1313,25 +1321,66 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
           child: Container(
             child: Column(
               children: <Widget>[
-                CircleAvatar(
-                  child: CircleAvatar(
-                    child: CircleAvatar(
-                      radius: 32,
-                      backgroundImage: NetworkImage(
-                        itemsAllViewers[index - 1][1],
-                        //fit: BoxFit.cover,
+                itemsAllViewers[index - 1][1] !=
+                        'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
+                    ? Container(
+                        height: 72,
+                        width: 72,
+                        padding: EdgeInsets.all(2),
+                        child: CircleAvatar(
+                          radius: 34,
+                          backgroundColor: Colors.black,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30),
+                            child: CachedNetworkImage(
+                              imageUrl: itemsAllViewers[index - 1][1],
+                              placeholder: (BuildContext context, String url) =>
+                                  Image.asset(
+                                'assets/icos/loader.gif',
+                                width: 64,
+                                height: 64,
+                                fit: BoxFit.cover,
+                              ),
+                              width: 64,
+                              height: 64,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: [Colors.pink, Colors.blue]),
+                            borderRadius: BorderRadius.circular(36)),
+                      )
+                    : Container(
+                        height: 72,
+                        width: 72,
+                        padding: EdgeInsets.all(2),
+                        child: CircleAvatar(
+                          radius: 34,
+                          backgroundColor: Color(0xFF272D3A),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(32),
+                            child: CachedNetworkImage(
+                              imageUrl: itemsAllViewers[index - 1][1],
+                              placeholder: (BuildContext context, String url) =>
+                                  Image.asset(
+                                'assets/icos/loader.gif',
+                                width: 64,
+                                height: 64,
+                                fit: BoxFit.cover,
+                              ),
+                              width: 32,
+                              height: 32,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: [Colors.pink, Colors.blue]),
+                            borderRadius: BorderRadius.circular(36)),
                       ),
-                    ),
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.black,
-                    radius: 34.0,
-                  ),
-                  radius: 36,
-                  backgroundImage: AssetImage(
-                    'assets/images/circle.png',
-                    //fit: BoxFit.cover,
-                  ),
-                ),
                 SizedBox(
                   height: 7.0,
                 ),
@@ -1362,10 +1411,52 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
             },
             child: Column(
               children: <Widget>[
-                new CircleAvatar(
-                  radius: 36,
-                  backgroundImage: NetworkImage(itemsAllViewers[index - 1][1]),
-                ),
+                itemsAllViewers[index - 1][1] !=
+                        'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
+                    ? CircleAvatar(
+                        radius: 36,
+                        backgroundColor: Colors.black,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(32),
+                          child: CachedNetworkImage(
+                            imageUrl: itemsAllViewers[index - 1][1],
+                            placeholder: (BuildContext context, String url) =>
+                                Image.asset(
+                              'assets/icos/loader.gif',
+                              width: 72,
+                              height: 72,
+                              fit: BoxFit.cover,
+                            ),
+                            width: 72,
+                            height: 72,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      )
+                    : Container(
+                        height: 72,
+                        width: 72,
+                        child: CircleAvatar(
+                          radius: 34,
+                          backgroundColor: Color(0xFF272D3A),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(32),
+                            child: CachedNetworkImage(
+                              imageUrl: itemsAllViewers[index - 1][1],
+                              placeholder: (BuildContext context, String url) =>
+                                  Image.asset(
+                                'assets/icos/loader.gif',
+                                width: 64,
+                                height: 64,
+                                fit: BoxFit.cover,
+                              ),
+                              width: 32,
+                              height: 32,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),
                 SizedBox(
                   height: 7.0,
                 ),
@@ -1606,25 +1697,69 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
                       //     //fit: BoxFit.cover,
                       //   ),
                       // ),
-                      CircleAvatar(
-                        child: CircleAvatar(
-                          child: CircleAvatar(
-                            radius: 32,
-                            backgroundImage:
-                                NetworkImage(itemMostActiveViewer[0]
-                                    //fit: BoxFit.cover,
+                      itemMostActiveViewer[0] !=
+                              'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
+                          ? Container(
+                              height: 72,
+                              width: 72,
+                              padding: EdgeInsets.all(2),
+                              child: CircleAvatar(
+                                radius: 34,
+                                backgroundColor: Colors.black,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(32),
+                                  child: CachedNetworkImage(
+                                    imageUrl: itemMostActiveViewer[0],
+                                    placeholder:
+                                        (BuildContext context, String url) =>
+                                            Image.asset(
+                                      'assets/icos/loader.gif',
+                                      width: 64,
+                                      height: 64,
+                                      fit: BoxFit.cover,
                                     ),
-                          ),
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.black,
-                          radius: 34.0,
-                        ),
-                        radius: 36,
-                        backgroundImage: AssetImage(
-                          'assets/images/circle.png',
-                          //fit: BoxFit.cover,
-                        ),
-                      ),
+                                    width: 64,
+                                    height: 64,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      colors: [Colors.pink, Colors.blue]),
+                                  borderRadius: BorderRadius.circular(36)),
+                            )
+                          : Container(
+                              height: 72,
+                              width: 72,
+                              padding: EdgeInsets.all(2),
+                              child: CircleAvatar(
+                                radius: 34,
+                                backgroundColor: Color(0xFF272D3A),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(32),
+                                  child: CachedNetworkImage(
+                                    imageUrl: itemMostActiveViewer[0],
+                                    placeholder:
+                                        (BuildContext context, String url) =>
+                                            Image.asset(
+                                      'assets/icos/loader.gif',
+                                      width: 64,
+                                      height: 64,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    width: 32,
+                                    height: 32,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      colors: [Colors.pink, Colors.blue]),
+                                  borderRadius: BorderRadius.circular(36)),
+                            ),
+
                       SizedBox(
                         height: 7.0,
                       ),

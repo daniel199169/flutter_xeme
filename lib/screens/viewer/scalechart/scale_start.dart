@@ -114,7 +114,7 @@ class _ViewScaleStartState extends State<ViewScaleStart>
       } else {
         minOpacity = scaleHeatmapData[i].minOpacity / 50;
       }
-      double radius = 50.0;
+      double radius = 60.0;
       Offset center =
           Offset(scaleHeatmapData[i].x + 43, scaleHeatmapData[i].y + 43);
       // draw shadow first

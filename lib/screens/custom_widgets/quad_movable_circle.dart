@@ -32,6 +32,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
   int circleBorderColor = 4278190080;
   int circlebackgroundcolor = 4278190080;
   int flag = 0;
+  int timeflag = 0;
   int flagMoveEnd = 0;
   double midWidth = 0.0;
   double midHeight = 0.0;
@@ -45,13 +46,12 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
 
     borderWidth = 2.0;
     getCircleColor();
-   
+
     xPosition = SessionManager.getMediaWidth() * 0.36;
     yPosition = SessionManager.getMediaHeight() * 0.335;
-   
+
     midWidth = xPosition;
     midHeight = yPosition;
-    
   }
 
   getCircleColor() async {
@@ -90,6 +90,10 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
+                timeflag = 0;
+                Timer(const Duration(milliseconds: 2000), () {
+                  timeflag = 1;
+                });
                 setState(() {
                   borderWidth = 8.0;
                   xPosition += tapInfo.delta.dx;
@@ -110,27 +114,6 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                   if (yPosition < 58 - 43) {
                     yPosition = 15;
                   }
-                  // if (yPosition >
-                  //         MediaQuery.of(context).size.height * 0.8 - 58 - 43 &&
-                  //     xPosition < 58 - 43) {
-                  //   yPosition = MediaQuery.of(context).size.height * 0.8 - 58 - 43;
-                  //   xPosition = 15;
-                  // }
-                  // if (yPosition >
-                  //         MediaQuery.of(context).size.height * 0.8 - 58 - 43 &&
-                  //     xPosition > MediaQuery.of(context).size.width - 58 - 43) {
-                  //   yPosition = MediaQuery.of(context).size.height * 0.8 - 58 - 43;
-                  //   xPosition = MediaQuery.of(context).size.width - 101;
-                  // }
-                  // if (yPosition < 58 - 43 && xPosition < 58 - 43) {
-                  //   yPosition = 15;
-                  //   xPosition = 15;
-                  // }
-                  // if (yPosition < 58 - 43 &&
-                  //     xPosition > MediaQuery.of(context).size.width - 58 - 43) {
-                  //   yPosition = 15;
-                  //   xPosition = MediaQuery.of(context).size.width - 101;
-                  // }
                 });
               }
             }
@@ -159,53 +142,58 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                setState(() {
-                  borderWidth = 2.0;
-                  print("========== quad chart position value  ============");
-                  print(xPosition);
-                  print(midWidth);
-                  print(yPosition);
-                  print(midHeight);
+                if (timeflag == 1) {
+                  setState(() {
+                    borderWidth = 2.0;
+                    // print("========== quad chart position value  ============");
+                    // print(xPosition);
+                    // print(midWidth);
+                    // print(yPosition);
+                    // print(midHeight);
 
-                  if (xPosition < midWidth && yPosition < midHeight) {
-                    vote = "1";
-                  }
-                  if (xPosition > midWidth && yPosition < midHeight) {
-                    vote = "2";
-                  }
-                  if (xPosition < midWidth && yPosition > midHeight) {
-                    vote = "3";
-                  }
-                  if (xPosition > midWidth && yPosition > midHeight) {
-                    vote = "4";
-                  }
+                    if (xPosition < midWidth && yPosition < midHeight) {
+                      vote = "1";
+                    }
+                    if (xPosition > midWidth && yPosition < midHeight) {
+                      vote = "2";
+                    }
+                    if (xPosition < midWidth && yPosition > midHeight) {
+                      vote = "3";
+                    }
+                    if (xPosition > midWidth && yPosition > midHeight) {
+                      vote = "4";
+                    }
+                  });
 
-                  print(vote);
-                });
-
-                ChartCirclePosition chartPosition = ChartCirclePosition(
-                    x: xPosition,
-                    y: yPosition,
-                    uid: SessionManager.getUserId(),
-                    minOpacity: 5,
-                    subOrder: widget.subOrder.toString(),
-                    vote: vote);
-                CirclePosition position = CirclePosition(
-                    x: xPosition,
-                    y: yPosition,
-                    uid: SessionManager.getUserId(),
-                    subOrder: widget.subOrder.toString());
-                ViewerManager.updateQuadHeatmap(
-                    chartPosition, widget.id, widget.type, widget.subOrder);
-                ViewerManager.updateQuadPosition(
-                    position, widget.id, widget.type, widget.subOrder);
-                Timer(const Duration(milliseconds: 1000), () {
-                  widget.getQuadHeatmap(MediaQuery.of(context).size);
-                });
-                setState(() {
-                  flag = 1;
-                  flagMoveEnd = 1;
-                });
+                  ChartCirclePosition chartPosition = ChartCirclePosition(
+                      x: xPosition,
+                      y: yPosition,
+                      uid: SessionManager.getUserId(),
+                      minOpacity: 5,
+                      subOrder: widget.subOrder.toString(),
+                      vote: vote);
+                  CirclePosition position = CirclePosition(
+                      x: xPosition,
+                      y: yPosition,
+                      uid: SessionManager.getUserId(),
+                      subOrder: widget.subOrder.toString());
+                  ViewerManager.updateQuadHeatmap(
+                      chartPosition, widget.id, widget.type, widget.subOrder);
+                  ViewerManager.updateQuadPosition(
+                      position, widget.id, widget.type, widget.subOrder);
+                  Timer(const Duration(milliseconds: 1000), () {
+                    widget.getQuadHeatmap(MediaQuery.of(context).size);
+                  });
+                  setState(() {
+                    flag = 1;
+                    flagMoveEnd = 1;
+                  });
+                } else {
+                  setState(() {
+                    xPosition = midWidth;
+                    yPosition = midHeight;
+                  });
+                }
               } else {
                 Timer(const Duration(milliseconds: 1000), () {
                   widget.getQuadHeatmap(MediaQuery.of(context).size);
@@ -219,10 +207,10 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                 child: new CircleAvatar(
                   backgroundColor:
                       intToColor(circlebackgroundcolor).withOpacity(0.4),
-                  radius: 30.0,
+                  radius: 40.0,
                 ),
-                width: 85.0,
-                height: 85.0,
+                width: 100.0,
+                height: 100.0,
                 padding: const EdgeInsets.all(0.0),
                 decoration: new BoxDecoration(
                   color: Colors.transparent, // border color
@@ -235,10 +223,10 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
             : Container(
                 child: new CircleAvatar(
                   backgroundColor: Colors.transparent,
-                  radius: 30.0,
+                  radius: 40.0,
                 ),
-                width: 85.0,
-                height: 85.0,
+                width: 100.0,
+                height: 100.0,
                 padding: const EdgeInsets.all(0.0),
                 decoration: new BoxDecoration(
                   color: Colors.transparent, // border color

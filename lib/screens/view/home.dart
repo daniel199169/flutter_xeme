@@ -460,7 +460,7 @@ class _HomeState extends State<Home> {
                           children: <Widget>[
                             Padding(
                               padding:
-                                  EdgeInsets.fromLTRB(30.0, 15.0, 0.0, 15.0),
+                                  EdgeInsets.fromLTRB(30.0, 35.0, 0.0, 15.0),
                               child: RichText(
                                 text: TextSpan(
                                   text: 'TRENDING NOW',
@@ -470,7 +470,7 @@ class _HomeState extends State<Home> {
                             ),
                             Container(
                               padding: const EdgeInsets.fromLTRB(
-                                  0.0, 50.0, 0.0, 15.0),
+                                  0.0, 70.0, 0.0, 15.0),
                               constraints:
                                   const BoxConstraints(maxHeight: 235.0),
                               child: new ListView.builder(
@@ -488,7 +488,7 @@ class _HomeState extends State<Home> {
                     ? Container(
                         child: Stack(children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.fromLTRB(30.0, 30.0, 0.0, 0.0),
+                          padding: EdgeInsets.fromLTRB(30.0, 20.0, 0.0, 0.0),
                           child: RichText(
                             text: TextSpan(
                               text: "FOLLOWING (" +
@@ -500,7 +500,7 @@ class _HomeState extends State<Home> {
                         ),
                         Container(
                           padding:
-                              const EdgeInsets.fromLTRB(0.0, 60.0, 0.0, 0.0),
+                              const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
                           constraints: const BoxConstraints(maxHeight: 160.0),
                           child: new ListView.builder(
                             scrollDirection: Axis.horizontal,
@@ -907,7 +907,7 @@ class _HomeState extends State<Home> {
                         ? updateStatus[index - 1] == "updated"
                             ? BoxDecoration(
                                 gradient: LinearGradient(
-                                    colors: [Colors.pink, Colors.blue]),
+                                    colors: [Color(0xffC26FED), Color(0xff5086DE)]),
                                 borderRadius: BorderRadius.circular(34))
                             : BoxDecoration()
                         : BoxDecoration(),

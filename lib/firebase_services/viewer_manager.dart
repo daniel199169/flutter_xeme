@@ -254,12 +254,19 @@ class ViewerManager {
           .compareTo((int.parse(b.viewNumber) + int.parse(b.commentNumber))));
 
       for (int i = _midTempArry.length - 1; i >= 0; i--) {
+        if (i > 9) break;
+        String avatarImage =
+            await TrendingManager.getAvatarImage(_midTempArry[i].uid);
+        String username =
+            await TrendingManager.getUserName(_midTempArry[i].uid);
+        if (avatarImage == "" || username == "") continue;
         var temp = [];
-        temp.add(await TrendingManager.getAvatarImage(_midTempArry[i].uid));
-        temp.add(await TrendingManager.getUserName(_midTempArry[i].uid));
+        temp.add(avatarImage);
+        temp.add(username);
         temp.add(_midTempArry[i].viewNumber);
         temp.add(_midTempArry[i].commentNumber);
         temp.add(_midTempArry[i].uid);
+        temp.add(await TrendingManager.getNewXmapCreated(_midTempArry[i].uid));
         _result.add(temp);
       }
       return _result;
@@ -327,10 +334,15 @@ class ViewerManager {
 
       for (int i = 0; i < _uidArry.length; i++) {
         if (_uidArry[i] != '') {
+          String avatarImage =
+              await TrendingManager.getAvatarImage(_uidArry[i]);
+          String username = await TrendingManager.getUserName(_uidArry[i]);
+          if (avatarImage == "" || username == "") continue;
           var temp = [];
           temp.add(_uidArry[i]);
-          temp.add(await TrendingManager.getAvatarImage(_uidArry[i]));
-          temp.add(await TrendingManager.getUserName(_uidArry[i]));
+          temp.add(avatarImage);
+          temp.add(username);
+          temp.add(await TrendingManager.getNewXmapCreated(_uidArry[i]));
           result.add(temp);
         }
       }
@@ -573,7 +585,7 @@ class ViewerManager {
           querySnapshotCommentId.documents[0]['page_order'][i]));
     }
     // int orderId = int.parse(pageOrderId) - 1;
-    int orderId = int.parse(pageOrderId) ;
+    int orderId = int.parse(pageOrderId);
     String commentID = _pageOrderList[orderId].commentID;
     return commentID;
   }

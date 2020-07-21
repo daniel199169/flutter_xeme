@@ -256,6 +256,19 @@ class TrendingManager {
     }
   }
 
+  static getNewXmapCreated(String uid) async {
+    QuerySnapshot docSnapShot = await db
+        .collection('Trending')
+        .where('uid', isEqualTo: uid)
+        .getDocuments();
+    if (docSnapShot == null || docSnapShot.documents.length == 0) {
+      return "not created";
+    } else {
+     
+      return 'created';
+    }
+  }
+
   static getSectionInfo(String xmapid, String commentID) async {
     QuerySnapshot docSnapShot = await db
         .collection('Trending')
@@ -271,8 +284,8 @@ class TrendingManager {
     var _pageOrder = docSnapShot.documents[0]['page_order'];
     for (int i = 0; i < _pageOrder.length; i++) {
       if (_pageOrder[i]['comment_id'] == commentID) {
-         _resultPageName = _pageOrder[i]['page_name'];
-         _resultSubOrder = _pageOrder[i]['sub_order'];
+        _resultPageName = _pageOrder[i]['page_name'];
+        _resultSubOrder = _pageOrder[i]['sub_order'];
 
         if (_resultPageName == "Cover image") {
           CoverImageModel _new =

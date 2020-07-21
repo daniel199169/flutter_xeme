@@ -584,7 +584,7 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
-                              colors: [Colors.pink, Colors.blue]),
+                              colors: [Color(0xffC26FED), Color(0xff5086DE)]),
                           borderRadius: BorderRadius.circular(94)),
                     )
                   : new CircleAvatar(

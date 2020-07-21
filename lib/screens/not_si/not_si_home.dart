@@ -317,7 +317,7 @@ class _NotSiHomeState extends State<NotSiHome> {
             fit: BoxFit.cover,
           ),
         ),
-        TitleSentence(),
+        // TitleSentence(),
         // Container(
         //   height: 100,
         //   margin:

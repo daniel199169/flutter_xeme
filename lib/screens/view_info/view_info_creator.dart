@@ -136,6 +136,8 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
     setState(() {
       itemsMostActiveViewer = _itemsMostActiveViewer;
     });
+
+  
   }
 
   getTrendingViewList() async {
@@ -158,7 +160,7 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
   getAllViewers() async {
     var _itemsAllViewers = await ViewerManager.getAllViewers(widget.id);
     setState(() {
-      // print("--------- -----------    ---------------");
+      // print("--------- -----------    All viewer    ---------------");
       // print(_itemsAllViewers);
       itemsAllViewers = _itemsAllViewers;
     });
@@ -1228,28 +1230,28 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
                   width: 38,
                   padding: EdgeInsets.all(2),
                   child: CircleAvatar(
-                    radius: 15,
+                    radius: 16,
                     backgroundColor: Colors.black,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(32),
                       child: CachedNetworkImage(
                         imageUrl: imageUrl,
                         placeholder: (BuildContext context, String url) =>
                             Image.asset(
                           'assets/icos/loader.gif',
-                          width: 30,
-                          height: 30,
+                          width: 32,
+                          height: 32,
                           fit: BoxFit.cover,
                         ),
-                        width: 30,
-                        height: 30,
+                        width: 32,
+                        height: 32,
                         fit: BoxFit.fill,
                       ),
                     ),
                   ),
                   decoration: BoxDecoration(
-                      gradient:
-                          LinearGradient(colors: [Colors.pink, Colors.blue]),
+                      gradient: LinearGradient(
+                          colors: [Color(0xffC26FED), Color(0xff5086DE)]),
                       borderRadius: BorderRadius.circular(19)),
                 )),
           ),
@@ -1304,172 +1306,105 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
   Widget _buildAllViewersChild(BuildContext context, int index) {
     index++;
     if (index > itemsAllViewers.length) return null;
-    if (index < 4) {
-      return new Padding(
-        padding: index == 1
-            ? EdgeInsets.only(left: 0, right: 10.0, top: 5.0, bottom: 5.0)
-            : EdgeInsets.only(left: 10, right: 10.0, top: 5.0, bottom: 5.0),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                FadeRoute(
-                    page: OthersProfile(
-                  uid: itemsAllViewers[index - 1][0],
-                )));
-          },
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                itemsAllViewers[index - 1][1] !=
-                        'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
-                    ? Container(
-                        height: 72,
-                        width: 72,
-                        padding: EdgeInsets.all(2),
-                        child: CircleAvatar(
-                          radius: 34,
-                          backgroundColor: Colors.black,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(30),
-                            child: CachedNetworkImage(
-                              imageUrl: itemsAllViewers[index - 1][1],
-                              placeholder: (BuildContext context, String url) =>
-                                  Image.asset(
-                                'assets/icos/loader.gif',
-                                width: 64,
-                                height: 64,
-                                fit: BoxFit.cover,
-                              ),
-                              width: 64,
-                              height: 64,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Colors.pink, Colors.blue]),
-                            borderRadius: BorderRadius.circular(36)),
-                      )
-                    : Container(
-                        height: 72,
-                        width: 72,
-                        padding: EdgeInsets.all(2),
-                        child: CircleAvatar(
-                          radius: 34,
-                          backgroundColor: Color(0xFF272D3A),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(32),
-                            child: CachedNetworkImage(
-                              imageUrl: itemsAllViewers[index - 1][1],
-                              placeholder: (BuildContext context, String url) =>
-                                  Image.asset(
-                                'assets/icos/loader.gif',
-                                width: 64,
-                                height: 64,
-                                fit: BoxFit.cover,
-                              ),
-                              width: 32,
-                              height: 32,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Colors.pink, Colors.blue]),
-                            borderRadius: BorderRadius.circular(36)),
-                      ),
-                SizedBox(
-                  height: 7.0,
-                ),
-                Text(
-                  itemsAllViewers[index - 1][2].length < 13
-                      ? itemsAllViewers[index - 1][2]
-                      : itemsAllViewers[index - 1][2].substring(0, 10) + "...",
-                  style: Theme.of(context).textTheme.headline,
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    } else {
-      return new Padding(
-          padding: index == 1
-              ? EdgeInsets.only(left: 0, right: 10.0, top: 5.0, bottom: 5.0)
-              : EdgeInsets.only(left: 10, right: 10.0, top: 5.0, bottom: 5.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  FadeRoute(
-                      page: OthersProfile(
-                    uid: itemsAllViewers[index - 1][0],
-                  )));
-            },
-            child: Column(
-              children: <Widget>[
-                itemsAllViewers[index - 1][1] !=
-                        'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
-                    ? CircleAvatar(
-                        radius: 36,
+
+    return new Padding(
+      padding: index == 1
+          ? EdgeInsets.only(left: 0, right: 10.0, top: 5.0, bottom: 5.0)
+          : EdgeInsets.only(left: 10, right: 10.0, top: 5.0, bottom: 5.0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              FadeRoute(
+                  page: OthersProfile(
+                uid: itemsAllViewers[index - 1][0],
+              )));
+        },
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              itemsAllViewers[index - 1][1] !=
+                      'https://firebasestorage.googleapis.com/v0/b/xenome-mobile.appspot.com/o/profiles%2Fuser_big_outlined%402x.png?alt=media&token=5707511f-cdcd-4bf8-b49e-fde668bcd4f5'
+                  ? Container(
+                      height: 72,
+                      width: 72,
+                      padding: EdgeInsets.all(2),
+                      child: CircleAvatar(
+                        radius: 34,
                         backgroundColor: Colors.black,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(32),
+                          borderRadius: BorderRadius.circular(30),
                           child: CachedNetworkImage(
                             imageUrl: itemsAllViewers[index - 1][1],
                             placeholder: (BuildContext context, String url) =>
                                 Image.asset(
                               'assets/icos/loader.gif',
-                              width: 72,
-                              height: 72,
+                              width: 64,
+                              height: 64,
                               fit: BoxFit.cover,
                             ),
-                            width: 72,
-                            height: 72,
+                            width: 64,
+                            height: 64,
                             fit: BoxFit.fill,
                           ),
                         ),
-                      )
-                    : Container(
-                        height: 72,
-                        width: 72,
-                        child: CircleAvatar(
-                          radius: 34,
-                          backgroundColor: Color(0xFF272D3A),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(32),
-                            child: CachedNetworkImage(
-                              imageUrl: itemsAllViewers[index - 1][1],
-                              placeholder: (BuildContext context, String url) =>
-                                  Image.asset(
-                                'assets/icos/loader.gif',
-                                width: 64,
-                                height: 64,
-                                fit: BoxFit.cover,
-                              ),
-                              width: 32,
-                              height: 32,
-                              fit: BoxFit.fill,
+                      ),
+                      decoration: itemsAllViewers[index - 1][3] == "created"
+                          ? BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Color(0xffC26FED),
+                                Color(0xff5086DE)
+                              ]),
+                              borderRadius: BorderRadius.circular(36))
+                          : BoxDecoration(),
+                    )
+                  : Container(
+                      height: 72,
+                      width: 72,
+                      padding: EdgeInsets.all(2),
+                      child: CircleAvatar(
+                        radius: 34,
+                        backgroundColor: Color(0xFF272D3A),
+                        child: ClipRRect(
+                          // borderRadius: BorderRadius.circular(32),
+                          child: CachedNetworkImage(
+                            imageUrl: itemsAllViewers[index - 1][1],
+                            placeholder: (BuildContext context, String url) =>
+                                Image.asset(
+                              'assets/icos/loader.gif',
+                              width: 64,
+                              height: 64,
+                              fit: BoxFit.cover,
                             ),
+                            width: 32,
+                            height: 32,
+                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
-                SizedBox(
-                  height: 7.0,
-                ),
-                Text(
-                  itemsAllViewers[index - 1][2].length < 13
-                      ? itemsAllViewers[index - 1][2]
-                      : itemsAllViewers[index - 1][2].substring(0, 10) + "...",
-                  style: Theme.of(context).textTheme.headline,
-                ),
-              ],
-            ),
-          ));
-    }
+                      decoration: itemsAllViewers[index - 1][3] == "created"
+                          ? BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Color(0xffC26FED),
+                                Color(0xff5086DE)
+                              ]),
+                              borderRadius: BorderRadius.circular(36))
+                          : BoxDecoration(),
+                    ),
+              SizedBox(
+                height: 7.0,
+              ),
+              Text(
+                itemsAllViewers[index - 1][2].length < 13
+                    ? itemsAllViewers[index - 1][2]
+                    : itemsAllViewers[index - 1][2].substring(0, 10) + "...",
+                style: Theme.of(context).textTheme.headline,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildTrendingSectionChild(BuildContext context, int index) {
@@ -1724,10 +1659,14 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
                                   ),
                                 ),
                               ),
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      colors: [Colors.pink, Colors.blue]),
-                                  borderRadius: BorderRadius.circular(36)),
+                              decoration: itemMostActiveViewer[5] == "created"
+                                  ? BoxDecoration(
+                                      gradient: LinearGradient(colors: [
+                                        Color(0xffC26FED),
+                                        Color(0xff5086DE)
+                                      ]),
+                                      borderRadius: BorderRadius.circular(36))
+                                  : BoxDecoration(),
                             )
                           : Container(
                               height: 72,
@@ -1737,7 +1676,7 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
                                 radius: 34,
                                 backgroundColor: Color(0xFF272D3A),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(32),
+                                  // borderRadius: BorderRadius.circular(32),
                                   child: CachedNetworkImage(
                                     imageUrl: itemMostActiveViewer[0],
                                     placeholder:
@@ -1754,10 +1693,14 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
                                   ),
                                 ),
                               ),
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      colors: [Colors.pink, Colors.blue]),
-                                  borderRadius: BorderRadius.circular(36)),
+                              decoration: itemMostActiveViewer[5] == "created"
+                                  ? BoxDecoration(
+                                      gradient: LinearGradient(colors: [
+                                        Color(0xffC26FED),
+                                        Color(0xff5086DE)
+                                      ]),
+                                      borderRadius: BorderRadius.circular(36))
+                                  : BoxDecoration(),
                             ),
 
                       SizedBox(

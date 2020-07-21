@@ -111,7 +111,7 @@ class _QuadStartState extends State<ViewQuadStart>
       } else {
         minOpacity = quadHeatmapData[i].minOpacity / 50;
       }
-      double radius = 50.0;
+      double radius = 60.0;
       Offset center =
           Offset(quadHeatmapData[i].x + 43, quadHeatmapData[i].y + 43);
       // draw shadow first

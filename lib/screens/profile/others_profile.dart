@@ -49,6 +49,7 @@ class _OthersProfileState extends State<OthersProfile> {
     getCollections();
     getUserInfo();
     getFollowStatus();
+   
   }
 
   getFollowStatus() async {
@@ -62,6 +63,7 @@ class _OthersProfileState extends State<OthersProfile> {
     var _userAvatar = await ActivityManager.getUserImage(widget.uid);
     var _userWebsites = await ActivityManager.getUserWebsite(widget.uid);
     var _description = await ActivityManager.getUserDescription(widget.uid);
+   
     var _otherlink = await ActivityManager.getUserOtherlink(widget.uid);
     var _name = await ActivityManager.getPostUserName(widget.uid);
     if (_userWebsites == null) {

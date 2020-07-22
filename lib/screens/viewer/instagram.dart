@@ -50,7 +50,9 @@ class _InstagramState extends State<Instagram> {
   }
 
   addViewNumber() async {
-    await ViewerManager.addViewNumber(widget.id, widget.type, commentId);
+    if (SessionManager.getUserId() != '') {
+      await ViewerManager.addViewNumber(widget.id, widget.type, commentId);
+    }
   }
 
   getLastComment() async {

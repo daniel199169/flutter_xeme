@@ -35,12 +35,8 @@ class NotSiHome extends StatefulWidget {
   _NotSiHomeState createState() => _NotSiHomeState();
 }
 
-bool is_signin = false;
-
 class _NotSiHomeState extends State<NotSiHome> {
   int _currentIndex = 0;
-  StyledText _styledText;
-  File _image;
 
   String topImageUrl = '';
   String topXmapID = "";
@@ -68,36 +64,22 @@ class _NotSiHomeState extends State<NotSiHome> {
     });
   }
 
-  getTopXmapTitle() async {
-    var _topXmapInfo = await TrendingManager.getTopXmapInfo();
+  // getTopXmapTitle() async {
+  //   var _topXmapInfo = await TrendingManager.getTopXmapInfo();
 
-    SetupInfo _xmapTitle =
-        await ViewerManager.getSetupInfo(_topXmapInfo[1], "Trending");
-    setState(() {
-      xmapTitle = _xmapTitle;
-    });
-  }
+  //   SetupInfo _xmapTitle =
+  //       await ViewerManager.getSetupInfo(_topXmapInfo[1], "Trending");
+  //   setState(() {
+  //     xmapTitle = _xmapTitle;
+  //   });
+  // }
 
-  getPositionList() async {
-    List<double> _positionList = await BuildManager.getPositionList(uid);
-    setState(() {
-      yPosition = _positionList[1];
-    });
-  }
-
-  Future getImage() async {
-    String filePath = await BuildManager.getImage(uid);
-    List<String> realPath = filePath.split("File: '");
-    File image =
-        await getFile(realPath[1].substring(0, realPath[1].length - 1));
-    setState(() {
-      _image = image;
-    });
-  }
-
-  Future<File> getFile(String path) async {
-    return File(path);
-  }
+  // getPositionList() async {
+  //   List<double> _positionList = await BuildManager.getPositionList(uid);
+  //   setState(() {
+  //     yPosition = _positionList[1];
+  //   });
+  // }
 
   @override
   void initState() {
@@ -108,11 +90,11 @@ class _NotSiHomeState extends State<NotSiHome> {
     xmapTitle = new SetupInfo(title: '', description: '');
 
     getXmapInfo();
-    getTopXmapTitle();
-    getPositionList();
-    getImage();
+    // getTopXmapTitle();
+    // getPositionList();
+
     getTrendingList();
-    getMylistList();
+    // getMylistList();
   }
 
   getTrendingList() async {
@@ -122,12 +104,12 @@ class _NotSiHomeState extends State<NotSiHome> {
     });
   }
 
-  getMylistList() async {
-    var _itemsMylist = await MylistManager.getList(uid);
-    setState(() {
-      itemsMylist = _itemsMylist;
-    });
-  }
+  // getMylistList() async {
+  //   var _itemsMylist = await MylistManager.getList(uid);
+  //   setState(() {
+  //     itemsMylist = _itemsMylist;
+  //   });
+  // }
 
   void onTabTapped(int index) {
     setState(() {
@@ -220,35 +202,36 @@ class _NotSiHomeState extends State<NotSiHome> {
                           ),
                         )
                       : Container(),
-                  itemsMylist.length != 0
-                      ? Container(
-                          child: Stack(
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    EdgeInsets.fromLTRB(30.0, 15.0, 0.0, 15.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    text: 'MY LIST',
-                                    style: Theme.of(context).textTheme.subtitle,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.fromLTRB(
-                                    0.0, 50.0, 0.0, 15.0),
-                                constraints:
-                                    const BoxConstraints(maxHeight: 235.0),
-                                child: new ListView.builder(
-                                  itemCount: itemsMylist.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: _buildMylistChild,
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      : Container(),
+                  // itemsMylist.length != 0
+                  //     ? Container(
+                  //         child: Stack(
+                  //           children: <Widget>[
+                  //             Padding(
+                  //               padding:
+                  //                   EdgeInsets.fromLTRB(30.0, 15.0, 0.0, 15.0),
+                  //               child: RichText(
+                  //                 text: TextSpan(
+                  //                   text: 'MY LIST',
+                  //                   style: Theme.of(context).textTheme.subtitle,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             Container(
+                  //               padding: const EdgeInsets.fromLTRB(
+                  //                   0.0, 50.0, 0.0, 15.0),
+                  //               constraints:
+                  //                   const BoxConstraints(maxHeight: 235.0),
+                  //               child: new ListView.builder(
+                  //                 itemCount: itemsMylist.length,
+                  //                 scrollDirection: Axis.horizontal,
+                  //                 itemBuilder: _buildMylistChild,
+                  //               ),
+                  //             )
+                  //           ],
+                  //         ),
+                  //       )
+                  //     : Container(),
+                
                 ],
               ),
             ),
@@ -572,67 +555,69 @@ class _NotSiHomeState extends State<NotSiHome> {
     );
   }
 
-  Widget _buildMylistChild(BuildContext context, int index) {
-    final itemMyslist = itemsMylist[index];
-    return Padding(
-      padding: index == 0
-          ? const EdgeInsets.only(right: 10.0, left: 30)
-          : const EdgeInsets.only(right: 10.0),
-      child: Center(
-        child: Stack(
-          //fit: StackFit.expand,
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: itemMyslist.image != null
-                  ? CachedNetworkImage(
-                      imageUrl: itemMyslist.image.imageURL,
-                      placeholder: (BuildContext context, String url) =>
-                          Image.asset(
-                            'assets/icos/loader.gif',
-                            height: 200,
-                            width: 115,
-                            fit: BoxFit.cover,
-                          ),
-                      width: 115,
-                      height: 200,
-                      fit: BoxFit.cover)
-                  : Image.asset('assets/images/pic17.jpg',
-                      height: 200, width: 115, fit: BoxFit.cover),
-            ),
-            //TemplateThumbnail(description(context), position),
-            // Center(
-            //   child: Container(
-            //     padding: EdgeInsets.only(top: 40),
-            //     width: 115,
-            //     child: Column(
-            //       children: <Widget>[
-            //         AutoSizeText(
-            //           itemMyslist.title.title,
-            //           style: TextStyle(
-            //               fontFamily: 'Roboto Black',
-            //               fontWeight: FontWeight.w900,
-            //               fontSize: 14,
-            //               color: Colors.white),
-            //           minFontSize: 12,
-            //           maxLines: 4,
-            //           overflow: TextOverflow.ellipsis,
-            //         ),
-            //         Text(
-            //           itemMyslist.description.description,
-            //           style: TextStyle(
-            //               fontFamily: 'Roboto Black',
-            //               fontWeight: FontWeight.w600,
-            //               fontSize: 12,
-            //               color: Colors.white),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildMylistChild(BuildContext context, int index) {
+  //   final itemMyslist = itemsMylist[index];
+  //   return Padding(
+  //     padding: index == 0
+  //         ? const EdgeInsets.only(right: 10.0, left: 30)
+  //         : const EdgeInsets.only(right: 10.0),
+  //     child: Center(
+  //       child: Stack(
+  //         //fit: StackFit.expand,
+  //         children: <Widget>[
+  //           ClipRRect(
+  //             borderRadius: BorderRadius.circular(20.0),
+  //             child: itemMyslist.image != null
+  //                 ? CachedNetworkImage(
+  //                     imageUrl: itemMyslist.image.imageURL,
+  //                     placeholder: (BuildContext context, String url) =>
+  //                         Image.asset(
+  //                           'assets/icos/loader.gif',
+  //                           height: 200,
+  //                           width: 115,
+  //                           fit: BoxFit.cover,
+  //                         ),
+  //                     width: 115,
+  //                     height: 200,
+  //                     fit: BoxFit.cover)
+  //                 : Image.asset('assets/images/pic17.jpg',
+  //                     height: 200, width: 115, fit: BoxFit.cover),
+  //           ),
+  //           //TemplateThumbnail(description(context), position),
+  //           // Center(
+  //           //   child: Container(
+  //           //     padding: EdgeInsets.only(top: 40),
+  //           //     width: 115,
+  //           //     child: Column(
+  //           //       children: <Widget>[
+  //           //         AutoSizeText(
+  //           //           itemMyslist.title.title,
+  //           //           style: TextStyle(
+  //           //               fontFamily: 'Roboto Black',
+  //           //               fontWeight: FontWeight.w900,
+  //           //               fontSize: 14,
+  //           //               color: Colors.white),
+  //           //           minFontSize: 12,
+  //           //           maxLines: 4,
+  //           //           overflow: TextOverflow.ellipsis,
+  //           //         ),
+  //           //         Text(
+  //           //           itemMyslist.description.description,
+  //           //           style: TextStyle(
+  //           //               fontFamily: 'Roboto Black',
+  //           //               fontWeight: FontWeight.w600,
+  //           //               fontSize: 12,
+  //           //               color: Colors.white),
+  //           //         ),
+  //           //       ],
+  //           //     ),
+  //           //   ),
+  //           // ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
+
 }

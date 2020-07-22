@@ -15,11 +15,8 @@ class ActivityManager {
     List<DocumentSnapshot> templist;
     List<Map<dynamic, dynamic>> list = new List();
 
-    QuerySnapshot querySnapshot = await db
-        .collection('ActivityFeed')
-        .orderBy('createdAt')
-        .getDocuments();
-
+    QuerySnapshot querySnapshot =
+        await db.collection('ActivityFeed').orderBy('createdAt').getDocuments();
 
     templist = querySnapshot.documents;
     list = templist.map((DocumentSnapshot docSnapshot) {
@@ -28,7 +25,6 @@ class ActivityManager {
 
     List<ActivityFeedModel> _list = [];
     _list = list.map((doc) {
-      
       return ActivityFeedModel.fromJson(doc);
     }).toList();
     return _list;
@@ -42,11 +38,15 @@ class ActivityManager {
     if (docSnapShot == null || docSnapShot.documents.length == 0) {
       return [];
     } else {
-      var userImage = docSnapShot.documents[0]['image'];
-      return userImage;
+      if (docSnapShot.documents[0]['image'] == null) {
+        return "";
+      } else {
+        var userImage = docSnapShot.documents[0]['image'];
+        return userImage;
+      }
     }
   }
-  
+
   static getUserWebsite(String uid) async {
     QuerySnapshot docSnapShot = await db
         .collection('Users')
@@ -55,24 +55,16 @@ class ActivityManager {
     if (docSnapShot == null || docSnapShot.documents.length == 0) {
       return [];
     } else {
-      var website = docSnapShot.documents[0]['website'];
-      return website;
-    }
-  }
-  static getUserDescription(String uid) async{
-    QuerySnapshot docSnapShot = await db
-        .collection('Users')
-        .where('uid', isEqualTo: uid)
-        .getDocuments();
-    if (docSnapShot == null || docSnapShot.documents.length == 0) {
-      return [];
-    } else {
-      var description = docSnapShot.documents[0]['description'];
-      return description;
+      if (docSnapShot.documents[0]['website'] == null) {
+        return "";
+      } else {
+        var website = docSnapShot.documents[0]['website'];
+        return website;
+      }
     }
   }
 
-  static getUserOtherlink(String uid) async{
+  static getUserDescription(String uid) async {
     QuerySnapshot docSnapShot = await db
         .collection('Users')
         .where('uid', isEqualTo: uid)
@@ -80,8 +72,29 @@ class ActivityManager {
     if (docSnapShot == null || docSnapShot.documents.length == 0) {
       return [];
     } else {
-      var otherlink = docSnapShot.documents[0]['otherlink'];
-      return otherlink;
+      if (docSnapShot.documents[0]['description'] == null) {
+        return "";
+      } else {
+        var description = docSnapShot.documents[0]['description'];
+        return description;
+      }
+    }
+  }
+
+  static getUserOtherlink(String uid) async {
+    QuerySnapshot docSnapShot = await db
+        .collection('Users')
+        .where('uid', isEqualTo: uid)
+        .getDocuments();
+    if (docSnapShot == null || docSnapShot.documents.length == 0) {
+      return [];
+    } else {
+      if (docSnapShot.documents[0]['otherlink'] == null) {
+        return "";
+      } else {
+        var otherlink = docSnapShot.documents[0]['otherlink'];
+        return otherlink;
+      }
     }
   }
 
@@ -115,13 +128,12 @@ class ActivityManager {
     }).toList();
     return followingList;
   }
-  
-  static addReplyComment(String id, String type, String uid, String comment) async{
-    QuerySnapshot docSnapShot = await db
-        .collection(type)
-        .where('id', isEqualTo: id)
-        .getDocuments();
-    
+
+  static addReplyComment(
+      String id, String type, String uid, String comment) async {
+    QuerySnapshot docSnapShot =
+        await db.collection(type).where('id', isEqualTo: id).getDocuments();
+
     String thumbnail = docSnapShot.documents[0]['image'].toString();
     String xmapName = docSnapShot.documents[0]['title']['title'].toString();
     String commentUid = docSnapShot.documents[0]['uid'].toString();
@@ -135,19 +147,17 @@ class ActivityManager {
       xmapName: xmapName,
       createdAt: nowTime.toString(),
       postUid: commentUid,
-      xmapId : id,
-      xmapType : type,
+      xmapId: id,
+      xmapType: type,
     );
     addNewActivity(newActivity);
-
   }
 
-  static addAPageComment(String id, String type, String uid, String comment) async{
-    QuerySnapshot docSnapShot = await db
-        .collection(type)
-        .where('id', isEqualTo: id)
-        .getDocuments();
-    
+  static addAPageComment(
+      String id, String type, String uid, String comment) async {
+    QuerySnapshot docSnapShot =
+        await db.collection(type).where('id', isEqualTo: id).getDocuments();
+
     String thumbnail = docSnapShot.documents[0]['image'].toString();
     String xmapName = docSnapShot.documents[0]['title']['title'].toString();
     String commentUid = docSnapShot.documents[0]['uid'].toString();
@@ -161,19 +171,15 @@ class ActivityManager {
       xmapName: xmapName,
       createdAt: nowTime.toString(),
       postUid: commentUid,
-      xmapId : id,
-      xmapType : type,
-
+      xmapId: id,
+      xmapType: type,
     );
     addNewActivity(newActivity);
-
   }
 
-  static addAPageCollect(String id, String type, String uid) async{
-    QuerySnapshot docSnapShot = await db
-        .collection(type)
-        .where('id', isEqualTo: id)
-        .getDocuments();
+  static addAPageCollect(String id, String type, String uid) async {
+    QuerySnapshot docSnapShot =
+        await db.collection(type).where('id', isEqualTo: id).getDocuments();
 
     String thumbnail = docSnapShot.documents[0]['image'].toString();
     String xmapName = docSnapShot.documents[0]['title']['title'].toString();
@@ -188,19 +194,15 @@ class ActivityManager {
       xmapName: xmapName,
       createdAt: nowTime.toString(),
       postUid: commentUid,
-      xmapId : id,
-      xmapType : type,
-
+      xmapId: id,
+      xmapType: type,
     );
     addNewActivity(newActivity);
-
   }
 
-  static addMyList(String id, String type, String uid) async{
-    QuerySnapshot docSnapShot = await db
-        .collection(type)
-        .where('id', isEqualTo: id)
-        .getDocuments();
+  static addMyList(String id, String type, String uid) async {
+    QuerySnapshot docSnapShot =
+        await db.collection(type).where('id', isEqualTo: id).getDocuments();
 
     String thumbnail = docSnapShot.documents[0]['image'].toString();
     String xmapName = docSnapShot.documents[0]['title']['title'].toString();
@@ -215,27 +217,21 @@ class ActivityManager {
       xmapName: xmapName,
       createdAt: nowTime.toString(),
       postUid: commentUid,
-      xmapId : id,
-      xmapType : type,
-
+      xmapId: id,
+      xmapType: type,
     );
     addNewActivity(newActivity);
-
   }
 
   static Future<void> addNewActivity(ActivityFeedModel newActivity) async {
-    await db.collection('ActivityFeed')
-    .add(newActivity.toJson());
+    await db.collection('ActivityFeed').add(newActivity.toJson());
   }
-  
+
   static addPushTokenToUsers(String token) async {
-    
     String myUid = SessionManager.getUserId();
-      await db
+    await db
         .collection('Users')
         .document(myUid)
         .updateData({'pushToken': token});
-        
   }
-
 }

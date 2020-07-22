@@ -400,30 +400,30 @@ class _HomeState extends State<Home> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                itemsViewing.length != 0
-                    ? Container(
-                        child: Stack(children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(30.0, 20.0, 0.0, 15.0),
-                          child: RichText(
-                            text: TextSpan(
-                              text: 'CONTINUE VIEWING',
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                          ),
-                        ),
-                        new Container(
-                          padding:
-                              const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 15.0),
-                          constraints: const BoxConstraints(maxHeight: 255.0),
-                          child: new ListView.builder(
-                            itemCount: itemsViewing.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: _buildViewingChild,
-                          ),
-                        ),
-                      ]))
-                    : Container(),
+                // itemsViewing.length != 0
+                //     ? Container(
+                //         child: Stack(children: <Widget>[
+                //         Padding(
+                //           padding: EdgeInsets.fromLTRB(30.0, 20.0, 0.0, 15.0),
+                //           child: RichText(
+                //             text: TextSpan(
+                //               text: 'CONTINUE VIEWING',
+                //               style: Theme.of(context).textTheme.subtitle,
+                //             ),
+                //           ),
+                //         ),
+                //         new Container(
+                //           padding:
+                //               const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 15.0),
+                //           constraints: const BoxConstraints(maxHeight: 255.0),
+                //           child: new ListView.builder(
+                //             itemCount: itemsViewing.length,
+                //             scrollDirection: Axis.horizontal,
+                //             itemBuilder: _buildViewingChild,
+                //           ),
+                //         ),
+                //       ]))
+                //     : Container(),
                 itemsInviting.length != 0
                     ? Container(
                         child: Stack(
@@ -942,90 +942,90 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildViewingChild(BuildContext context, int index) {
-    final itemViewing = itemsViewing[index];
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context,
-            FadeRoute(page: ViewerInit(id: itemViewing.id, type: "Viewing")));
-      },
-      child: Padding(
-        padding: index == 0
-            ? const EdgeInsets.only(right: 10.0, left: 30)
-            : const EdgeInsets.only(right: 10.0),
-        child: Column(
-          children: <Widget>[
-            Center(
-              child: Stack(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: itemViewing.image != null
-                        ? CachedNetworkImage(
-                            imageUrl: itemViewing.image.imageURL,
-                            placeholder: (BuildContext context, String url) =>
-                                Image.asset(
-                                  'assets/icos/loader.gif',
-                                  width: 115,
-                                  height: 170,
-                                  fit: BoxFit.cover,
-                                ),
-                            width: 115,
-                            height: 170,
-                            fit: BoxFit.cover)
-                        : Image.asset('assets/images/pic17.jpg',
-                            height: 170, width: 115, fit: BoxFit.cover),
-                  ),
-                  // Center(
-                  //   child: Container(
-                  //     padding: EdgeInsets.only(top: 40),
-                  //     width: 115,
-                  //     child: Column(
-                  //       children: <Widget>[
-                  //         AutoSizeText(
-                  //           itemViewing.title.title != null
-                  //               ? itemViewing.title.title
-                  //               : "...",
-                  //           style: TextStyle(
-                  //               fontFamily: 'Roboto Black',
-                  //               fontWeight: FontWeight.w900,
-                  //               fontSize: 14,
-                  //               color: Colors.white),
-                  //           minFontSize: 12,
-                  //           maxLines: 4,
-                  //           overflow: TextOverflow.ellipsis,
-                  //         ),
-                  //         Text(
-                  //           itemViewing.title.description != null
-                  //               ? itemViewing.title.description
-                  //               : "...",
-                  //           style: TextStyle(
-                  //               fontFamily: 'Roboto Black',
-                  //               fontWeight: FontWeight.w900,
-                  //               fontSize: 14,
-                  //               color: Colors.white),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-              // child: LinearPercentIndicator(
-              //   width: 100.0,
-              //   lineHeight: 4.0,
-              //   percent: 0.9,
-              //   progressColor: Color(0xFF2B8DD8),
-              // ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildViewingChild(BuildContext context, int index) {
+  //   final itemViewing = itemsViewing[index];
+  //   return GestureDetector(
+  //     onTap: () {
+  //       Navigator.push(context,
+  //           FadeRoute(page: ViewerInit(id: itemViewing.id, type: "Viewing")));
+  //     },
+  //     child: Padding(
+  //       padding: index == 0
+  //           ? const EdgeInsets.only(right: 10.0, left: 30)
+  //           : const EdgeInsets.only(right: 10.0),
+  //       child: Column(
+  //         children: <Widget>[
+  //           Center(
+  //             child: Stack(
+  //               children: <Widget>[
+  //                 ClipRRect(
+  //                   borderRadius: BorderRadius.circular(20.0),
+  //                   child: itemViewing.image != null
+  //                       ? CachedNetworkImage(
+  //                           imageUrl: itemViewing.image.imageURL,
+  //                           placeholder: (BuildContext context, String url) =>
+  //                               Image.asset(
+  //                                 'assets/icos/loader.gif',
+  //                                 width: 115,
+  //                                 height: 170,
+  //                                 fit: BoxFit.cover,
+  //                               ),
+  //                           width: 115,
+  //                           height: 170,
+  //                           fit: BoxFit.cover)
+  //                       : Image.asset('assets/images/pic17.jpg',
+  //                           height: 170, width: 115, fit: BoxFit.cover),
+  //                 ),
+  //                 // Center(
+  //                 //   child: Container(
+  //                 //     padding: EdgeInsets.only(top: 40),
+  //                 //     width: 115,
+  //                 //     child: Column(
+  //                 //       children: <Widget>[
+  //                 //         AutoSizeText(
+  //                 //           itemViewing.title.title != null
+  //                 //               ? itemViewing.title.title
+  //                 //               : "...",
+  //                 //           style: TextStyle(
+  //                 //               fontFamily: 'Roboto Black',
+  //                 //               fontWeight: FontWeight.w900,
+  //                 //               fontSize: 14,
+  //                 //               color: Colors.white),
+  //                 //           minFontSize: 12,
+  //                 //           maxLines: 4,
+  //                 //           overflow: TextOverflow.ellipsis,
+  //                 //         ),
+  //                 //         Text(
+  //                 //           itemViewing.title.description != null
+  //                 //               ? itemViewing.title.description
+  //                 //               : "...",
+  //                 //           style: TextStyle(
+  //                 //               fontFamily: 'Roboto Black',
+  //                 //               fontWeight: FontWeight.w900,
+  //                 //               fontSize: 14,
+  //                 //               color: Colors.white),
+  //                 //         ),
+  //                 //       ],
+  //                 //     ),
+  //                 //   ),
+  //                 // ),
+  //               ],
+  //             ),
+  //           ),
+  //           SizedBox(
+  //             height: 20.0,
+  //             // child: LinearPercentIndicator(
+  //             //   width: 100.0,
+  //             //   lineHeight: 4.0,
+  //             //   percent: 0.9,
+  //             //   progressColor: Color(0xFF2B8DD8),
+  //             // ),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildTrendingChild(BuildContext context, int index) {
     final itemTrending = itemsTrending[index];
@@ -1317,78 +1317,80 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildAgainChild(BuildContext context, int index) {
-    final itemAgain = itemsAgain[index];
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context,
-            FadeRoute(page: ViewerInit(id: itemAgain.id, type: "Again")));
-      },
-      child: Padding(
-        padding: index == 0
-            ? const EdgeInsets.only(right: 10.0, left: 30)
-            : const EdgeInsets.only(right: 10.0),
-        child: Center(
-          child: Stack(
-            //fit: StackFit.expand,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: itemAgain.image != null
-                    ? CachedNetworkImage(
-                        imageUrl: itemAgain.image,
-                        placeholder: (BuildContext context, String url) =>
-                            Image.asset(
-                              'assets/icos/loader.gif',
-                              width: 115,
-                              height: 170,
-                              fit: BoxFit.cover,
-                            ),
-                        width: 115,
-                        height: 170,
-                        fit: BoxFit.cover)
-                    : Image.asset('assets/images/pic17.jpg',
-                        height: 170, width: 115, fit: BoxFit.cover),
-              ),
-              // Center(
-              //   child: Container(
-              //     padding: EdgeInsets.only(top: itemAgain.position.y / 4),
-              //     width: 115,
-              //     child: Column(
-              //       children: <Widget>[
-              //         AutoSizeText(
-              //           itemAgain.title.title != null
-              //               ? itemAgain.title.title
-              //               : "...",
-              //           style: TextStyle(
-              //               fontFamily: 'Roboto Black',
-              //               fontWeight: itemAgain.title.isBold
-              //                   ? FontWeight.bold
-              //                   : FontWeight.normal,
-              //               fontSize: itemAgain.title.size / 4,
-              //               color: itemAgain.title.color),
-              //           minFontSize: 12,
-              //           maxLines: 4,
-              //           overflow: TextOverflow.ellipsis,
-              //         ),
-              //         Text(
-              //           itemAgain.subtitle.title,
-              //           style: TextStyle(
-              //               fontFamily: 'Roboto Black',
-              //               fontWeight: itemAgain.subtitle.isBold
-              //                   ? FontWeight.bold
-              //                   : FontWeight.normal,
-              //               fontSize: itemAgain.subtitle.size / 4,
-              //               color: itemAgain.subtitle.color),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildAgainChild(BuildContext context, int index) {
+  //   final itemAgain = itemsAgain[index];
+  //   return GestureDetector(
+  //     onTap: () {
+  //       Navigator.push(context,
+  //           FadeRoute(page: ViewerInit(id: itemAgain.id, type: "Again")));
+  //     },
+  //     child: Padding(
+  //       padding: index == 0
+  //           ? const EdgeInsets.only(right: 10.0, left: 30)
+  //           : const EdgeInsets.only(right: 10.0),
+  //       child: Center(
+  //         child: Stack(
+  //           //fit: StackFit.expand,
+  //           children: <Widget>[
+  //             ClipRRect(
+  //               borderRadius: BorderRadius.circular(20.0),
+  //               child: itemAgain.image != null
+  //                   ? CachedNetworkImage(
+  //                       imageUrl: itemAgain.image,
+  //                       placeholder: (BuildContext context, String url) =>
+  //                           Image.asset(
+  //                             'assets/icos/loader.gif',
+  //                             width: 115,
+  //                             height: 170,
+  //                             fit: BoxFit.cover,
+  //                           ),
+  //                       width: 115,
+  //                       height: 170,
+  //                       fit: BoxFit.cover)
+  //                   : Image.asset('assets/images/pic17.jpg',
+  //                       height: 170, width: 115, fit: BoxFit.cover),
+  //             ),
+  //             // Center(
+  //             //   child: Container(
+  //             //     padding: EdgeInsets.only(top: itemAgain.position.y / 4),
+  //             //     width: 115,
+  //             //     child: Column(
+  //             //       children: <Widget>[
+  //             //         AutoSizeText(
+  //             //           itemAgain.title.title != null
+  //             //               ? itemAgain.title.title
+  //             //               : "...",
+  //             //           style: TextStyle(
+  //             //               fontFamily: 'Roboto Black',
+  //             //               fontWeight: itemAgain.title.isBold
+  //             //                   ? FontWeight.bold
+  //             //                   : FontWeight.normal,
+  //             //               fontSize: itemAgain.title.size / 4,
+  //             //               color: itemAgain.title.color),
+  //             //           minFontSize: 12,
+  //             //           maxLines: 4,
+  //             //           overflow: TextOverflow.ellipsis,
+  //             //         ),
+  //             //         Text(
+  //             //           itemAgain.subtitle.title,
+  //             //           style: TextStyle(
+  //             //               fontFamily: 'Roboto Black',
+  //             //               fontWeight: itemAgain.subtitle.isBold
+  //             //                   ? FontWeight.bold
+  //             //                   : FontWeight.normal,
+  //             //               fontSize: itemAgain.subtitle.size / 4,
+  //             //               color: itemAgain.subtitle.color),
+  //             //         ),
+  //             //       ],
+  //             //     ),
+  //             //   ),
+  //             // ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+
 }

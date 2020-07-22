@@ -136,7 +136,9 @@ class _ViewInfoCreatorState extends State<ViewInfoCreator> {
     setState(() {
       itemsMostActiveViewer = _itemsMostActiveViewer;
     });
-
+    
+    print("**********  Most Active Viewers  **********");
+    print(itemsMostActiveViewer);
   
   }
 

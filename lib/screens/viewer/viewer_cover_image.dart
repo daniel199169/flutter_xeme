@@ -41,13 +41,12 @@ class _ViewerCoverImageState extends State<ViewerCoverImage> {
     getXmapTitle();
     getCollections();
     getLastComment();
-   
   }
 
   addViewNumber() async {
-
-    await ViewerManager.addViewNumber(
-        widget.id, widget.type, commentId);
+    if (SessionManager.getUserId() != '') {
+      await ViewerManager.addViewNumber(widget.id, widget.type, commentId);
+    }
   }
 
   getLastComment() async {
@@ -62,7 +61,7 @@ class _ViewerCoverImageState extends State<ViewerCoverImage> {
     setState(() {
       commentId = _commentId;
     });
-     addViewNumber();
+    addViewNumber();
   }
 
   void addNewCollection(String collectionTitle) async {
@@ -572,7 +571,6 @@ class _ViewerCoverImageState extends State<ViewerCoverImage> {
                                         id: widget.id,
                                         type: widget.type,
                                         commentId: commentId,
-                                       
                                         callback: getLastComment,
                                       ),
                                       decoration: BoxDecoration(
@@ -677,7 +675,6 @@ class _ViewerCoverImageState extends State<ViewerCoverImage> {
                                       id: widget.id,
                                       type: widget.type,
                                       commentId: commentId,
-                                      
                                       callback: getLastComment,
                                     ),
                                     decoration: BoxDecoration(

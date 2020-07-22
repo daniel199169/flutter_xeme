@@ -43,12 +43,12 @@ class _ViewerImageState extends State<ViewerImage>
 
     getCollections();
     getLastComment();
-    
   }
 
   addViewNumber() async {
-    await ViewerManager.addViewNumber(
-        widget.id, widget.type, commentId);
+    if (SessionManager.getUserId() != '') {
+      await ViewerManager.addViewNumber(widget.id, widget.type, commentId);
+    }
   }
 
   getLastComment() async {
@@ -574,7 +574,6 @@ class _ViewerImageState extends State<ViewerImage>
                                         id: widget.id,
                                         type: widget.type,
                                         commentId: commentId,
-                                       
                                         callback: getLastComment,
                                       ),
                                       decoration: BoxDecoration(
@@ -672,7 +671,6 @@ class _ViewerImageState extends State<ViewerImage>
                                       id: widget.id,
                                       type: widget.type,
                                       commentId: commentId,
-                                     
                                       callback: getLastComment,
                                     ),
                                     decoration: BoxDecoration(

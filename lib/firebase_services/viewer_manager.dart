@@ -249,12 +249,16 @@ class ViewerManager {
         _midTempArry.add(
             MidSaveArray(_uidArry[i], point1.toString(), point2.toString()));
       }
+
       _midTempArry.sort((a, b) => (int.parse(a.viewNumber) +
               int.parse(a.commentNumber))
           .compareTo((int.parse(b.viewNumber) + int.parse(b.commentNumber))));
 
+      int k = 0;
       for (int i = _midTempArry.length - 1; i >= 0; i--) {
-        if (i > 9) break;
+        k++;
+
+        if (k > 4) break;
         String avatarImage =
             await TrendingManager.getAvatarImage(_midTempArry[i].uid);
         String username =
@@ -331,8 +335,10 @@ class ViewerManager {
       }
 
       _uidArry = Set.of(_uidArry).toList();
-
+     
       for (int i = 0; i < _uidArry.length; i++) {
+        
+        if (i > 9) break;
         if (_uidArry[i] != '') {
           String avatarImage =
               await TrendingManager.getAvatarImage(_uidArry[i]);

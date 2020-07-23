@@ -207,15 +207,15 @@ class _CommentsState extends State<Comments> {
                                 onPressed: () async {
                                   if (_flagAddMyList == 'Not exist') {
                                     addMylist();
+                                    ActivityManager.addMyList(
+                                      widget.id,
+                                      widget.type,
+                                      SessionManager.getUserId(),
+                                    );
                                   } else {
                                     removeMylist();
                                   }
 
-                                  // ActivityManager.addMyList(
-                                  //   widget.id,
-                                  //   widget.type,
-                                  //   SessionManager.getUserId(),
-                                  // );
                                   // Navigator.pushReplacement(
                                   //     context,
                                   //     MaterialPageRoute(
@@ -469,17 +469,17 @@ class _CommentsState extends State<Comments> {
                       child: TextFormField(
                         focusNode: textNode,
                         onFieldSubmitted: (details) {
-                          // ActivityManager.addAPageComment(
-                          //     widget.id,
-                          //     widget.type,
-                          //     SessionManager.getUserId(),
-                          //     commentController.text);
+                          ActivityManager.addAPageComment(
+                              widget.id,
+                              widget.type,
+                              SessionManager.getUserId(),
+                              commentController.text);
                           if (flagReply == 1) {
-                            // ActivityManager.addReplyComment(
-                            //     widget.id,
-                            //     widget.type,
-                            //     SessionManager.getUserId(),
-                            //     commentController.text);
+                            ActivityManager.addReplyComment(
+                                widget.id,
+                                widget.type,
+                                SessionManager.getUserId(),
+                                commentController.text);
                             setState(() {
                               flagReply = 0;
                             });

@@ -134,8 +134,8 @@ class ActivityManager {
     QuerySnapshot docSnapShot =
         await db.collection(type).where('id', isEqualTo: id).getDocuments();
 
-    String thumbnail = docSnapShot.documents[0]['image'].toString();
-    String xmapName = docSnapShot.documents[0]['title']['title'].toString();
+    String thumbnail = docSnapShot.documents[0]['cover_image']['image_url'].toString();
+    String xmapName = docSnapShot.documents[0]['SetupInfo']['title'].toString();
     String commentUid = docSnapShot.documents[0]['uid'].toString();
     DateTime nowTime = DateTime.now();
 
@@ -158,8 +158,8 @@ class ActivityManager {
     QuerySnapshot docSnapShot =
         await db.collection(type).where('id', isEqualTo: id).getDocuments();
 
-    String thumbnail = docSnapShot.documents[0]['image'].toString();
-    String xmapName = docSnapShot.documents[0]['title']['title'].toString();
+     String thumbnail = docSnapShot.documents[0]['cover_image']['image_url'].toString();
+    String xmapName = docSnapShot.documents[0]['SetupInfo']['title'].toString();
     String commentUid = docSnapShot.documents[0]['uid'].toString();
     DateTime nowTime = DateTime.now();
 
@@ -181,11 +181,12 @@ class ActivityManager {
     QuerySnapshot docSnapShot =
         await db.collection(type).where('id', isEqualTo: id).getDocuments();
 
-    String thumbnail = docSnapShot.documents[0]['image'].toString();
-    String xmapName = docSnapShot.documents[0]['title']['title'].toString();
+     String thumbnail = docSnapShot.documents[0]['cover_image']['image_url'].toString();
+    String xmapName = docSnapShot.documents[0]['SetupInfo']['title'].toString();
     String commentUid = docSnapShot.documents[0]['uid'].toString();
     DateTime nowTime = DateTime.now();
-
+    
+    
     ActivityFeedModel newActivity = ActivityFeedModel(
       uid: uid,
       type: 'aPageCollect',
@@ -197,15 +198,19 @@ class ActivityManager {
       xmapId: id,
       xmapType: type,
     );
+
     addNewActivity(newActivity);
+    
   }
 
-  static addMyList(String id, String type, String uid) async {
+  static addMyList(String id, String type, String uid,) async {
     QuerySnapshot docSnapShot =
         await db.collection(type).where('id', isEqualTo: id).getDocuments();
 
-    String thumbnail = docSnapShot.documents[0]['image'].toString();
-    String xmapName = docSnapShot.documents[0]['title']['title'].toString();
+    
+
+    String thumbnail = docSnapShot.documents[0]['cover_image']['image_url'].toString();
+    String xmapName = docSnapShot.documents[0]['SetupInfo']['title'].toString();
     String commentUid = docSnapShot.documents[0]['uid'].toString();
     DateTime nowTime = DateTime.now();
 

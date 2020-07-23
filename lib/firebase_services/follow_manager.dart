@@ -30,44 +30,16 @@ class FollowManager {
   }
 
   static getUpdateState(String uid) async {
-    QuerySnapshot docSnapShot = await db.collection('Trending').getDocuments();
-
-    var list = docSnapShot.documents;
-
-    for (int i = 0; i < list.length; i++) {
-      int flag = 0;
+    QuerySnapshot docSnapShot = await db
+        .collection('Trending')
+        .where('uid', isEqualTo: uid)
+        .getDocuments();
+    if (docSnapShot == null || docSnapShot.documents.length == 0) {
+      return "not updated";
+    } else {
      
-      QuerySnapshot docSnapShot1 = await db
-          .collection('XmapInfo')
-          .where('xmapID', isEqualTo: list[i]['id'])
-          .getDocuments();
-
-      if (docSnapShot1 == null || docSnapShot1.documents.length == 0) {
-        return "updated";
-      } else {
-       
-        if (docSnapShot1.documents[0]['page_order'] == null ||
-            docSnapShot1.documents[0]['page_order'].length == 0) {
-          return "updated";
-        } else {
-         
-          var _pageOrder = docSnapShot1.documents[0]['page_order'];
-
-          for (int j = 0; j < _pageOrder.length; j++) {
-            if (_pageOrder[j]['uid'] == uid &&
-                int.parse(_pageOrder[j]['view_number']) > 0) {
-              flag = 1;    
-              break;
-            }
-          }
-
-          if (flag == 0) {
-            return "updated";
-          }
-        }
-      }
+      return 'updated';
     }
-    return "not updated";
 
   }
 

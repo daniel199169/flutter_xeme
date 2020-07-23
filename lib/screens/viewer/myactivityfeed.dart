@@ -164,6 +164,8 @@ class _MyActivityFeedState extends State<MyActivityFeed> {
     }
     setState(() {
       activityList = tempActivityList;
+      print("--------    you   ---------");
+      print(activityList);
     });
   }
 
@@ -373,21 +375,37 @@ class _MyActivityFeedState extends State<MyActivityFeed> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            new CircleAvatar(
-                              child: CircleAvatar(
+                            Container(
+                                height: 68,
+                                width: 68,
+                                padding: EdgeInsets.all(2),
                                 child: CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage:
-                                        NetworkImage(activityList[index][1])),
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.black,
-                                radius: 32.0,
-                              ),
-                              radius: 34,
-                              backgroundImage: AssetImage(
-                                'assets/images/circle.png',
-                              ),
-                            ),
+                                  radius: 32,
+                                  backgroundColor: Colors.black,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: CachedNetworkImage(
+                                      imageUrl: activityList[index][1],
+                                      placeholder:
+                                          (BuildContext context, String url) =>
+                                              Image.asset(
+                                        'assets/icos/loader.gif',
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                      Color(0xffC26FED),
+                                      Color(0xff5086DE)
+                                    ]),
+                                    borderRadius: BorderRadius.circular(34)))
                           ],
                         ),
                       ),

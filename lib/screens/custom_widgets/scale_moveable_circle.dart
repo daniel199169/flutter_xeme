@@ -33,10 +33,12 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
   int circleBorderColor = 4278190080;
   int circlebackgroundcolor = 4278190080;
   int flag = 0;
+  int starttimer = 0;
   int timeflag = 0;
   int flagMoveEnd = 0;
   double midWidth = 0.0;
   double midHeight = 0.0;
+
 
   @override
   void initState() {
@@ -89,16 +91,12 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                setState(() {
-                  timeflag = 0;
-                });
-                
-                Timer(const Duration(milliseconds: 2000), () {
+                if(starttimer == 1){
                   setState(() {
                     timeflag = 1;
                   });
-                  
-                });
+                }
+
                 setState(() {
                   borderWidth = 8.0;
 
@@ -152,47 +150,55 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                if (timeflag == 1) {
+                setState(() {
+                  borderWidth = 2.0;
+
+                  if (yPosition < midHeight) {
+                    vote = "1";
+                  } else {
+                    vote = "2";
+                  }
+                });
+
+                ChartCirclePosition chartPosition = ChartCirclePosition(
+                    x: xPosition,
+                    y: yPosition,
+                    uid: SessionManager.getUserId(),
+                    minOpacity: 5,
+                    subOrder: widget.subOrder,
+                    vote: vote);
+                CirclePosition position = CirclePosition(
+                    x: xPosition,
+                    y: yPosition,
+                    uid: SessionManager.getUserId(),
+                    subOrder: widget.subOrder);
                   setState(() {
-                    borderWidth = 2.0;
+                    starttimer = 1;
+                  });
+                  Timer(const Duration(milliseconds: 2000), () async{
                     
-                    if (yPosition < midHeight) {
-                      vote = "1";
-                    } else {
-                      vote = "2";
-                    }
-                  });
 
-                  ChartCirclePosition chartPosition = ChartCirclePosition(
-                      x: xPosition,
-                      y: yPosition,
-                      uid: SessionManager.getUserId(),
-                      minOpacity: 5,
-                      subOrder: widget.subOrder,
-                      vote: vote);
-                  CirclePosition position = CirclePosition(
-                      x: xPosition,
-                      y: yPosition,
-                      uid: SessionManager.getUserId(),
-                      subOrder: widget.subOrder);
-
-                  ViewerManager.updateScaleHeatmap(
-                      chartPosition, widget.id, widget.type, widget.subOrder);
-                  ViewerManager.updateScalePosition(
-                      position, widget.id, widget.type, widget.subOrder);
-                  Timer(const Duration(milliseconds: 1000), () {
+                  if (timeflag == 0) {
+                    await ViewerManager.updateScaleHeatmap(
+                        chartPosition, widget.id, widget.type, widget.subOrder);
+                    await ViewerManager.updateScalePosition(
+                        position, widget.id, widget.type, widget.subOrder);
                     widget.getScaleHeatmap(MediaQuery.of(context).size);
-                  });
-                  setState(() {
-                    flag = 1;
-                    flagMoveEnd = 1;
-                  });
-                } else {
-                  setState(() {
-                    xPosition = midWidth;
-                    yPosition = midHeight;
-                  });
-                }
+                    setState(() {
+                      flag = 1;
+                      flagMoveEnd = 1;
+                      timeflag = 0;
+                      starttimer = 0;
+                    });
+                  }else{
+                    setState(() {
+                      timeflag = 0;
+                      starttimer = 0;
+                    });
+                  }
+                });
+                
+                
               } else {
                 Timer(const Duration(milliseconds: 1000), () {
                   widget.getScaleHeatmap(MediaQuery.of(context).size);

@@ -33,6 +33,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
   int circlebackgroundcolor = 4278190080;
   int flag = 0;
   int timeflag = 0;
+  int starttimer = 0;
   int flagMoveEnd = 0;
   double midWidth = 0.0;
   double midHeight = 0.0;
@@ -90,15 +91,12 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                setState(() {
-                  timeflag = 0;
-                });
-
-                Timer(const Duration(milliseconds: 2000), () {
+                if (starttimer == 1) {
                   setState(() {
                     timeflag = 1;
                   });
-                });
+                }
+
                 setState(() {
                   borderWidth = 8.0;
                   xPosition += tapInfo.delta.dx;
@@ -147,58 +145,64 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                if (timeflag == 1) {
-                  setState(() {
-                    borderWidth = 2.0;
-                    // print("========== quad chart position value  ============");
-                    // print(xPosition);
-                    // print(midWidth);
-                    // print(yPosition);
-                    // print(midHeight);
+                setState(() {
+                  borderWidth = 2.0;
+                  // print("========== quad chart position value  ============");
+                  // print(xPosition);
+                  // print(midWidth);
+                  // print(yPosition);
+                  // print(midHeight);
 
-                    if (xPosition < midWidth && yPosition < midHeight) {
-                      vote = "1";
-                    }
-                    if (xPosition > midWidth && yPosition < midHeight) {
-                      vote = "2";
-                    }
-                    if (xPosition < midWidth && yPosition > midHeight) {
-                      vote = "3";
-                    }
-                    if (xPosition > midWidth && yPosition > midHeight) {
-                      vote = "4";
-                    }
-                  });
+                  if (xPosition < midWidth && yPosition < midHeight) {
+                    vote = "1";
+                  }
+                  if (xPosition > midWidth && yPosition < midHeight) {
+                    vote = "2";
+                  }
+                  if (xPosition < midWidth && yPosition > midHeight) {
+                    vote = "3";
+                  }
+                  if (xPosition > midWidth && yPosition > midHeight) {
+                    vote = "4";
+                  }
+                });
 
-                  ChartCirclePosition chartPosition = ChartCirclePosition(
-                      x: xPosition,
-                      y: yPosition,
-                      uid: SessionManager.getUserId(),
-                      minOpacity: 5,
-                      subOrder: widget.subOrder.toString(),
-                      vote: vote);
-                  CirclePosition position = CirclePosition(
-                      x: xPosition,
-                      y: yPosition,
-                      uid: SessionManager.getUserId(),
-                      subOrder: widget.subOrder.toString());
-                  ViewerManager.updateQuadHeatmap(
-                      chartPosition, widget.id, widget.type, widget.subOrder);
-                  ViewerManager.updateQuadPosition(
-                      position, widget.id, widget.type, widget.subOrder);
-                  Timer(const Duration(milliseconds: 1000), () {
+                ChartCirclePosition chartPosition = ChartCirclePosition(
+                    x: xPosition,
+                    y: yPosition,
+                    uid: SessionManager.getUserId(),
+                    minOpacity: 5,
+                    subOrder: widget.subOrder.toString(),
+                    vote: vote);
+                CirclePosition position = CirclePosition(
+                    x: xPosition,
+                    y: yPosition,
+                    uid: SessionManager.getUserId(),
+                    subOrder: widget.subOrder.toString());
+
+                setState(() {
+                  starttimer = 1;
+                });
+                Timer(const Duration(milliseconds: 2000), () async{
+                  if (timeflag == 0) {
+                    await ViewerManager.updateQuadHeatmap(
+                        chartPosition, widget.id, widget.type, widget.subOrder);
+                    await ViewerManager.updateQuadPosition(
+                        position, widget.id, widget.type, widget.subOrder);
                     widget.getQuadHeatmap(MediaQuery.of(context).size);
-                  });
-                  setState(() {
-                    flag = 1;
-                    flagMoveEnd = 1;
-                  });
-                } else {
-                  setState(() {
-                    xPosition = midWidth;
-                    yPosition = midHeight;
-                  });
-                }
+                    setState(() {
+                      flag = 1;
+                      flagMoveEnd = 1;
+                      timeflag = 0;
+                      starttimer = 0;
+                    });
+                  } else {
+                    setState(() {
+                      timeflag = 0;
+                      starttimer = 0;
+                    });
+                  }
+                });
               } else {
                 Timer(const Duration(milliseconds: 1000), () {
                   widget.getQuadHeatmap(MediaQuery.of(context).size);

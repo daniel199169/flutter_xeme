@@ -90,9 +90,14 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                timeflag = 0;
+                setState(() {
+                  timeflag = 0;
+                });
+
                 Timer(const Duration(milliseconds: 2000), () {
-                  timeflag = 1;
+                  setState(() {
+                    timeflag = 1;
+                  });
                 });
                 setState(() {
                   borderWidth = 8.0;

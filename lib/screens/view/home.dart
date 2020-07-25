@@ -1243,81 +1243,81 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildRecommendedChild(BuildContext context, int index) {
-    final item = items[index];
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context,
-            FadeRoute(page: ViewerInit(id: item.id, type: "Recommended")));
-      },
-      child: Padding(
-        padding: index == 0
-            ? const EdgeInsets.only(right: 10.0, left: 30)
-            : const EdgeInsets.only(right: 10.0),
-        child: Center(
-          child: Stack(
-            //fit: StackFit.expand,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: item.image != null
-                    ? CachedNetworkImage(
-                        imageUrl: item.image,
-                        placeholder: (BuildContext context, String url) =>
-                            Image.asset(
-                              'assets/icos/loader.gif',
-                              width: 115,
-                              height: 170,
-                              fit: BoxFit.cover,
-                            ),
-                        width: 115,
-                        height: 170,
-                        fit: BoxFit.cover)
-                    : Image.asset('assets/images/pic17.jpg',
-                        height: 170, width: 115, fit: BoxFit.cover),
-              ),
-              //TemplateThumbnail(description(context), position),
-              // Center(
-              //   child: Container(
-              //     padding: EdgeInsets.only(top: item.position.y / 4),
-              //     width: 115,
-              //     child: Column(
-              //       children: <Widget>[
-              //         AutoSizeText(
-              //           item.title.title != null ? item.title.title : "...",
-              //           style: TextStyle(
-              //               fontFamily: 'Roboto Black',
-              //               fontWeight: item.title.isBold
-              //                   ? FontWeight.bold
-              //                   : FontWeight.normal,
-              //               fontSize: item.title.size / 4,
-              //               color: item.title.color),
-              //           minFontSize: 12,
-              //           maxLines: 4,
-              //           overflow: TextOverflow.ellipsis,
-              //         ),
-              //         Text(
-              //           item.subtitle.title,
-              //           style: TextStyle(
-              //               fontFamily: 'Roboto Black',
-              //               fontWeight: item.subtitle.isBold
-              //                   ? FontWeight.bold
-              //                   : FontWeight.normal,
-              //               fontSize: item.subtitle.size / 4,
-              //               color: item.subtitle.color),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildRecommendedChild(BuildContext context, int index) {
+  //   final item = items[index];
+  //   return GestureDetector(
+  //     onTap: () {
+  //       Navigator.push(context,
+  //           FadeRoute(page: ViewerInit(id: item.id, type: "Recommended")));
+  //     },
+  //     child: Padding(
+  //       padding: index == 0
+  //           ? const EdgeInsets.only(right: 10.0, left: 30)
+  //           : const EdgeInsets.only(right: 10.0),
+  //       child: Center(
+  //         child: Stack(
+  //           //fit: StackFit.expand,
+  //           children: <Widget>[
+  //             ClipRRect(
+  //               borderRadius: BorderRadius.circular(20.0),
+  //               child: item.image != null
+  //                   ? CachedNetworkImage(
+  //                       imageUrl: item.image,
+  //                       placeholder: (BuildContext context, String url) =>
+  //                           Image.asset(
+  //                             'assets/icos/loader.gif',
+  //                             width: 115,
+  //                             height: 170,
+  //                             fit: BoxFit.cover,
+  //                           ),
+  //                       width: 115,
+  //                       height: 170,
+  //                       fit: BoxFit.cover)
+  //                   : Image.asset('assets/images/pic17.jpg',
+  //                       height: 170, width: 115, fit: BoxFit.cover),
+  //             ),
+  //             //TemplateThumbnail(description(context), position),
+  //             // Center(
+  //             //   child: Container(
+  //             //     padding: EdgeInsets.only(top: item.position.y / 4),
+  //             //     width: 115,
+  //             //     child: Column(
+  //             //       children: <Widget>[
+  //             //         AutoSizeText(
+  //             //           item.title.title != null ? item.title.title : "...",
+  //             //           style: TextStyle(
+  //             //               fontFamily: 'Roboto Black',
+  //             //               fontWeight: item.title.isBold
+  //             //                   ? FontWeight.bold
+  //             //                   : FontWeight.normal,
+  //             //               fontSize: item.title.size / 4,
+  //             //               color: item.title.color),
+  //             //           minFontSize: 12,
+  //             //           maxLines: 4,
+  //             //           overflow: TextOverflow.ellipsis,
+  //             //         ),
+  //             //         Text(
+  //             //           item.subtitle.title,
+  //             //           style: TextStyle(
+  //             //               fontFamily: 'Roboto Black',
+  //             //               fontWeight: item.subtitle.isBold
+  //             //                   ? FontWeight.bold
+  //             //                   : FontWeight.normal,
+  //             //               fontSize: item.subtitle.size / 4,
+  //             //               color: item.subtitle.color),
+  //             //         ),
+  //             //       ],
+  //             //     ),
+  //             //   ),
+  //             // ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  // Widget _buildAgainChild(BuildContext context, int index) {
+  // // Widget _buildAgainChild(BuildContext context, int index) {
   //   final itemAgain = itemsAgain[index];
   //   return GestureDetector(
   //     onTap: () {

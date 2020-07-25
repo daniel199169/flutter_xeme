@@ -32,11 +32,11 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
   int circleBorderColor = 4278190080;
   int circlebackgroundcolor = 4278190080;
   int flag = 0;
-  int timeflag = 0;
-  int starttimer = 0;
+  
   int flagMoveEnd = 0;
   double midWidth = 0.0;
   double midHeight = 0.0;
+  Timer _newTimer;
   @override
   void initState() {
     super.initState();
@@ -91,11 +91,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                if (starttimer == 1) {
-                  setState(() {
-                    timeflag = 1;
-                  });
-                }
+                
 
                 setState(() {
                   borderWidth = 8.0;
@@ -180,11 +176,12 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                     uid: SessionManager.getUserId(),
                     subOrder: widget.subOrder.toString());
 
-                setState(() {
-                  starttimer = 1;
-                });
-                Timer(const Duration(milliseconds: 2000), () async{
-                  if (timeflag == 0) {
+                if(_newTimer != null){
+                  _newTimer.cancel();
+                }
+
+                _newTimer = new Timer(const Duration(milliseconds: 1000), () async{
+                 
                     await ViewerManager.updateQuadHeatmap(
                         chartPosition, widget.id, widget.type, widget.subOrder);
                     await ViewerManager.updateQuadPosition(
@@ -193,15 +190,9 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                     setState(() {
                       flag = 1;
                       flagMoveEnd = 1;
-                      timeflag = 0;
-                      starttimer = 0;
+                     
                     });
-                  } else {
-                    setState(() {
-                      timeflag = 0;
-                      starttimer = 0;
-                    });
-                  }
+                 
                 });
               } else {
                 Timer(const Duration(milliseconds: 1000), () {

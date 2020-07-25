@@ -51,6 +51,7 @@ class _CommentsState extends State<Comments> {
     getComments();
     sliderValue = 0;
     getAddMyListStatus();
+    
   }
 
   getAddMyListStatus() async {

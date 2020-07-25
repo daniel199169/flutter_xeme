@@ -98,8 +98,9 @@ class _MyActivityFeedState extends State<MyActivityFeed> {
       var messagePart = '';
       var checkFollowingUser =
           await ActivityManager.getFollowingList(_activityList[i].uid);
-
-      if (checkFollowingUser != null) {
+      
+      if (checkFollowingUser.length != 0 ||  _activityList[i].postUid == SessionManager.getUserId()){
+        //||  _activityList[i].postUid == SessionManager.getUserId()
         if (_activityList[i].uid != SessionManager.getUserId()) {
           switch (_activityList[i].type) {
             case "newPageCreat":
@@ -164,8 +165,8 @@ class _MyActivityFeedState extends State<MyActivityFeed> {
     }
     setState(() {
       activityList = tempActivityList;
-      print("--------    you   ---------");
-      print(activityList);
+      // print("--------    you   ---------");
+      // print(activityList);
     });
   }
 

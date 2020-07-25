@@ -33,12 +33,11 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
   int circleBorderColor = 4278190080;
   int circlebackgroundcolor = 4278190080;
   int flag = 0;
-  int starttimer = 0;
-  int timeflag = 0;
+
   int flagMoveEnd = 0;
   double midWidth = 0.0;
   double midHeight = 0.0;
-
+  Timer _newTimer;
 
   @override
   void initState() {
@@ -91,12 +90,6 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                if(starttimer == 1){
-                  setState(() {
-                    timeflag = 1;
-                  });
-                }
-
                 setState(() {
                   borderWidth = 8.0;
 
@@ -109,19 +102,6 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                   if (yPosition < 58 - 43) {
                     yPosition = 15;
                   }
-                  // if (yPosition >
-                  //     MediaQuery.of(context).size.height * 0.8 - 80) {
-                  //   yPosition = MediaQuery.of(context).size.height * 0.8 - 80;
-                  // }
-                  // if (yPosition < 22.566964285714334) {
-                  //   yPosition = 22.566964285714334;
-                  // }
-                  // if (xPosition < 41.647321428571473) {
-                  //   xPosition = 41.647321428571473;
-                  // }
-                  // if (xPosition > 275.63588169642867) {
-                  //   xPosition = 275.63588169642867;
-                  // }
                 });
               }
             }
@@ -172,33 +152,23 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                     y: yPosition,
                     uid: SessionManager.getUserId(),
                     subOrder: widget.subOrder);
-                  setState(() {
-                    starttimer = 1;
-                  });
-                  Timer(const Duration(milliseconds: 2000), () async{
-                    
 
-                  if (timeflag == 0) {
-                    await ViewerManager.updateScaleHeatmap(
-                        chartPosition, widget.id, widget.type, widget.subOrder);
-                    await ViewerManager.updateScalePosition(
-                        position, widget.id, widget.type, widget.subOrder);
-                    widget.getScaleHeatmap(MediaQuery.of(context).size);
-                    setState(() {
-                      flag = 1;
-                      flagMoveEnd = 1;
-                      timeflag = 0;
-                      starttimer = 0;
-                    });
-                  }else{
-                    setState(() {
-                      timeflag = 0;
-                      starttimer = 0;
-                    });
-                  }
+                if (_newTimer != null) {
+                  _newTimer.cancel();
+                }
+
+                _newTimer =
+                    new Timer(const Duration(milliseconds: 1000), () async {
+                  await ViewerManager.updateScaleHeatmap(
+                      chartPosition, widget.id, widget.type, widget.subOrder);
+                  await ViewerManager.updateScalePosition(
+                      position, widget.id, widget.type, widget.subOrder);
+                  widget.getScaleHeatmap(MediaQuery.of(context).size);
+                  setState(() {
+                    flag = 1;
+                    flagMoveEnd = 1;
+                  });
                 });
-                
-                
               } else {
                 Timer(const Duration(milliseconds: 1000), () {
                   widget.getScaleHeatmap(MediaQuery.of(context).size);

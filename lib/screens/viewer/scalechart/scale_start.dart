@@ -64,6 +64,9 @@ class _ViewScaleStartState extends State<ViewScaleStart>
   getScaleHeatmap(Size size) async {
     var _scaleHeatmapData = await ViewerManager.getScaleHeatmap(
         widget.id, widget.type, int.parse(widget.subOrder));
+        // print("---------- scaleHeatmap Data ----------");
+        // print(_scaleHeatmapData);
+        // print(_scaleHeatmapData.length);
     setState(() {
       scaleHeatmapWidgets.clear();
       scaleHeatmapData = _scaleHeatmapData;

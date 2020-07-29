@@ -72,6 +72,7 @@ class HeatmapPainter extends CustomPainter {
 //   }
 
     for (int y = 0; y < colorSize.height.floor(); y++) {
+      if(i * 4 + 3 > _colorHeatmapGrad.length) break;
       for (int x = 0; x < colorSize.width.floor(); x++) {
         double minOpacity;
         if (_colorHeatmapGrad[i * 4 + 3] > 50) {

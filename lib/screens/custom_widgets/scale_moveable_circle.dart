@@ -15,9 +15,9 @@ class ScaleMoveableCircle extends StatefulWidget {
   String type;
   String subOrder;
 
-  Function getScaleHeatmap;
+  final Function callback;
 
-  ScaleMoveableCircle(this.id, this.type, this.subOrder, this.getScaleHeatmap);
+  ScaleMoveableCircle(this.id, this.type, this.subOrder, this.callback);
 
   @override
   State<StatefulWidget> createState() {
@@ -33,11 +33,19 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
   int circleBorderColor = 4278190080;
   int circlebackgroundcolor = 4278190080;
   int flag = 0;
-
+  int diffsc = 0;
   int flagMoveEnd = 0;
+  int flagEndStart = 0;
   double midWidth = 0.0;
   double midHeight = 0.0;
-  Timer _newTimer;
+  DateTime dateTimeUpdate;
+  DateTime dateTimeEnd;
+  ChartCirclePosition chartPosition;
+  CirclePosition position;
+
+  // int panUpdateNo = 0;
+  int timerNo = 0;
+  Timer timer;
 
   @override
   void initState() {
@@ -86,23 +94,38 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
       top: yPosition,
       left: xPosition,
       child: GestureDetector(
+        onPanStart: (tapInfo) async {
+          dateTimeUpdate = DateTime.now();
+          print(dateTimeEnd);
+          if (dateTimeEnd != null) {
+            diffsc = dateTimeUpdate.difference(dateTimeEnd).inSeconds;
+            if (diffsc <= 1)
+              setState(() {
+                timerNo = 0;
+                flagEndStart = 0;
+              
+              });
+          }
+        },
         onPanUpdate: (tapInfo) {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                setState(() {
-                  borderWidth = 8.0;
+                if (diffsc <= 1) {
+                  setState(() {
+                    borderWidth = 8.0;
 
-                  yPosition += tapInfo.delta.dy;
-                  if (yPosition >
-                      MediaQuery.of(context).size.height * 0.8 - 58 - 43) {
-                    yPosition =
-                        MediaQuery.of(context).size.height * 0.8 - 58 - 43;
-                  }
-                  if (yPosition < 58 - 43) {
-                    yPosition = 15;
-                  }
-                });
+                    yPosition += tapInfo.delta.dy;
+                    if (yPosition >
+                        MediaQuery.of(context).size.height * 0.8 - 58 - 43) {
+                      yPosition =
+                          MediaQuery.of(context).size.height * 0.8 - 58 - 43;
+                    }
+                    if (yPosition < 58 - 43) {
+                      yPosition = 15;
+                    }
+                  });
+                }
               }
             }
           } else {
@@ -130,50 +153,70 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
+                dateTimeEnd = DateTime.now();
                 setState(() {
-                  borderWidth = 2.0;
-
-                  if (yPosition < midHeight) {
-                    vote = "1";
-                  } else {
-                    vote = "2";
-                  }
+                  flagEndStart = 1;
                 });
 
-                ChartCirclePosition chartPosition = ChartCirclePosition(
-                    x: xPosition,
-                    y: yPosition,
-                    uid: SessionManager.getUserId(),
-                    minOpacity: 5,
-                    subOrder: widget.subOrder,
-                    vote: vote);
-                CirclePosition position = CirclePosition(
-                    x: xPosition,
-                    y: yPosition,
-                    uid: SessionManager.getUserId(),
-                    subOrder: widget.subOrder);
+                if (diffsc <= 1) {
+                  
+                  setState(() {
+                    borderWidth = 2.0;
 
-                if (_newTimer != null) {
-                  _newTimer.cancel();
+                    if (yPosition < midHeight) {
+                      vote = "1";
+                    } else {
+                      vote = "2";
+                    }
+                  });
+
+                  chartPosition = ChartCirclePosition(
+                      x: xPosition,
+                      y: yPosition,
+                      uid: SessionManager.getUserId(),
+                      minOpacity: 5,
+                      subOrder: widget.subOrder,
+                      vote: vote);
+                  position = CirclePosition(
+                      x: xPosition,
+                      y: yPosition,
+                      uid: SessionManager.getUserId(),
+                      subOrder: widget.subOrder);
                 }
 
-                _newTimer =
-                    new Timer(const Duration(milliseconds: 1000), () async {
-                  await ViewerManager.updateScaleHeatmap(
-                      chartPosition, widget.id, widget.type, widget.subOrder);
-                  await ViewerManager.updateScalePosition(
-                      position, widget.id, widget.type, widget.subOrder);
-                  widget.getScaleHeatmap(MediaQuery.of(context).size);
-                  setState(() {
-                    flag = 1;
-                    flagMoveEnd = 1;
+                if (timer == null) {
+                  timer = Timer.periodic(const Duration(milliseconds: 100),
+                      (Timer _) async {
+                    if (flagEndStart == 1) {
+                      timerNo++;
+                      
+                      if (timerNo == 10) {
+                        await ViewerManager.updateScaleHeatmap(chartPosition,
+                            widget.id, widget.type, widget.subOrder);
+
+                        await ViewerManager.updateScalePosition(
+                            position, widget.id, widget.type, widget.subOrder);
+                        
+                        widget.callback(MediaQuery.of(context).size);
+                        
+
+                        setState(() {
+                          flag = 1;
+                          flagMoveEnd = 1;
+                          timerNo = 0;
+                        });
+                        timer.cancel();
+                      }
+                    }
+
+                    // }
                   });
-                });
-              } else {
-                Timer(const Duration(milliseconds: 1000), () {
-                  widget.getScaleHeatmap(MediaQuery.of(context).size);
-                });
+                }
               }
+            } else {
+              Timer(const Duration(milliseconds: 1000), () {
+                widget.callback(MediaQuery.of(context).size);
+              });
             }
           }
         },

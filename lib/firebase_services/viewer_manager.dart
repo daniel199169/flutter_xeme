@@ -865,33 +865,33 @@ class ViewerManager {
       var position, String id, String type, String subOrder) async {
     QuerySnapshot docSnapShot =
         await db.collection(type).where('id', isEqualTo: id).getDocuments();
-    int isPosition;
-    for (int i = 0;
-        i < docSnapShot.documents[0]['scale_circle_position'].length;
-        i++) {
-      if (docSnapShot.documents[0]['scale_circle_position'][i]['subOrder'] ==
-          subOrder.toString()) {
-        CirclePosition _scaleCirclePositionList = new CirclePosition.fromJson(
-            docSnapShot.documents[0]['scale_circle_position'][i]);
+    // int isPosition;
+    // for (int i = 0;
+    //     i < docSnapShot.documents[0]['scale_circle_position'].length;
+    //     i++) {
+    //   if (docSnapShot.documents[0]['scale_circle_position'][i]['subOrder'] ==
+    //       subOrder.toString()) {
+    //     CirclePosition _scaleCirclePositionList = new CirclePosition.fromJson(
+    //         docSnapShot.documents[0]['scale_circle_position'][i]);
 
-        if (_scaleCirclePositionList.uid == position.uid) {
-          docSnapShot.documents[0]['scale_circle_position'][i] =
-              position.toJson();
-          isPosition = 1;
-        }
-      }
-    }
-    docSnapShot.documents[0].reference.updateData({
-      'scale_circle_position': docSnapShot.documents[0]['scale_circle_position']
-    });
+    //     if (_scaleCirclePositionList.uid == position.uid) {
+    //       docSnapShot.documents[0]['scale_circle_position'][i] =
+    //           position.toJson();
+    //       isPosition = 1;
+    //     }
+    //   }
+    // }
+    // docSnapShot.documents[0].reference.updateData({
+    //   'scale_circle_position': docSnapShot.documents[0]['scale_circle_position']
+    // });
 
-    if (isPosition == null) {
+    // if (isPosition == null) {
       List _scaleCirclePosition =
           docSnapShot.documents[0]['scale_circle_position'].toList();
       _scaleCirclePosition.add(position.toJson());
       docSnapShot.documents[0].reference
           .updateData({'scale_circle_position': _scaleCirclePosition});
-    }
+    // }
   }
 
   static Future<void> updateQuadHeatmap(ChartCirclePosition position, String id,
@@ -916,7 +916,7 @@ class ViewerManager {
     List _quadCirclePosition =
         docSnapShot.documents[0]['quad_heatmap'].toList();
     _quadCirclePosition.add(position.toJson());
-    docSnapShot.documents[0].reference
+     docSnapShot.documents[0].reference
         .updateData({'quad_heatmap': _quadCirclePosition});
     // }
   }
@@ -942,10 +942,11 @@ class ViewerManager {
       }
     }
     if (isPosition == null) {
+      print("update scale heatmap   ================");
       List _scaleCirclePosition =
           docSnapShot.documents[0]['scale_heatmap'].toList();
       _scaleCirclePosition.add(position.toJson());
-      docSnapShot.documents[0].reference
+       docSnapShot.documents[0].reference
           .updateData({'scale_heatmap': _scaleCirclePosition});
     }
   }

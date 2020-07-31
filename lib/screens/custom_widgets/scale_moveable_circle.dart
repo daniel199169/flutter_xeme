@@ -213,11 +213,12 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                   });
                 }
               }
-            } else {
-              Timer(const Duration(milliseconds: 1000), () {
-                widget.callback(MediaQuery.of(context).size);
-              });
             }
+            //  else {
+            //   Timer(const Duration(milliseconds: 1000), () {
+            //     widget.callback(MediaQuery.of(context).size);
+            //   });
+            // }
           }
         },
         child: flagMoveEnd == 0

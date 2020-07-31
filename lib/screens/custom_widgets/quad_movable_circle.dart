@@ -201,6 +201,9 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                 if (timer == null) {
                   timer = Timer.periodic(const Duration(milliseconds: 100),
                       (Timer _) async {
+                    print("flagEndStart" + "$flagEndStart");
+                    print("timerNo" + "$timerNo");
+
                     if (flagEndStart == 1) {
                       timerNo++;
 
@@ -221,11 +224,12 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                   });
                 }
               }
-            } else {
-              Timer(const Duration(milliseconds: 1000), () {
-                widget.callback(MediaQuery.of(context).size);
-              });
-            }
+            } 
+            // else {
+              // Timer(const Duration(milliseconds: 1000), () {
+              //   widget.callback(MediaQuery.of(context).size);
+              // });
+            // }
           }
         },
         child: flagMoveEnd == 0

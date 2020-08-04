@@ -38,6 +38,8 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
   int flagEndStart = 0;
   double midWidth = 0.0;
   double midHeight = 0.0;
+  double dWidth = 0.0;
+  double dHeight = 0.0;
   DateTime dateTimeUpdate;
   DateTime dateTimeEnd;
   ChartCirclePosition chartPosition;
@@ -57,10 +59,12 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
     borderWidth = 2.0;
 
     getCircleColor();
-    xPosition = SessionManager.getMediaWidth() * 0.36;
-    yPosition = SessionManager.getMediaHeight() * 0.335;
-    midWidth = xPosition;
-    midHeight = yPosition;
+    midWidth = (SessionManager.getMediaWidth() - 20) * 0.5 - 50;
+    midHeight = (SessionManager.getMediaHeight() - 20) * 0.4 - 40;
+    dWidth = SessionManager.getMediaWidth() - 20;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
+    xPosition = midWidth;
+    yPosition = midHeight;
   }
 
   getPositionList() async {
@@ -71,7 +75,7 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
         flag = 0;
       } else {
         flag = 1;
-        yPosition = _position.y;
+        yPosition = num.parse(((_position.y / 100) * dHeight) .toStringAsFixed(3));
       }
     });
   }
@@ -103,7 +107,6 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
               setState(() {
                 timerNo = 0;
                 flagEndStart = 0;
-              
               });
           }
         },
@@ -159,7 +162,6 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                 });
 
                 if (diffsc <= 1) {
-                  
                   setState(() {
                     borderWidth = 2.0;
 
@@ -170,16 +172,21 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                     }
                   });
 
+                  double xxPosition = (xPosition / dWidth) * 100;
+                  xxPosition = double.parse(xxPosition.toStringAsFixed(3));
+                  double yyPosition = (yPosition / dHeight) * 100;
+                  yyPosition = double.parse(yyPosition.toStringAsFixed(3));
+
                   chartPosition = ChartCirclePosition(
-                      x: xPosition,
-                      y: yPosition,
+                      x: xxPosition,
+                      y: yyPosition,
                       uid: SessionManager.getUserId(),
                       minOpacity: 5,
                       subOrder: widget.subOrder,
                       vote: vote);
                   position = CirclePosition(
-                      x: xPosition,
-                      y: yPosition,
+                      x: xxPosition,
+                      y: yyPosition,
                       uid: SessionManager.getUserId(),
                       subOrder: widget.subOrder);
                 }
@@ -189,16 +196,15 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                       (Timer _) async {
                     if (flagEndStart == 1) {
                       timerNo++;
-                      
+
                       if (timerNo == 10) {
                         await ViewerManager.updateScaleHeatmap(chartPosition,
                             widget.id, widget.type, widget.subOrder);
 
                         await ViewerManager.updateScalePosition(
                             position, widget.id, widget.type, widget.subOrder);
-                        
+
                         widget.callback(MediaQuery.of(context).size);
-                        
 
                         setState(() {
                           flag = 1;

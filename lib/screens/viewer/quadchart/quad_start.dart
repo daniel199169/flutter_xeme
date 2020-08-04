@@ -30,6 +30,8 @@ class _QuadStartState extends State<ViewQuadStart>
   final quadHeatmapWidgets = List<Widget>();
   var quadHeatmapData = [];
   bool isSwitched = true;
+  double dWidth = 0.0;
+  double dHeight = 0.0;
 
   int border = 5;
   var lastComment = [];
@@ -100,9 +102,9 @@ class _QuadStartState extends State<ViewQuadStart>
     // Get Black heatmap data
     final blackHeatmapRecorder = ui.PictureRecorder();
     final blackHeatmapCanvas = Canvas(
-        blackHeatmapRecorder,
-        Rect.fromPoints(
-            Offset(0.0, 0.0), Offset(size.width, size.height * 0.8)),);
+      blackHeatmapRecorder,
+      Rect.fromPoints(Offset(0.0, 0.0), Offset(size.width, size.height * 0.8)),
+    );
 
     for (int i = 0; i < quadHeatmapData.length; i++) {
       double minOpacity;
@@ -112,8 +114,13 @@ class _QuadStartState extends State<ViewQuadStart>
         minOpacity = quadHeatmapData[i].minOpacity / 50;
       }
       double radius = 60.0;
-      Offset center =
-          Offset(quadHeatmapData[i].x + 43, quadHeatmapData[i].y + 43);
+      Offset center = Offset(
+          num.parse(
+                  ((quadHeatmapData[i].x / 100) * dWidth).toStringAsFixed(3)) +
+              50,
+          num.parse(((quadHeatmapData[i].y / 100) * dHeight)
+                  .toStringAsFixed(3)) +
+              50);
       // draw shadow first
       Path oval = Path()
         ..addOval(Rect.fromCircle(center: center, radius: radius + 8));
@@ -167,6 +174,13 @@ class _QuadStartState extends State<ViewQuadStart>
         tag: "",
         reference: "");
 
+    dWidth = SessionManager.getMediaWidth() - 20 ;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
+    
+    print(" ******  ///// quad start /////  ****** ");
+    print(dWidth);
+    print(dHeight);
+
     getLastComment();
 
     this.getQuadTitle();
@@ -178,9 +192,9 @@ class _QuadStartState extends State<ViewQuadStart>
       CirclePosition _position = await ViewerManager.getQuadPosition(
           widget.id, widget.type, int.parse(widget.subOrder));
       if (_position == null) {
-      var tapCircle = new QuadMoveableCircle(
-          widget.id, widget.type, widget.subOrder, this.getQuadHeatmap);
-      commentWidgets.add(tapCircle);
+        var tapCircle = new QuadMoveableCircle(
+            widget.id, widget.type, widget.subOrder, this.getQuadHeatmap);
+        commentWidgets.add(tapCircle);
       } else {
         var tapCircle = new QuadCircleRemember(
             widget.id, widget.type, widget.subOrder, this.getQuadHeatmap);
@@ -242,7 +256,7 @@ class _QuadStartState extends State<ViewQuadStart>
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.only(
-                      top: 22.0, left: 10, bottom: 0.0, right: 10),
+                      top: 20.0, left: 10, bottom: 0.0, right: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -379,7 +393,6 @@ class _QuadStartState extends State<ViewQuadStart>
                                     id: widget.id,
                                     type: widget.type,
                                     commentId: commentId,
-                                   
                                     callback: () {
                                       getLastComment();
                                       showHeatmap();
@@ -462,6 +475,10 @@ class _QuadStartState extends State<ViewQuadStart>
 class PathPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
+    print("--------- canvas --------");
+    print(size.width);
+    print(size.height);
+
     Paint paint = Paint()
       ..color = Color(0xFF272D3A)
       ..style = PaintingStyle.stroke

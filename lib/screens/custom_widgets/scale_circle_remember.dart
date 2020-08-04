@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xenome/firebase_services/viewer_manager.dart';
 import 'package:xenome/models/circleposition.dart';
+import 'package:xenome/utils/session_manager.dart';
 import 'dart:async';
 
 class ScaleCircleRemember extends StatefulWidget {
@@ -23,20 +24,25 @@ class _ScaleCircleRememberState extends State<ScaleCircleRemember> {
   double xPosition;
   double yPosition;
   double borderWidth;
+  double dWidth = 0.0;
+  double dHeight = 0.0;
 
   @override
   void initState() {
     super.initState();
+
+    dWidth = SessionManager.getMediaWidth() - 20;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
+
     getPositionList();
 
     borderWidth = 2.0;
 
     heatmap();
-    
   }
-  
-  heatmap() async{
-   Timer(const Duration(milliseconds: 1000), () {
+
+  heatmap() async {
+    Timer(const Duration(milliseconds: 1000), () {
       widget.getScaleHeatmap(MediaQuery.of(context).size);
     });
   }
@@ -45,8 +51,9 @@ class _ScaleCircleRememberState extends State<ScaleCircleRemember> {
     CirclePosition _position = await ViewerManager.getScalePosition(
         widget.id, widget.type, int.parse(widget.subOrder));
     setState(() {
-      xPosition = _position.x;
-      yPosition = _position.y;
+      xPosition = num.parse(((_position.x / 100) * dWidth).toStringAsFixed(3)) + 10;
+      yPosition =
+          num.parse(((_position.y / 100) * dHeight).toStringAsFixed(3)) + 10;
     });
   }
 

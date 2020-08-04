@@ -87,9 +87,14 @@ class _HomeState extends State<Home> {
       topXmapID = _topXmapInfo[1];
     });
     getAddMyListStatus();
+    var pixRatio = MediaQuery.of(context).devicePixelRatio;
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    print("======   ------   ======");
+    print(screenHeight);
+    print(screenWidth);
 
     SessionManager.setMediaWidth(screenWidth);
     SessionManager.setMediaHeight(screenHeight);
@@ -378,7 +383,10 @@ class _HomeState extends State<Home> {
             Brightness.dark // Dark == white status bar -- for IOS.
         ));
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-
+    print("----- body -----");
+    print("Size W is ${MediaQuery.of(context).size.width}");
+    print("Size H is ${MediaQuery.of(context).size.height}");
+    
     return new Scaffold(
       // extendBodyBehindAppBar: true,
 
@@ -906,8 +914,10 @@ class _HomeState extends State<Home> {
                     decoration: updateStatus.length > 0
                         ? updateStatus[index - 1] == "updated"
                             ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [Color(0xffC26FED), Color(0xff5086DE)]),
+                                gradient: LinearGradient(colors: [
+                                  Color(0xffC26FED),
+                                  Color(0xff5086DE)
+                                ]),
                                 borderRadius: BorderRadius.circular(34))
                             : BoxDecoration()
                         : BoxDecoration(),
@@ -1391,6 +1401,5 @@ class _HomeState extends State<Home> {
   //     ),
   //   );
   // }
-
 
 }

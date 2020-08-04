@@ -33,6 +33,8 @@ class _ViewScaleStartState extends State<ViewScaleStart>
   ScaleTitleModel scaleTitle;
   var lastComment = [];
   String commentId = '';
+  double dWidth = 0.0;
+  double dHeight = 0.0;
 
   //heatmap variables
   final scaleHeatmapWidgets = List<Widget>();
@@ -64,9 +66,9 @@ class _ViewScaleStartState extends State<ViewScaleStart>
   getScaleHeatmap(Size size) async {
     var _scaleHeatmapData = await ViewerManager.getScaleHeatmap(
         widget.id, widget.type, int.parse(widget.subOrder));
-        // print("---------- scaleHeatmap Data ----------");
-        // print(_scaleHeatmapData);
-        // print(_scaleHeatmapData.length);
+    // print("---------- scaleHeatmap Data ----------");
+    // print(_scaleHeatmapData);
+    // print(_scaleHeatmapData.length);
     setState(() {
       scaleHeatmapWidgets.clear();
       scaleHeatmapData = _scaleHeatmapData;
@@ -104,6 +106,10 @@ class _ViewScaleStartState extends State<ViewScaleStart>
     _grad = Uint8List.view(pngBytes.buffer);
 
     // Get Black heatmap data
+    print("999980979879   88888888888888888888 =====");
+    print(size.width);
+    print(size.height);
+
     final blackHeatmapRecorder = ui.PictureRecorder();
     final blackHeatmapCanvas = Canvas(
         blackHeatmapRecorder,
@@ -118,8 +124,13 @@ class _ViewScaleStartState extends State<ViewScaleStart>
         minOpacity = scaleHeatmapData[i].minOpacity / 50;
       }
       double radius = 60.0;
-      Offset center =
-          Offset(scaleHeatmapData[i].x + 43, scaleHeatmapData[i].y + 43);
+      Offset center = Offset(
+          num.parse(((scaleHeatmapData[i].x / 100) * dWidth)
+                  .toStringAsFixed(3)) +
+              50,
+          num.parse(((scaleHeatmapData[i].y / 100) * dHeight)
+                  .toStringAsFixed(3)) +
+              50);
       // draw shadow first
       Path oval = Path()
         ..addOval(Rect.fromCircle(center: center, radius: radius + 8));
@@ -171,6 +182,14 @@ class _ViewScaleStartState extends State<ViewScaleStart>
         description: "",
         tag: "",
         reference: "");
+
+    dWidth = SessionManager.getMediaWidth() - 20;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
+    print(" ******  ///// scale start /////  ****** ");
+    print(SessionManager.getMediaWidth());
+    print(SessionManager.getMediaHeight());
+    print(dWidth);
+    print(dHeight);
 
     getLastComment();
     getScaleTitle();
@@ -345,7 +364,6 @@ class _ViewScaleStartState extends State<ViewScaleStart>
                                         id: widget.id,
                                         type: widget.type,
                                         commentId: commentId,
-                                        
                                         callback: () {
                                           getLastComment();
                                           showHeatmap();

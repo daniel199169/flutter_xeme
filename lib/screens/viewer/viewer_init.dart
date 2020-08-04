@@ -147,7 +147,7 @@ class _ViewerInitState extends State<ViewerInit> {
       if (pageList[i]['page_name'] == "Cover image") {
         sectionWidgets.add(Container(
           width: MediaQuery.of(context).size.width - 10,
-          margin: const EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(9.0),
           child: ViewerCoverImage(
               id: widget.id,
               type: widget.type,
@@ -158,7 +158,7 @@ class _ViewerInitState extends State<ViewerInit> {
       if (pageList[i]['page_name'] == "Image") {
         sectionWidgets.add(Container(
           width: MediaQuery.of(context).size.width - 10,
-          margin: const EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(9.0),
           child: ViewerImage(
               id: widget.id,
               type: widget.type,
@@ -170,7 +170,7 @@ class _ViewerInitState extends State<ViewerInit> {
       if (pageList[i]['page_name'] == "Text") {
         sectionWidgets.add(Container(
           width: MediaQuery.of(context).size.width - 10,
-          margin: const EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(9.0),
           child: TextPart(
               id: widget.id,
               type: widget.type,
@@ -182,7 +182,7 @@ class _ViewerInitState extends State<ViewerInit> {
       if (pageList[i]['page_name'] == "YouTube") {
         sectionWidgets.add(Container(
             width: MediaQuery.of(context).size.width - 10,
-            margin: const EdgeInsets.all(10.0),
+            margin: const EdgeInsets.all(9.0),
             child: YouTube(
                 id: widget.id,
                 type: widget.type,
@@ -194,7 +194,7 @@ class _ViewerInitState extends State<ViewerInit> {
       if (pageList[i]['page_name'] == "Vimeo") {
         sectionWidgets.add(Container(
           width: MediaQuery.of(context).size.width - 10,
-          margin: const EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(9.0),
           child: Vimeo(
               id: widget.id,
               type: widget.type,
@@ -207,7 +207,7 @@ class _ViewerInitState extends State<ViewerInit> {
       if (pageList[i]['page_name'] == "Instagram") {
         sectionWidgets.add(Container(
           width: MediaQuery.of(context).size.width - 10,
-          margin: const EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(9.0),
           child: Instagram(
               id: widget.id,
               type: widget.type,
@@ -219,7 +219,7 @@ class _ViewerInitState extends State<ViewerInit> {
       if (pageList[i]['page_name'] == "Quad chart") {
         sectionWidgets.add(Container(
           width: MediaQuery.of(context).size.width - 10,
-          margin: const EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(9.0),
           child: ViewQuadStart(
               id: widget.id,
               type: widget.type,
@@ -230,7 +230,7 @@ class _ViewerInitState extends State<ViewerInit> {
       if (pageList[i]['page_name'] == "Scale chart") {
         sectionWidgets.add(Container(
           width: MediaQuery.of(context).size.width - 10,
-          margin: const EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(9.0),
           child: ViewScaleStart(
               id: widget.id,
               type: widget.type,

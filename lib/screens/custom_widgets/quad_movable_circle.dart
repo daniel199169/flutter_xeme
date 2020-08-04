@@ -37,6 +37,8 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
   int flagMoveEnd = 0;
   double midWidth = 0.0;
   double midHeight = 0.0;
+  double dWidth = 0.0;
+  double dHeight = 0.0;
   DateTime dateTimeUpdate;
   DateTime dateTimeEnd;
   ChartCirclePosition chartPosition;
@@ -56,11 +58,13 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
     borderWidth = 2.0;
     getCircleColor();
 
-    xPosition = SessionManager.getMediaWidth() * 0.36;
-    yPosition = SessionManager.getMediaHeight() * 0.335;
+    midWidth = (SessionManager.getMediaWidth() - 20) * 0.5 - 50;
+    midHeight = (SessionManager.getMediaHeight() - 20) * 0.4 - 40;
+    dWidth = SessionManager.getMediaWidth() - 20;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
 
-    midWidth = xPosition;
-    midHeight = yPosition;
+    xPosition = midWidth;
+    yPosition = midHeight;
   }
 
   getCircleColor() async {
@@ -83,14 +87,20 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
         flag = 0;
       } else {
         flag = 1;
-        xPosition = _position.x;
-        yPosition = _position.y;
+        xPosition =
+            num.parse(((_position.x / 100) * dWidth).toStringAsFixed(3));
+        yPosition =
+            num.parse(((_position.y / 100) * dHeight).toStringAsFixed(3));
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print(" ------- movable quad chart -------- ");
+    print("Size W is ${MediaQuery.of(context).size.width}");
+    print("Size H is ${MediaQuery.of(context).size.height}");
+
     return Positioned(
       top: yPosition,
       left: xPosition,
@@ -114,6 +124,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                 if (diffsc <= 1) {
                   setState(() {
                     borderWidth = 8.0;
+
                     xPosition += tapInfo.delta.dx;
                     yPosition += tapInfo.delta.dy;
 
@@ -133,6 +144,9 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                     if (yPosition < 58 - 43) {
                       yPosition = 15;
                     }
+                    print("**********  move updating  *********");
+                    print(xPosition);
+                    print(yPosition);
                   });
                 }
               }
@@ -184,17 +198,21 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                       vote = "4";
                     }
                   });
+                  double xxPosition = (xPosition / dWidth) * 100;
+                  xxPosition = double.parse(xxPosition.toStringAsFixed(3));
+                  double yyPosition = (yPosition / dHeight) * 100;
+                  yyPosition = double.parse(yyPosition.toStringAsFixed(3));
 
                   chartPosition = ChartCirclePosition(
-                      x: xPosition,
-                      y: yPosition,
+                      x: xxPosition,
+                      y: yyPosition,
                       uid: SessionManager.getUserId(),
                       minOpacity: 5,
                       subOrder: widget.subOrder.toString(),
                       vote: vote);
                   position = CirclePosition(
-                      x: xPosition,
-                      y: yPosition,
+                      x: xxPosition,
+                      y: yyPosition,
                       uid: SessionManager.getUserId(),
                       subOrder: widget.subOrder.toString());
                 }
@@ -224,11 +242,11 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                   });
                 }
               }
-            } 
+            }
             // else {
-              // Timer(const Duration(milliseconds: 1000), () {
-              //   widget.callback(MediaQuery.of(context).size);
-              // });
+            // Timer(const Duration(milliseconds: 1000), () {
+            //   widget.callback(MediaQuery.of(context).size);
+            // });
             // }
           }
         },

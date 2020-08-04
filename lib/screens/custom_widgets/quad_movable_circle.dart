@@ -127,22 +127,23 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
 
                     xPosition += tapInfo.delta.dx;
                     yPosition += tapInfo.delta.dy;
-
+                     print("**********  dHeight  *********");
+                    print(dHeight);
                     if (yPosition >
-                        MediaQuery.of(context).size.height * 0.8 - 58 - 43) {
+                        dHeight - 110) {
                       yPosition =
-                          MediaQuery.of(context).size.height * 0.8 - 58 - 43;
+                          dHeight - 110;
                     }
-                    if (xPosition < 58 - 43) {
-                      xPosition = 15;
+                    if (xPosition < 20) {
+                      xPosition = 20;
                     }
                     if (xPosition >
-                        MediaQuery.of(context).size.width - 58 - 58) {
-                      xPosition = MediaQuery.of(context).size.width - 58 - 58;
+                        MediaQuery.of(context).size.width - 130) {
+                      xPosition = MediaQuery.of(context).size.width - 130;
                     }
 
-                    if (yPosition < 58 - 43) {
-                      yPosition = 15;
+                    if (yPosition < 20) {
+                      yPosition = 20;
                     }
                     print("**********  move updating  *********");
                     print(xPosition);
@@ -250,6 +251,9 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
             // }
           }
         },
+      
+        
+        
         child: flagMoveEnd == 0
             ? Container(
                 child: new CircleAvatar(

@@ -1808,12 +1808,12 @@ class _BuilderStarterState extends State<BuilderStarter> {
                           value: 'AddInstagram',
                           height: 40,
                         ),
-                        new PopupMenuItem<String>(
-                          child: Text('Add HTML',
-                              style: TextStyle(color: Color(0xFF868E9C))),
-                          value: 'AddHTML',
-                          height: 40,
-                        ),
+                        // new PopupMenuItem<String>(
+                        //   child: Text('Add HTML',
+                        //       style: TextStyle(color: Color(0xFF868E9C))),
+                        //   value: 'AddHTML',
+                        //   height: 40,
+                        // ),
                       ],
                       icon: Icon(Icons.more_horiz,
                           size: 25, color: Color(0xFF868E9C)),

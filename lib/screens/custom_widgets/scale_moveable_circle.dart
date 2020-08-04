@@ -227,6 +227,7 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
             // }
           }
         },
+        
         child: flagMoveEnd == 0
             ? Container(
                 child: new CircleAvatar(

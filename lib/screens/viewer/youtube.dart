@@ -34,6 +34,8 @@ class _YouTubeState extends State<YouTube> {
   List collections;
   bool visible;
   String commentId = '';
+  double dWidth = 0.0;
+  double dHeight = 0.0;
 
   VideoPlayerController _videoPlayerController;
   final collectionTitleController = TextEditingController();
@@ -47,7 +49,8 @@ class _YouTubeState extends State<YouTube> {
         description: '',
         tag: '',
         reference: '');
-
+    dWidth = SessionManager.getMediaWidth() - 20;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
     getLastComment();
     getCollections();
 
@@ -714,7 +717,7 @@ class _YouTubeState extends State<YouTube> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 35.0),
+                  padding: EdgeInsets.only(bottom: dHeight / 0.8 * 0.044),
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(

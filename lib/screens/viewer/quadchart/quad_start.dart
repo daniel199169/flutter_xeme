@@ -118,8 +118,8 @@ class _QuadStartState extends State<ViewQuadStart>
           num.parse(
                   ((quadHeatmapData[i].x / 100) * dWidth).toStringAsFixed(3)) +
               50,
-          num.parse(((quadHeatmapData[i].y / 100) * dHeight)
-                  .toStringAsFixed(3)) +
+          num.parse(
+                  ((quadHeatmapData[i].y / 100) * dHeight).toStringAsFixed(3)) +
               50);
       // draw shadow first
       Path oval = Path()
@@ -174,12 +174,8 @@ class _QuadStartState extends State<ViewQuadStart>
         tag: "",
         reference: "");
 
-    dWidth = SessionManager.getMediaWidth() - 20 ;
+    dWidth = SessionManager.getMediaWidth() - 20;
     dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
-    
-    print(" ******  ///// quad start /////  ****** ");
-    print(dWidth);
-    print(dHeight);
 
     getLastComment();
 
@@ -241,8 +237,8 @@ class _QuadStartState extends State<ViewQuadStart>
                     padding: EdgeInsets.only(top: 0, left: 0, right: 0),
                     child: Container(
                       color: Colors.transparent,
-                      height: MediaQuery.of(context).size.height * 0.8,
-                      width: MediaQuery.of(context).size.width,
+                      height: dHeight + 18,
+                      width: dWidth,
                       child: CustomPaint(
                         painter: PathPainter(),
                       ),
@@ -307,7 +303,7 @@ class _QuadStartState extends State<ViewQuadStart>
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 10, bottom: 100.0, right: 10),
+                  padding: EdgeInsets.only(left: 10, bottom: dHeight / 0.8 * 0.1, right: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -373,7 +369,7 @@ class _QuadStartState extends State<ViewQuadStart>
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 35.0),
+              padding: EdgeInsets.only(bottom: dHeight / 0.8 * 0.044),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: GestureDetector(
@@ -486,19 +482,19 @@ class PathPainter extends CustomPainter {
 
     Path path = Path();
     // TODO: do operations here
-    path.moveTo(0, size.height * 0.8 / 2 + 72);
-    path.lineTo(size.width, size.height * 0.8 / 2 + 72);
+    path.moveTo(0, size.height * 0.5);
+    path.lineTo(size.width, size.height * 0.5);
     // path.close();
     path.moveTo(size.width / 2, 0);
-    path.lineTo(size.width / 2, size.height * 0.8 + 130);
+    path.lineTo(size.width / 2, size.height);
 
     //path.moveTo(0, 0);
     path.addOval(
-        Rect.fromLTWH(10, 50, size.width - 20, size.height * 0.8 + 40));
+        Rect.fromLTWH(10, 60, size.width - 20, size.height - 120));
     path.addOval(
-        Rect.fromLTWH(50, 110, size.width - 100, size.height * 0.8 - 80));
+        Rect.fromLTWH(60, 110, size.width - 120, size.height  - 220));
     path.addOval(
-        Rect.fromLTWH(100, 170, size.width - 200, size.height * 0.8 - 200));
+        Rect.fromLTWH(110, 160, size.width - 220, size.height - 320));
 
     canvas.drawPath(path, paint);
   }

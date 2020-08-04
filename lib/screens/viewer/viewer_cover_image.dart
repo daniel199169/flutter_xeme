@@ -27,7 +27,8 @@ class _ViewerCoverImageState extends State<ViewerCoverImage> {
   var lastComment = [];
   String lComment = '';
   String commentId = '';
-
+  double dWidth = 0.0;
+  double dHeight = 0.0;
   String collectionTitle;
   List collections;
   SetupInfo xmapTitle;
@@ -37,7 +38,8 @@ class _ViewerCoverImageState extends State<ViewerCoverImage> {
   void initState() {
     super.initState();
     xmapTitle = new SetupInfo(title: '', description: '');
-
+     dWidth = SessionManager.getMediaWidth() - 20;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
     getXmapTitle();
     getCollections();
     getLastComment();
@@ -655,7 +657,7 @@ class _ViewerCoverImageState extends State<ViewerCoverImage> {
               // ),
 
               Padding(
-                padding: EdgeInsets.only(bottom: 35.0),
+                padding: EdgeInsets.only(bottom: dHeight / 0.8 * 0.044),
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: GestureDetector(

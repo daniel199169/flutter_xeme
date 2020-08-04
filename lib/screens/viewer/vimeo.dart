@@ -33,7 +33,8 @@ class _VimeoState extends State<Vimeo> {
   List collections;
   bool visible;
   String commentId = '';
-
+  double dWidth = 0.0;
+  double dHeight = 0.0;
   VideoPlayerController _videoPlayerController;
   final collectionTitleController = TextEditingController();
 
@@ -48,8 +49,8 @@ class _VimeoState extends State<Vimeo> {
         tag: '',
         reference: '');
 
-    print("----- ++++++ =======");
-    print(widget.data);
+    dWidth = SessionManager.getMediaWidth() - 20;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
     getVimeo();
 
     getLastComment();
@@ -714,7 +715,7 @@ class _VimeoState extends State<Vimeo> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 35.0),
+                    padding: EdgeInsets.only(bottom: dHeight / 0.8 * 0.044),
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: GestureDetector(

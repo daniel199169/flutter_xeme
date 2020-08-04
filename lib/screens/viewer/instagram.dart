@@ -30,7 +30,8 @@ class _InstagramState extends State<Instagram> {
   InstagramModel instagram;
   bool visible;
   var lastComment = [];
-
+  double dWidth = 0.0;
+  double dHeight = 0.0;
   String collectionTitle;
   String commentId = '';
   List collections;
@@ -42,6 +43,9 @@ class _InstagramState extends State<Instagram> {
     visible = true;
     instagram = new InstagramModel(
         title: "", instagramURL: "", description: '', tag: '', reference: '');
+
+    dWidth = SessionManager.getMediaWidth() - 20;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
 
     getLastComment();
     getCollections();
@@ -649,7 +653,7 @@ class _InstagramState extends State<Instagram> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 35.0),
+                    padding: EdgeInsets.only(bottom: dHeight / 0.8 * 0.044),
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: GestureDetector(

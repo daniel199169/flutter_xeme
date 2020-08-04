@@ -185,11 +185,7 @@ class _ViewScaleStartState extends State<ViewScaleStart>
 
     dWidth = SessionManager.getMediaWidth() - 20;
     dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
-    print(" ******  ///// scale start /////  ****** ");
-    print(SessionManager.getMediaWidth());
-    print(SessionManager.getMediaHeight());
-    print(dWidth);
-    print(dHeight);
+   
 
     getLastComment();
     getScaleTitle();
@@ -234,7 +230,7 @@ class _ViewScaleStartState extends State<ViewScaleStart>
                 GestureDetector(
                   child: Container(
                     padding:
-                        EdgeInsets.only(top: 0, left: 5, bottom: 58, right: 0),
+                        EdgeInsets.only(top: 0, left: 0, bottom: 0, right: 0),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
@@ -250,8 +246,8 @@ class _ViewScaleStartState extends State<ViewScaleStart>
                         padding: EdgeInsets.only(top: 0, left: 0, right: 0),
                         child: Container(
                           color: Colors.transparent,
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          width: MediaQuery.of(context).size.width,
+                          height: dHeight + 18,
+                          width: dWidth,
                           child: CustomPaint(
                             painter: PathPainter(),
                           ),
@@ -290,7 +286,7 @@ class _ViewScaleStartState extends State<ViewScaleStart>
                     Container(
                       width: MediaQuery.of(context).size.width,
                       padding:
-                          EdgeInsets.only(left: 30, bottom: 108.0, right: 30),
+                          EdgeInsets.only(left: 30, bottom: dHeight / 0.8 * 0.125, right: 30),
                       alignment: AlignmentDirectional(0, 400.0),
                       child: Center(
                         child: Text(
@@ -344,7 +340,7 @@ class _ViewScaleStartState extends State<ViewScaleStart>
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 35.0),
+                  padding: EdgeInsets.only(bottom: dHeight / 0.8 * 0.044 ),
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
@@ -459,26 +455,26 @@ class PathPainter extends CustomPainter {
     Path path = Path();
     // TODO: do operations here
 
-    path.moveTo(0, size.height * 0.8 / 12 + 68);
-    path.lineTo(size.width, size.height * 0.8 / 12 + 68);
+    path.moveTo(0, size.height * 0.5);
+    path.lineTo(size.width, size.height * 0.5);
 
-    path.moveTo(0, size.height * 0.8 / 4.5 + 68);
-    path.lineTo(size.width, size.height * 0.8 / 4.5 + 68);
+    path.moveTo(0, size.height * 0.5 * 0.3);
+    path.lineTo(size.width, size.height * 0.5 * 0.3);
 
-    path.moveTo(0, size.height * 0.8 / 3 + 68);
-    path.lineTo(size.width, size.height * 0.8 / 3 + 68);
+    path.moveTo(0, size.height * 0.5 * 0.5);
+    path.lineTo(size.width, size.height * 0.5 * 0.5);
 
-    path.moveTo(0, size.height * 0.8 / 2 + 72);
-    path.lineTo(size.width, size.height * 0.8 / 2 + 72);
+    path.moveTo(0, size.height * 0.5 * 0.7);
+    path.lineTo(size.width, size.height * 0.5 * 0.7);
 
-    path.moveTo(0, size.height * 0.8 / 1.5 + 76);
-    path.lineTo(size.width, size.height * 0.8 / 1.5 + 76);
+    path.moveTo(0, size.height * 13 / 20 );
+    path.lineTo(size.width, size.height * 13 / 20);
 
-    path.moveTo(0, size.height * 0.8 / 1.3 + 84);
-    path.lineTo(size.width, size.height * 0.8 / 1.3 + 84);
+    path.moveTo(0, size.height *  15 / 20);
+    path.lineTo(size.width, size.height * 15 / 20);
 
-    path.moveTo(0, size.height * 0.8 / 1.08 + 72);
-    path.lineTo(size.width, size.height * 0.8 / 1.08 + 72);
+    path.moveTo(0, size.height * 17 / 20);
+    path.lineTo(size.width, size.height * 17 / 20);
 
     canvas.drawPath(path, paint);
   }

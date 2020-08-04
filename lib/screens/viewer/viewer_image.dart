@@ -28,6 +28,9 @@ class _ViewerImageState extends State<ViewerImage>
   var lastComment = [];
   String lComment = '';
   String commentId = '';
+  double dWidth = 0.0;
+  double dHeight = 0.0;
+
   ImageModel imageURL;
   String collectionTitle;
   List collections;
@@ -40,6 +43,9 @@ class _ViewerImageState extends State<ViewerImage>
     super.initState();
     imageURL = new ImageModel(
         imageURL: '', link: '', description: '', tag: '', reference: '');
+
+    dWidth = SessionManager.getMediaWidth() - 20;
+    dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
 
     getCollections();
     getLastComment();
@@ -651,7 +657,7 @@ class _ViewerImageState extends State<ViewerImage>
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: 35.0),
+                padding: EdgeInsets.only(bottom: dHeight / 0.8 * 0.044),
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: GestureDetector(

@@ -6,7 +6,7 @@ import 'package:xenome/firebase_services/buildder_manager.dart';
 import 'package:xenome/models/quadTitle.dart';
 import 'package:xenome/models/circleposition.dart';
 import 'package:xenome/screens/custom_widgets/quad_heatmap.dart';
-import 'package:xenome/screens/custom_widgets/quad_movable_circle.dart';
+import 'package:xenome/screens/custom_widgets/quad_movable_circle_info.dart';
 import 'package:xenome/screens/custom_widgets/quad_circle_remember.dart';
 import 'package:xenome/screens/viewer/comments.dart';
 import 'package:xenome/screens/custom_widgets/bottom_sheet.dart';

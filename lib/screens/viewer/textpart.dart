@@ -23,13 +23,13 @@ class _TextPartState extends State<TextPart> {
   String commentId = '';
   double dWidth = 0.0;
   double dHeight = 0.0;
-  
+
   @override
   void initState() {
     textPart = new TextPartModel(
         title: "", text: "", description: "", tag: "", reference: "");
-    
-     dWidth = SessionManager.getMediaWidth() - 20;
+
+    dWidth = SessionManager.getMediaWidth() - 20;
     dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
 
     getLastComment();
@@ -113,7 +113,6 @@ class _TextPartState extends State<TextPart> {
                                   id: widget.id,
                                   type: widget.type,
                                   commentId: commentId,
-                                 
                                   callback: getLastComment,
                                 ),
                                 decoration: BoxDecoration(

@@ -42,7 +42,8 @@ class _ViewerInitState extends State<ViewerInit> {
 
   CoverImageModel sendCoverImage;
   int _currentIndex;
-
+  int kk = 0;
+  int isDraging = 0;
   var pageList = [];
   int sectionNumber = 2;
   var duplicateItems = [];
@@ -57,7 +58,6 @@ class _ViewerInitState extends State<ViewerInit> {
   double _progress = 0;
   int _total = 0, _received = 0;
 
-
   @override
   void initState() {
     super.initState();
@@ -67,10 +67,8 @@ class _ViewerInitState extends State<ViewerInit> {
     _pageController = new PageController(initialPage: _currentIndex);
     startTimer();
     getXmapAllData();
-    
   }
-  
-  
+
   void startTimer() {
     new Timer.periodic(
       Duration(seconds: 1),
@@ -137,13 +135,13 @@ class _ViewerInitState extends State<ViewerInit> {
           }
         }
       }
-      // if (pageList[i]['page_name'] == "FilterPage") {
-      //   sectionWidgets.add(Container(
-      //     width: MediaQuery.of(context).size.width - 70,
-      //     margin: const EdgeInsets.all(10.0),
-      //     child: FilterPage(id: widget.id, type: widget.type),
-      //   ));
-      // }
+      if (pageList[i]['page_name'] == "FilterPage") {
+        sectionWidgets.add(Container(
+          width: MediaQuery.of(context).size.width - 70,
+          margin: const EdgeInsets.all(10.0),
+          child: FilterPage(id: widget.id, type: widget.type),
+        ));
+      }
       if (pageList[i]['page_name'] == "Cover image") {
         sectionWidgets.add(Container(
           width: MediaQuery.of(context).size.width - 10,
@@ -224,7 +222,9 @@ class _ViewerInitState extends State<ViewerInit> {
               id: widget.id,
               type: widget.type,
               subOrder: pageList[i]['sub_order'],
-              pageId: i.toString()),
+              pageId: i.toString(),
+              callbackswipe: blockSwipe,
+              ),
         ));
       }
       if (pageList[i]['page_name'] == "Scale chart") {
@@ -256,13 +256,24 @@ class _ViewerInitState extends State<ViewerInit> {
     goBack();
   }
 
+  blockSwipe() {
+    setState(() {
+      if (isDraging == 0) {
+        isDraging = 1;
+      } else {
+        isDraging = 0;
+      }
+    });
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
-    return 
+    return
         // sendCoverImage != null
-        // ? 
+        // ?
         Scaffold(
             backgroundColor: Colors.black87,
             appBar: PreferredSize(
@@ -320,58 +331,61 @@ class _ViewerInitState extends State<ViewerInit> {
               ),
             ),
             body: new PageView(
+                physics: isDraging == 0
+                    ? PageScrollPhysics()
+                    : NeverScrollableScrollPhysics(),
                 controller: _pageController,
                 onPageChanged: _onPageViewChange,
                 children: <Widget>[] + sectionWidgets));
-        // : Scaffold(
-        //     backgroundColor: Colors.black,
-        //     body: Container(
-        //       child: Padding(
-        //           padding: EdgeInsets.fromLTRB(30, 30, 30, 10),
-        //           child: Column(
-        //             children: <Widget>[
-        //               Container(
-        //                 margin: EdgeInsets.fromLTRB(20,
-        //                     MediaQuery.of(context).size.height * 0.2, 20, 0),
-        //                 child: Image.asset('assets/icos/wait.gif',
-        //                     width: 250, height: 250),
-        //               ),
-        //               Container(
-        //                 margin: EdgeInsets.fromLTRB(20, 10, 20, 140),
-        //                 child: Text(
-        //                   'Explore each page by scrolling left and right, create collections for future reference and have your say while providing valuable feedback',
-        //                   textAlign: TextAlign.center,
-        //                   style: TextStyle(
-        //                     color: Color(0xFF868E9C),
-        //                     fontSize: 13,
-        //                   ),
-        //                 ),
-        //               ),
-        //               Padding(
-        //                   padding: EdgeInsets.fromLTRB(30, 50, 30, 0),
-        //                   child: SizedBox(
-        //                       height: 3.0,
-        //                       width: 300.0,
-        //                       child: LinearProgressIndicator(
-        //                         valueColor:
-        //                             AlwaysStoppedAnimation(Colors.white),
-        //                         backgroundColor: Color(0xFF13161D),
-        //                         value: _progress,
-        //                       ))),
-        //               Padding(
-        //                 padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
-        //                 child: Text(
-        //                   'LOADING',
-        //                   textAlign: TextAlign.center,
-        //                   style: TextStyle(
-        //                     color: Color(0xFF868E9C),
-        //                     fontSize: 12,
-        //                   ),
-        //                 ),
-        //               ),
-        //             ],
-        //           )),
-        //     ));
+    // : Scaffold(
+    //     backgroundColor: Colors.black,
+    //     body: Container(
+    //       child: Padding(
+    //           padding: EdgeInsets.fromLTRB(30, 30, 30, 10),
+    //           child: Column(
+    //             children: <Widget>[
+    //               Container(
+    //                 margin: EdgeInsets.fromLTRB(20,
+    //                     MediaQuery.of(context).size.height * 0.2, 20, 0),
+    //                 child: Image.asset('assets/icos/wait.gif',
+    //                     width: 250, height: 250),
+    //               ),
+    //               Container(
+    //                 margin: EdgeInsets.fromLTRB(20, 10, 20, 140),
+    //                 child: Text(
+    //                   'Explore each page by scrolling left and right, create collections for future reference and have your say while providing valuable feedback',
+    //                   textAlign: TextAlign.center,
+    //                   style: TextStyle(
+    //                     color: Color(0xFF868E9C),
+    //                     fontSize: 13,
+    //                   ),
+    //                 ),
+    //               ),
+    //               Padding(
+    //                   padding: EdgeInsets.fromLTRB(30, 50, 30, 0),
+    //                   child: SizedBox(
+    //                       height: 3.0,
+    //                       width: 300.0,
+    //                       child: LinearProgressIndicator(
+    //                         valueColor:
+    //                             AlwaysStoppedAnimation(Colors.white),
+    //                         backgroundColor: Color(0xFF13161D),
+    //                         value: _progress,
+    //                       ))),
+    //               Padding(
+    //                 padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
+    //                 child: Text(
+    //                   'LOADING',
+    //                   textAlign: TextAlign.center,
+    //                   style: TextStyle(
+    //                     color: Color(0xFF868E9C),
+    //                     fontSize: 12,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ],
+    //           )),
+    //     ));
   }
 
   _onPageViewChange(int page) {

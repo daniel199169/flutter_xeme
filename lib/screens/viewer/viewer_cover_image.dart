@@ -604,7 +604,14 @@ class _ViewerCoverImageState extends State<ViewerCoverImage> {
                             );
                           });
                     }
+                    
                   },
+                  // onHorizontalDragUpdate: (details) {
+                  //   // print("*******   horizantal drag  *********");
+                  // },
+                  // onTapUp: (details) {
+                  //   // print("-------   onTapUp event   --------");
+                  // },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(40.0),
                     child: CachedNetworkImage(

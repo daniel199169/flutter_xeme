@@ -15,8 +15,9 @@ class QuadMoveableCircle extends StatefulWidget {
   String subOrder;
 
   final Function callback;
+  final Function callbackswipe;
 
-  QuadMoveableCircle(this.id, this.type, this.subOrder, this.callback);
+  QuadMoveableCircle(this.id, this.type, this.subOrder, this.callback ,this.callbackswipe);
 
   @override
   State<StatefulWidget> createState() {
@@ -97,9 +98,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
 
   @override
   Widget build(BuildContext context) {
-    print(" ------- movable quad chart -------- ");
-    print("Size W is ${MediaQuery.of(context).size.width}");
-    print("Size H is ${MediaQuery.of(context).size.height}");
+   
 
     return Positioned(
       top: yPosition,
@@ -107,7 +106,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
       child: GestureDetector(
         onPanStart: (tapInfo) async {
           dateTimeUpdate = DateTime.now();
-          print(dateTimeEnd);
+          
           if (dateTimeEnd != null) {
             diffsc = dateTimeUpdate.difference(dateTimeEnd).inSeconds;
             if (diffsc <= 1)
@@ -118,6 +117,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
           }
         },
         onPanUpdate: (tapInfo) {
+          print("++++++++++++++++++   pan update  ++++++++++++++++++++++");
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
@@ -127,27 +127,21 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
 
                     xPosition += tapInfo.delta.dx;
                     yPosition += tapInfo.delta.dy;
-                     print("**********  dHeight  *********");
-                    print(dHeight);
-                    if (yPosition >
-                        dHeight - 110) {
-                      yPosition =
-                          dHeight - 110;
+                   
+                    if (yPosition > dHeight - 110) {
+                      yPosition = dHeight - 110;
                     }
                     if (xPosition < 20) {
                       xPosition = 20;
                     }
-                    if (xPosition >
-                        MediaQuery.of(context).size.width - 130) {
+                    if (xPosition > MediaQuery.of(context).size.width - 130) {
                       xPosition = MediaQuery.of(context).size.width - 130;
                     }
 
                     if (yPosition < 20) {
                       yPosition = 20;
                     }
-                    print("**********  move updating  *********");
-                    print(xPosition);
-                    print(yPosition);
+                   
                   });
                 }
               }
@@ -220,8 +214,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                 if (timer == null) {
                   timer = Timer.periodic(const Duration(milliseconds: 100),
                       (Timer _) async {
-                    print("flagEndStart" + "$flagEndStart");
-                    print("timerNo" + "$timerNo");
+                   
 
                     if (flagEndStart == 1) {
                       timerNo++;
@@ -244,16 +237,12 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                 }
               }
             }
-            // else {
-            // Timer(const Duration(milliseconds: 1000), () {
-            //   widget.callback(MediaQuery.of(context).size);
-            // });
-            // }
           }
         },
-      
-        
-        
+        onTapDown: (tapInfo) {
+          widget.callbackswipe();
+        },
+
         child: flagMoveEnd == 0
             ? Container(
                 child: new CircleAvatar(

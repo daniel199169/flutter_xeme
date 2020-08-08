@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:xenome/firebase_services/viewer_manager.dart';
@@ -9,7 +8,7 @@ import 'package:xenome/utils/session_manager.dart';
 import 'package:xenome/utils/string_helper.dart';
 import 'package:xenome/screens/custom_widgets/bottom_sheet.dart';
 
-class ScaleMoveableCircle extends StatefulWidget {
+class QuadMoveableCircle extends StatefulWidget {
 //  BuildContext context;
   String id;
   String type;
@@ -17,25 +16,25 @@ class ScaleMoveableCircle extends StatefulWidget {
 
   final Function callback;
 
-  ScaleMoveableCircle(this.id, this.type, this.subOrder, this.callback);
+  QuadMoveableCircle(this.id, this.type, this.subOrder, this.callback);
 
   @override
   State<StatefulWidget> createState() {
-    return _ScaleMoveableCircleState();
+    return _QuadMoveableCircleState();
   }
 }
 
-class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
+class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
   double xPosition;
   double yPosition;
   double borderWidth;
-  String vote = "";
+  String vote;
   int circleBorderColor = 4278190080;
   int circlebackgroundcolor = 4278190080;
   int flag = 0;
   int diffsc = 0;
-  int flagMoveEnd = 0;
   int flagEndStart = 0;
+  int flagMoveEnd = 0;
   double midWidth = 0.0;
   double midHeight = 0.0;
   double dWidth = 0.0;
@@ -45,7 +44,6 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
   ChartCirclePosition chartPosition;
   CirclePosition position;
 
-  // int panUpdateNo = 0;
   int timerNo = 0;
   Timer timer;
 
@@ -56,39 +54,44 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
     if (SessionManager.getUserId() != '') {
       getPositionList();
     }
-    borderWidth = 2.0;
 
+    borderWidth = 2.0;
     getCircleColor();
+
     midWidth = (SessionManager.getMediaWidth() - 20) * 0.5 - 50;
     midHeight = (SessionManager.getMediaHeight() - 20) * 0.4 - 40;
     dWidth = SessionManager.getMediaWidth() - 20;
     dHeight = (SessionManager.getMediaHeight() - 20) * 0.8;
+
     xPosition = midWidth;
     yPosition = midHeight;
   }
 
-  getPositionList() async {
-    CirclePosition _position = await ViewerManager.getScalePosition(
+  getCircleColor() async {
+    String _circleBorderColor = await ViewerManager.getQuadCircleColor(
         widget.id, widget.type, int.parse(widget.subOrder));
+    String _circlebackgroundcolor = "25" + _circleBorderColor;
+    String _circleCustomBorderColor = "FF" + _circleBorderColor;
+    setState(() {
+      circleBorderColor = int.parse(_circleCustomBorderColor, radix: 16);
+      circlebackgroundcolor = int.parse(_circlebackgroundcolor, radix: 16);
+    });
+  }
+
+  getPositionList() async {
+    CirclePosition _position = await ViewerManager.getQuadPosition(
+        widget.id, widget.type, int.parse(widget.subOrder));
+
     setState(() {
       if (_position == null) {
         flag = 0;
       } else {
         flag = 1;
-        yPosition = num.parse(((_position.y / 100) * dHeight) .toStringAsFixed(3));
+        xPosition =
+            num.parse(((_position.x / 100) * dWidth).toStringAsFixed(3));
+        yPosition =
+            num.parse(((_position.y / 100) * dHeight).toStringAsFixed(3));
       }
-    });
-  }
-
-  getCircleColor() async {
-    String _circleBorderColor = await ViewerManager.getScaleCircleColor(
-        widget.id, widget.type, int.parse(widget.subOrder));
-    String _circlebackgroundcolor = "25" + _circleBorderColor;
-    String _circleCustomBorderColor = "FF" + _circleBorderColor;
-
-    setState(() {
-      circleBorderColor = int.parse(_circleCustomBorderColor, radix: 16);
-      circlebackgroundcolor = int.parse(_circlebackgroundcolor, radix: 16);
     });
   }
 
@@ -100,7 +103,7 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
       child: GestureDetector(
         onPanStart: (tapInfo) async {
           dateTimeUpdate = DateTime.now();
-          
+
           if (dateTimeEnd != null) {
             diffsc = dateTimeUpdate.difference(dateTimeEnd).inSeconds;
             if (diffsc <= 1)
@@ -111,6 +114,7 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
           }
         },
         onPanUpdate: (tapInfo) {
+          print("++++++++++++++++++   pan update  ++++++++++++++++++++++");
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
@@ -118,14 +122,21 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                   setState(() {
                     borderWidth = 8.0;
 
+                    xPosition += tapInfo.delta.dx;
                     yPosition += tapInfo.delta.dy;
-                    if (yPosition >
-                        MediaQuery.of(context).size.height * 0.8 - 58 - 43) {
-                      yPosition =
-                          MediaQuery.of(context).size.height * 0.8 - 58 - 43;
+
+                    if (yPosition > dHeight - 110) {
+                      yPosition = dHeight - 110;
                     }
-                    if (yPosition < 58 - 43) {
-                      yPosition = 15;
+                    if (xPosition < 20) {
+                      xPosition = 20;
+                    }
+                    if (xPosition > MediaQuery.of(context).size.width - 130) {
+                      xPosition = MediaQuery.of(context).size.width - 130;
+                    }
+
+                    if (yPosition < 20) {
+                      yPosition = 20;
                     }
                   });
                 }
@@ -165,13 +176,19 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                   setState(() {
                     borderWidth = 2.0;
 
-                    if (yPosition < midHeight) {
+                    if (xPosition < midWidth && yPosition < midHeight) {
                       vote = "1";
-                    } else {
+                    }
+                    if (xPosition > midWidth && yPosition < midHeight) {
                       vote = "2";
                     }
+                    if (xPosition < midWidth && yPosition > midHeight) {
+                      vote = "3";
+                    }
+                    if (xPosition > midWidth && yPosition > midHeight) {
+                      vote = "4";
+                    }
                   });
-
                   double xxPosition = (xPosition / dWidth) * 100;
                   xxPosition = double.parse(xxPosition.toStringAsFixed(3));
                   double yyPosition = (yPosition / dHeight) * 100;
@@ -182,15 +199,14 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                       y: yyPosition,
                       uid: SessionManager.getUserId(),
                       minOpacity: 5,
-                      subOrder: widget.subOrder,
+                      subOrder: widget.subOrder.toString(),
                       vote: vote);
                   position = CirclePosition(
                       x: xxPosition,
                       y: yyPosition,
                       uid: SessionManager.getUserId(),
-                      subOrder: widget.subOrder);
+                      subOrder: widget.subOrder.toString());
                 }
-
                 if (timer == null) {
                   timer = Timer.periodic(const Duration(milliseconds: 100),
                       (Timer _) async {
@@ -198,14 +214,11 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                       timerNo++;
 
                       if (timerNo == 10) {
-                        await ViewerManager.updateScaleHeatmap(chartPosition,
+                        await ViewerManager.updateQuadHeatmap(chartPosition,
                             widget.id, widget.type, widget.subOrder);
-
-                        await ViewerManager.updateScalePosition(
+                        await ViewerManager.updateQuadPosition(
                             position, widget.id, widget.type, widget.subOrder);
-
                         widget.callback(MediaQuery.of(context).size);
-
                         setState(() {
                           flag = 1;
                           flagMoveEnd = 1;
@@ -214,24 +227,15 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                         timer.cancel();
                       }
                     }
-
-                    // }
                   });
                 }
               }
             }
-            //  else {
-            //   Timer(const Duration(milliseconds: 1000), () {
-            //     widget.callback(MediaQuery.of(context).size);
-            //   });
-            // }
           }
         },
-        
         child: flagMoveEnd == 0
             ? Container(
                 child: new CircleAvatar(
-                  child: new Text(''),
                   backgroundColor:
                       intToColor(circlebackgroundcolor).withOpacity(0.4),
                   radius: 40.0,

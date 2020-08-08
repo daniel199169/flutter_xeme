@@ -15,11 +15,13 @@ import 'dart:ui';
 import 'dart:ui' as ui;
 
 class ViewQuadStart extends StatefulWidget {
-  ViewQuadStart({this.id, this.type, this.subOrder, this.pageId});
+  ViewQuadStart(
+      {this.id, this.type, this.subOrder, this.pageId, this.callbackswipe});
   final String id;
   final String type;
   final String subOrder;
   final String pageId;
+  final Function callbackswipe;
   @override
   _QuadStartState createState() => _QuadStartState();
 }
@@ -138,6 +140,7 @@ class _QuadStartState extends State<ViewQuadStart>
     final blackHeatmapPicture = blackHeatmapRecorder.endRecording();
     final blackImg = await blackHeatmapPicture.toImage(
         size.width.floor(), (size.height * 0.8).floor());
+
     final blackPngBytes = await blackImg.toByteData();
 
     _blackHeatmapGrad = Uint8List.view(blackPngBytes.buffer);
@@ -188,8 +191,8 @@ class _QuadStartState extends State<ViewQuadStart>
       CirclePosition _position = await ViewerManager.getQuadPosition(
           widget.id, widget.type, int.parse(widget.subOrder));
       if (_position == null) {
-        var tapCircle = new QuadMoveableCircle(
-            widget.id, widget.type, widget.subOrder, this.getQuadHeatmap);
+        var tapCircle = new QuadMoveableCircle(widget.id, widget.type,
+            widget.subOrder, this.getQuadHeatmap, widget.callbackswipe);
         commentWidgets.add(tapCircle);
       } else {
         var tapCircle = new QuadCircleRemember(
@@ -197,8 +200,8 @@ class _QuadStartState extends State<ViewQuadStart>
         commentWidgets.add(tapCircle);
       }
     } else {
-      var tapCircle = new QuadMoveableCircle(
-          widget.id, widget.type, widget.subOrder, this.getQuadHeatmap);
+      var tapCircle = new QuadMoveableCircle(widget.id, widget.type,
+          widget.subOrder, this.getQuadHeatmap, widget.callbackswipe);
       commentWidgets.add(tapCircle);
     }
   }
@@ -303,7 +306,8 @@ class _QuadStartState extends State<ViewQuadStart>
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 10, bottom: dHeight / 0.8 * 0.1, right: 10),
+                  padding: EdgeInsets.only(
+                      left: 10, bottom: dHeight / 0.8 * 0.1, right: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -471,10 +475,6 @@ class _QuadStartState extends State<ViewQuadStart>
 class PathPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    print("--------- canvas --------");
-    print(size.width);
-    print(size.height);
-
     Paint paint = Paint()
       ..color = Color(0xFF272D3A)
       ..style = PaintingStyle.stroke
@@ -489,12 +489,9 @@ class PathPainter extends CustomPainter {
     path.lineTo(size.width / 2, size.height);
 
     //path.moveTo(0, 0);
-    path.addOval(
-        Rect.fromLTWH(10, 60, size.width - 20, size.height - 120));
-    path.addOval(
-        Rect.fromLTWH(60, 110, size.width - 120, size.height  - 220));
-    path.addOval(
-        Rect.fromLTWH(110, 160, size.width - 220, size.height - 320));
+    path.addOval(Rect.fromLTWH(10, 60, size.width - 20, size.height - 120));
+    path.addOval(Rect.fromLTWH(60, 110, size.width - 120, size.height - 220));
+    path.addOval(Rect.fromLTWH(110, 160, size.width - 220, size.height - 320));
 
     canvas.drawPath(path, paint);
   }

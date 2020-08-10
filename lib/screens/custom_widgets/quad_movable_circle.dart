@@ -16,8 +16,9 @@ class QuadMoveableCircle extends StatefulWidget {
 
   final Function callback;
   final Function callbackswipe;
+  final Function callbackrelease;
 
-  QuadMoveableCircle(this.id, this.type, this.subOrder, this.callback ,this.callbackswipe);
+  QuadMoveableCircle(this.id, this.type, this.subOrder, this.callback ,this.callbackswipe, this.callbackrelease);
 
   @override
   State<StatefulWidget> createState() {
@@ -210,6 +211,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                       y: yyPosition,
                       uid: SessionManager.getUserId(),
                       subOrder: widget.subOrder.toString());
+                  widget.callbackrelease();
                 }
                 if (timer == null) {
                   timer = Timer.periodic(const Duration(milliseconds: 100),

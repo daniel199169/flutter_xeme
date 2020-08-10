@@ -219,12 +219,13 @@ class _ViewerInitState extends State<ViewerInit> {
           width: MediaQuery.of(context).size.width - 10,
           margin: const EdgeInsets.all(9.0),
           child: ViewQuadStart(
-              id: widget.id,
-              type: widget.type,
-              subOrder: pageList[i]['sub_order'],
-              pageId: i.toString(),
-              callbackswipe: blockSwipe,
-              ),
+            id: widget.id,
+            type: widget.type,
+            subOrder: pageList[i]['sub_order'],
+            pageId: i.toString(),
+            callbackswipe: blockSwipe,
+            callbackrelease: releaseSwipe,
+          ),
         ));
       }
       if (pageList[i]['page_name'] == "Scale chart") {
@@ -258,15 +259,16 @@ class _ViewerInitState extends State<ViewerInit> {
 
   blockSwipe() {
     setState(() {
-      if (isDraging == 0) {
-        isDraging = 1;
-      } else {
-        isDraging = 0;
-      }
+      isDraging = 1;
     });
   }
 
-  
+  releaseSwipe() {
+    setState(() {
+      isDraging = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);

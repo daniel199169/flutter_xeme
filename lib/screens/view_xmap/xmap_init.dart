@@ -84,11 +84,13 @@ class _XmapInitState extends State<XmapInit> {
 
   blockSwipe() {
     setState(() {
-      if (isDraging == 0) {
-        isDraging = 1;
-      } else {
-        isDraging = 0;
-      }
+      isDraging = 1;
+    });
+  }
+
+  releaseSwipe() {
+    setState(() {
+      isDraging = 0;
     });
   }
 
@@ -231,6 +233,7 @@ class _XmapInitState extends State<XmapInit> {
             subOrder: pageList[i]['sub_order'],
             pageId: i.toString(),
             callbackswipe: blockSwipe,
+            callbackrelease: releaseSwipe,
           ),
         ));
       }

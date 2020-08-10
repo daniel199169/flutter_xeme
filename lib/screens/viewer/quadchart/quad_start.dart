@@ -16,12 +16,13 @@ import 'dart:ui' as ui;
 
 class ViewQuadStart extends StatefulWidget {
   ViewQuadStart(
-      {this.id, this.type, this.subOrder, this.pageId, this.callbackswipe});
+      {this.id, this.type, this.subOrder, this.pageId, this.callbackswipe, this.callbackrelease});
   final String id;
   final String type;
   final String subOrder;
   final String pageId;
   final Function callbackswipe;
+  final Function callbackrelease;
   @override
   _QuadStartState createState() => _QuadStartState();
 }
@@ -192,7 +193,7 @@ class _QuadStartState extends State<ViewQuadStart>
           widget.id, widget.type, int.parse(widget.subOrder));
       if (_position == null) {
         var tapCircle = new QuadMoveableCircle(widget.id, widget.type,
-            widget.subOrder, this.getQuadHeatmap, widget.callbackswipe);
+            widget.subOrder, this.getQuadHeatmap, widget.callbackswipe, widget.callbackrelease);
         commentWidgets.add(tapCircle);
       } else {
         var tapCircle = new QuadCircleRemember(
@@ -201,7 +202,7 @@ class _QuadStartState extends State<ViewQuadStart>
       }
     } else {
       var tapCircle = new QuadMoveableCircle(widget.id, widget.type,
-          widget.subOrder, this.getQuadHeatmap, widget.callbackswipe);
+          widget.subOrder, this.getQuadHeatmap, widget.callbackswipe, widget.callbackrelease);
       commentWidgets.add(tapCircle);
     }
   }

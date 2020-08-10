@@ -109,7 +109,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
           
           if (dateTimeEnd != null) {
             diffsc = dateTimeUpdate.difference(dateTimeEnd).inSeconds;
-            if (diffsc <= 1)
+            if (diffsc <= 2)
               setState(() {
                 timerNo = 0;
                 flagEndStart = 0;
@@ -121,7 +121,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                if (diffsc <= 1) {
+                if (diffsc <= 2) {
                   setState(() {
                     borderWidth = 8.0;
 
@@ -176,7 +176,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                   flagEndStart = 1;
                 });
 
-                if (diffsc <= 1) {
+                if (diffsc <= 2) {
                   setState(() {
                     borderWidth = 2.0;
 
@@ -219,7 +219,7 @@ class _QuadMoveableCircleState extends State<QuadMoveableCircle> {
                     if (flagEndStart == 1) {
                       timerNo++;
 
-                      if (timerNo == 10) {
+                      if (timerNo == 20) {
                         await ViewerManager.updateQuadHeatmap(chartPosition,
                             widget.id, widget.type, widget.subOrder);
                         await ViewerManager.updateQuadPosition(

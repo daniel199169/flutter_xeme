@@ -103,7 +103,7 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
           
           if (dateTimeEnd != null) {
             diffsc = dateTimeUpdate.difference(dateTimeEnd).inSeconds;
-            if (diffsc <= 1)
+            if (diffsc <= 2)
               setState(() {
                 timerNo = 0;
                 flagEndStart = 0;
@@ -114,7 +114,7 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
           if (SessionManager.getUserId() != '') {
             if (flagMoveEnd == 0) {
               if (flag == 0) {
-                if (diffsc <= 1) {
+                if (diffsc <= 2) {
                   setState(() {
                     borderWidth = 8.0;
 
@@ -161,7 +161,7 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                   flagEndStart = 1;
                 });
 
-                if (diffsc <= 1) {
+                if (diffsc <= 2) {
                   setState(() {
                     borderWidth = 2.0;
 
@@ -197,7 +197,7 @@ class _ScaleMoveableCircleState extends State<ScaleMoveableCircle> {
                     if (flagEndStart == 1) {
                       timerNo++;
 
-                      if (timerNo == 10) {
+                      if (timerNo == 20) {
                         await ViewerManager.updateScaleHeatmap(chartPosition,
                             widget.id, widget.type, widget.subOrder);
 

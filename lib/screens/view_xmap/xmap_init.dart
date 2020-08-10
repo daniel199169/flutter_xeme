@@ -383,6 +383,9 @@ class _XmapInitState extends State<XmapInit> {
     //   items.addAll(pageList);
     // });
     return new PageView(
+        physics: isDraging == 0
+            ? PageScrollPhysics()
+            : NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: _onPageViewChange,
         children: <Widget>[] + sectionWidgets);
@@ -396,9 +399,6 @@ class _XmapInitState extends State<XmapInit> {
 
   Widget _buildSearchResults() {
     return new PageView(
-        physics: isDraging == 0
-            ? PageScrollPhysics()
-            : NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: _onPageViewChange,
         children: <Widget>[] + sectionWidgets);

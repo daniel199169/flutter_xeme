@@ -43,7 +43,7 @@ class _XmapInitState extends State<XmapInit> {
 
   int _currentIndex;
   int sectionNumber = 2;
-
+  int isDraging = 0;
   var pageList = [];
   var duplicateItems = [];
   var items = [];
@@ -80,6 +80,16 @@ class _XmapInitState extends State<XmapInit> {
         },
       ),
     );
+  }
+
+  blockSwipe() {
+    setState(() {
+      if (isDraging == 0) {
+        isDraging = 1;
+      } else {
+        isDraging = 0;
+      }
+    });
   }
 
   getXmapAllData() async {
@@ -216,10 +226,12 @@ class _XmapInitState extends State<XmapInit> {
           width: MediaQuery.of(context).size.width - 10,
           margin: const EdgeInsets.all(10.0),
           child: ViewQuadStart(
-              id: widget.id,
-              type: widget.type,
-              subOrder: pageList[i]['sub_order'],
-              pageId: i.toString()),
+            id: widget.id,
+            type: widget.type,
+            subOrder: pageList[i]['sub_order'],
+            pageId: i.toString(),
+            callbackswipe: blockSwipe,
+          ),
         ));
       }
       if (pageList[i]['page_name'] == "Scale chart") {
@@ -255,117 +267,115 @@ class _XmapInitState extends State<XmapInit> {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
-    return 
+    return
         // sendCoverImage != null
-        // ? 
+        // ?
         Scaffold(
-            backgroundColor: Colors.black87,
-            appBar: PreferredSize(
-              preferredSize: Size(null, 100),
+      backgroundColor: Colors.black87,
+      appBar: PreferredSize(
+        preferredSize: Size(null, 100),
+        child: Container(
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(color: Colors.transparent, spreadRadius: 5, blurRadius: 2)
+          ]),
+          width: MediaQuery.of(context).size.width,
+          height: 80,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(1.0),
+            child: Container(
+              color: Colors.transparent,
               child: Container(
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                      color: Colors.transparent, spreadRadius: 5, blurRadius: 2)
-                ]),
-                width: MediaQuery.of(context).size.width,
-                height: 80,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(1.0),
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(25, 20, 25, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          new GestureDetector(
-                            child: Text(
-                              (_currentIndex + 1).toString() +
-                                  ' / ' +
-                                  sectionNumber.toString(),
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'Roboto Medium',
-                                color: Color(0xFF868E9C),
-                              ),
-                            ),
-                          ),
-                          new GestureDetector(
-                            onTap: () {
-                              if (SessionManager.getUserId() == '') {
-                                Navigator.push(
-                                    context, FadeRoute(page: NotSiHome()));
-                              } else {
-                                Navigator.push(
-                                    context, FadeRoute(page: Home()));
-                              }
-                            },
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 25.0,
-                            ),
-                          ),
-                        ],
+                margin: EdgeInsets.fromLTRB(25, 20, 25, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    new GestureDetector(
+                      child: Text(
+                        (_currentIndex + 1).toString() +
+                            ' / ' +
+                            sectionNumber.toString(),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'Roboto Medium',
+                          color: Color(0xFF868E9C),
+                        ),
                       ),
                     ),
-                  ),
+                    new GestureDetector(
+                      onTap: () {
+                        if (SessionManager.getUserId() == '') {
+                          Navigator.push(context, FadeRoute(page: NotSiHome()));
+                        } else {
+                          Navigator.push(context, FadeRoute(page: Home()));
+                        }
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 25.0,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            body: items.length == 0 || items.length == 1
-                ? _buildPagesList()
-                : _buildSearchResults(),);
-        // : Scaffold(
-        //     backgroundColor: Colors.black,
-        //     body: Container(
-        //       child: Padding(
-        //           padding: EdgeInsets.fromLTRB(30, 30, 30, 10),
-        //           child: Column(
-        //             children: <Widget>[
-        //               Container(
-        //                 margin: EdgeInsets.fromLTRB(20,
-        //                     MediaQuery.of(context).size.height * 0.2, 20, 0),
-        //                 child: Image.asset('assets/icos/wait.gif',
-        //                     width: 250, height: 250),
-        //               ),
-        //               Container(
-        //                 margin: EdgeInsets.fromLTRB(20, 10, 20, 140),
-        //                 child: Text(
-        //                   'Explore each page by scrolling left and right, create collections for future reference and have your say while providing valuable feedback',
-        //                   textAlign: TextAlign.center,
-        //                   style: TextStyle(
-        //                     color: Color(0xFF868E9C),
-        //                     fontSize: 13,
-        //                   ),
-        //                 ),
-        //               ),
-        //               Padding(
-        //                   padding: EdgeInsets.fromLTRB(30, 50, 30, 0),
-        //                   child: SizedBox(
-        //                       height: 3.0,
-        //                       width: 300.0,
-        //                       child: LinearProgressIndicator(
-        //                         valueColor:
-        //                             AlwaysStoppedAnimation(Colors.white),
-        //                         backgroundColor: Color(0xFF13161D),
-        //                         value: _progress,
-        //                       ))),
-        //               Padding(
-        //                 padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
-        //                 child: Text(
-        //                   'LOADING',
-        //                   textAlign: TextAlign.center,
-        //                   style: TextStyle(
-        //                     color: Color(0xFF868E9C),
-        //                     fontSize: 12,
-        //                   ),
-        //                 ),
-        //               ),
-        //             ],
-        //           )),
-        //     ));
+          ),
+        ),
+      ),
+      body: items.length == 0 || items.length == 1
+          ? _buildPagesList()
+          : _buildSearchResults(),
+    );
+    // : Scaffold(
+    //     backgroundColor: Colors.black,
+    //     body: Container(
+    //       child: Padding(
+    //           padding: EdgeInsets.fromLTRB(30, 30, 30, 10),
+    //           child: Column(
+    //             children: <Widget>[
+    //               Container(
+    //                 margin: EdgeInsets.fromLTRB(20,
+    //                     MediaQuery.of(context).size.height * 0.2, 20, 0),
+    //                 child: Image.asset('assets/icos/wait.gif',
+    //                     width: 250, height: 250),
+    //               ),
+    //               Container(
+    //                 margin: EdgeInsets.fromLTRB(20, 10, 20, 140),
+    //                 child: Text(
+    //                   'Explore each page by scrolling left and right, create collections for future reference and have your say while providing valuable feedback',
+    //                   textAlign: TextAlign.center,
+    //                   style: TextStyle(
+    //                     color: Color(0xFF868E9C),
+    //                     fontSize: 13,
+    //                   ),
+    //                 ),
+    //               ),
+    //               Padding(
+    //                   padding: EdgeInsets.fromLTRB(30, 50, 30, 0),
+    //                   child: SizedBox(
+    //                       height: 3.0,
+    //                       width: 300.0,
+    //                       child: LinearProgressIndicator(
+    //                         valueColor:
+    //                             AlwaysStoppedAnimation(Colors.white),
+    //                         backgroundColor: Color(0xFF13161D),
+    //                         value: _progress,
+    //                       ))),
+    //               Padding(
+    //                 padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
+    //                 child: Text(
+    //                   'LOADING',
+    //                   textAlign: TextAlign.center,
+    //                   style: TextStyle(
+    //                     color: Color(0xFF868E9C),
+    //                     fontSize: 12,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ],
+    //           )),
+    //     ));
   }
 
   Widget _buildPagesList() {
@@ -386,6 +396,9 @@ class _XmapInitState extends State<XmapInit> {
 
   Widget _buildSearchResults() {
     return new PageView(
+        physics: isDraging == 0
+            ? PageScrollPhysics()
+            : NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: _onPageViewChange,
         children: <Widget>[] + sectionWidgets);
